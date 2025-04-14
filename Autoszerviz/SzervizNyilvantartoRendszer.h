@@ -1,0 +1,136 @@
+#ifndef SZERVIZNYILVANTARTORENDSZER_H
+#define SZERVIZNYILVANTARTORENDSZER_H
+
+/**
+*   \file SzervizNyilvantartoRendszer.h
+*   A SzervizNyilvantartoRendszer adatait leíró osztály.
+*
+*   Az osztály az autókhoz kapcsolódó szervizmûveletek nyilvántartására szolgál.
+*   Felelõs az autók adatainak kezeléséért, új szervizmûveletek rögzítéséért,
+*   meglévõ adatok lekérdezéséért és módosításáért.
+*/
+
+#include <string>
+#include "Vector.hpp"
+#include "Auto.h"
+#include "Ugyfel.h"
+
+class SzervizNyilvantartoRendszer {
+	Vector<Auto> autok;			///< Az autók listája
+	Vector<Ugyfel> ugyfelek;	///< Az ügyfelek listája
+public:
+	/*-------------------------------------------
+			Konstruktorok és destruktor
+	-------------------------------------------*/
+	/// Alapértelmezett konstruktor.
+	/// Üres vektort hoz létre, elõre lefoglalt kapacitással.
+	SzervizNyilvantartoRendszer();
+
+	/// Paraméteres konstruktor
+	/// @param a - Az autó példány
+	/// @param u - Az ügyfél példány
+	SzervizNyilvantartoRendszer(const Auto& a, const Ugyfel& u);
+
+	/// Másoló konstruktor.
+	/// @param v - Másolandó SzervizNyilvantartoRendszer példány
+	SzervizNyilvantartoRendszer(const SzervizNyilvantartoRendszer& v);
+
+	/// Destruktor.
+	/// Ez jelzi, hogy nem kell semmi egyedi a destruktorba, mert a tagok destruktora magától elintézi.
+	~SzervizNyilvantartoRendszer();
+
+
+
+	/*-------------------------------------------
+				Bõvítõ tagfüggvények
+	-------------------------------------------*/
+	/// Új autó hozzáadása az adatbázishoz.
+	/// @param a - Az új autó példány.
+	void ujAuto(const Auto& a);
+
+	/// Új ügyfél hozzáadása az adatbázishoz.
+	/// @param u - Az új ügyfél példány.
+	void ujUgyfel(const Ugyfel& u);
+
+
+
+	/*-------------------------------------------
+				Frissítõ tagfüggvények
+	-------------------------------------------*/
+	/// Egy autó adatainak frissítése a rendszeren belül.
+	/// Ha a rendszeren belül már létezik az autó (rendszám alapján), akkor az adatai frissülnek.
+	/// @param a - Az autó új adatai.
+	/// @throws std::out_of_range - Ha az autó nem található.
+	void frissitAuto(const Auto& a);
+
+	/// Egy ügyfél adatainak frissítése a rendszeren belül.
+	/// Ha a rendszeren belül már létezik az ügyfél (név alapján), akkor az adatai frissülnek.
+	/// @param u - Az ügyfél új adatai.
+	/// @throws std::out_of_range - Ha az ügyfél nem található.
+	void frissitUgyfel(const Ugyfel& u);
+
+
+
+	/*-------------------------------------------
+				Törlõ tagfüggvények
+	-------------------------------------------*/
+	/// Egy autó törlése rendszám alapján.
+	/// @param r - A törlendõ autó rendszáma.
+	/// @throws std::out_of_range - Ha az autó nem található.
+	void torolAuto(const std::string& r);
+
+	/// Egy ügyfél törlése név alapján.
+	/// @param n - A törlendõ ügyfél neve.
+	/// @throws std::out_of_range - Ha az ügyfél nem található.
+	void torolUgyfel(const std::string& n);
+
+
+
+	/*-------------------------------------------
+			  Keresõ tagfüggvények
+	-------------------------------------------*/
+	// Autó keresése rendszám alapján.
+	/// @param r - A keresett autó rendszáma (teljes egyezés).
+	/// @return - Az autó referenciája, ha megtalálta.
+	/// @throws std::out_of_range - Ha az autó nem található.
+	Auto& keresAuto(const std::string& r);
+
+	/// Ügyfél keresése név alapján.
+	/// @param n - A keresett ügyfél neve (teljes egyezés).
+	/// @return - Az ügyfél referenciája, ha megtalálta.
+	/// @throws std::out_of_range - Ha a keresett ügyfél nem található.
+	Ugyfel& keresUgyfel(const std::string& n);
+
+
+
+	/*-------------------------------------------
+				Fontos tagmûveletek
+	-------------------------------------------*/
+	/// Egy végzett szervizmûvelet rögzítése adott autóhoz.
+	/// @param r - Az autó rendszáma.
+	/// @param m - A végzett szervizmûvelet.
+	void rogzitesVegzettMuvelet(const std::string& r, const VegzettMuvelet& m);
+
+	/// Lekérdezi az adott autóhoz tartozó szervizmûveleteket.
+	/// @param r - Az autó rendszáma.
+	void lekeroVegzettMuvelet(std::ostream& os, const std::string& r) const;
+
+	/// Figyelmeztetéseket generál az autó állapota alapján.
+	/// @param a - Az autó példány.
+	void figyelmeztetesek(std::ostream& os, const Auto& a) const;
+
+
+
+	/*-------------------------------------------
+			 Fájlkezelõ tagfüggvények
+	-------------------------------------------*/
+	/// Az aktuális rendszeradatok mentése fájlba.
+	/// @param f - A célfájl neve.
+	void mentesFajlba(const std::string& f) const;
+
+	/// Rendszeradatok betöltése fájlból.
+	/// @param f - A forrásfájl neve.
+	void betoltesFajlbol(const std::string& f);
+};
+
+#endif // SZERVIZNYILVANTARTORENDSZER_H
