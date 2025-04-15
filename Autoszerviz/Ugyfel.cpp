@@ -86,7 +86,7 @@ void Ugyfel::setEmail(const std::string& e) { email = e; }
 void Ugyfel::kiir(std::ostream& os) const {
     os << "Nev: " << nev << "\n"
         << "Telefonszam: " << telefonszam << "\n"
-        << "Email: " << email
+        << "Email: " << email << "\n"
         << std::endl;
 }
 

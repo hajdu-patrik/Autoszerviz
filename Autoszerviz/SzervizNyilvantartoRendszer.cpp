@@ -48,6 +48,24 @@ SzervizNyilvantartoRendszer::~SzervizNyilvantartoRendszer() = default;
 
 
 /*-------------------------------------------
+				Getter
+-------------------------------------------*/
+/// Visszaadja az összes autó objektumot.
+/// @return - Egy Vector<Auto> példány, amely az összes jelenleg nyilvántartott autót tartalmazza.
+Vector<Auto> SzervizNyilvantartoRendszer::getAutok() {
+	return autok;
+}
+
+
+/// Visszaadja az összes ügyfél objektumot.
+/// @return - Egy Vector<Ugyfel> példány, amely az összes jelenleg nyilvántartott ügyfelet tartalmazza.
+Vector<Ugyfel> SzervizNyilvantartoRendszer::getUgyfelek() {
+	return ugyfelek;
+}
+
+
+
+/*-------------------------------------------
 				Bővítő tagfüggvények
 -------------------------------------------*/
 /// Új autó hozzáadása az adatbázishoz.
@@ -148,6 +166,18 @@ Auto& SzervizNyilvantartoRendszer::keresAuto(const std::string& r) {
 	throw std::out_of_range("A keresett auto nincs rendszerben! (keresAuto)");
 }
 
+/// Ügyfél létezésének ellenőrzése név alapján.
+/// @param r - A keresett autó rendszáma (teljes egyezés).
+/// @return - True, ha az auto megtalálható a rendszerben, false egyébként.
+bool SzervizNyilvantartoRendszer::vanAuto(const std::string& r) const {
+	for (const auto& au : autok) {
+		if (au.getRendszam() == r) {
+			return true;
+		}
+	}
+	return false;
+}
+
 /// Ügyfél keresése név alapján.
 /// @param n - A keresett ügyfél neve (teljes egyezés).
 /// @return - Az ügyfél referenciája, ha megtalálta.
@@ -161,6 +191,17 @@ Ugyfel& SzervizNyilvantartoRendszer::keresUgyfel(const std::string& n) {
 	throw std::out_of_range("A keresett ugyfel nincs rendszerben! (keresUgyfel)");
 }
 
+/// Ügyfél létezésének ellenőrzése név alapján.
+/// @param n - A keresett ügyfél neve (teljes egyezés).
+/// @return - True, ha az ügyfél megtalálható a rendszerben, false egyébként.
+bool SzervizNyilvantartoRendszer::vanUgyfel(const std::string& n) const {
+	for (const auto& ugyfel : ugyfelek) {
+		if (ugyfel.getNev() == n) {
+			return true;
+		}
+	}
+	return false;
+}
 
 
 /*-------------------------------------------
@@ -299,75 +340,80 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 			ugyfelek.push_back(Ugyfel(nev, tel, email));
 		}
 		else if (autoFajl) {
-			std::string rendszam, marka, tipus, kmOraStr, datumStr, muveletekStr, tulajNev;
+			std::string rendszamStr, markaStr, tipusStr, kmOraStr, datumStr, muveletekStr, tulajNevStr;
 			std::istringstream iss(sor);
-			std::getline(iss, rendszam, '-');
-			std::getline(iss, marka, '-');
-			std::getline(iss, tipus, '-');
+			std::getline(iss, rendszamStr, '-');
+			std::getline(iss, markaStr, '-');
+			std::getline(iss, tipusStr, '-');
 			std::getline(iss, kmOraStr, '-');
 			std::getline(iss, datumStr, '-');
-			std::getline(iss, muveletekStr, '-');
-			std::getline(iss, tulajNev);
+
+			std::string muveletekTulajStr;
+			std::getline(iss, muveletekTulajStr);
+
+			// Az utolsó '-' jel alapján vágjuk ketté: muveletekStr - tulajNev
+			size_t utolsoKotojelHelye = muveletekTulajStr.rfind('-');
+			if (utolsoKotojelHelye == std::string::npos)
+				throw std::runtime_error("Hibas sorformatum, nem talalhato tulajdonos neve!");
+
+			muveletekStr = muveletekTulajStr.substr(0, utolsoKotojelHelye);
+			tulajNevStr = muveletekTulajStr.substr(utolsoKotojelHelye + 1);
 
 			// Azokat a mezőket, ahol alulvonás("_") karaktert használtunk szóköz helyett, visszaalakítjuk szóközökké(" ") a megjelenés egységesítése érdekében.
-			marka = trim(marka);
-			tipus = trim(tipus);
+			markaStr = trim(markaStr);
+			tipusStr = trim(tipusStr);
 			muveletekStr = trim(muveletekStr);
-			tulajNev = trim(tulajNev);
-
+			tulajNevStr = trim(tulajNevStr);
 			int kmOra = std::stoi(kmOraStr);
 			Datum uzembeHelyezes = Datum::parseFromString(datumStr);
 
-			Vector<VegzettMuvelet*> muveletek;
+			Vector<VegzettMuvelet*> szervizLista;
 			if (muveletekStr != "nincs") {
-				std::stringstream muveletSS(muveletekStr);
+				std::stringstream muveletTempStream(muveletekStr);
 				std::string muveletElem;
-				while (std::getline(muveletSS, muveletElem, ';')) {
+
+				while (std::getline(muveletTempStream, muveletElem, ';')) {
 					muveletElem = trim(muveletElem);
 					if (muveletElem.empty()) continue;
 
 					char tipus = muveletElem[0];
-					/* --- std::string.substr() ---
-					   - Hasznos, ha a szöveg elején valamilyen típusjelölő van és a többi részt külön akarod feldolgozni.
-					*/
-					std::string tartalom = muveletElem.substr(2);
-					std::string leiras, datumStr, arStr, kmStr, extra;
-					std::stringstream adatSS(tartalom);
-					std::getline(adatSS, leiras, ',');
+					std::string extraStr; // deklaráljuk itt, de értéket csak akkor adunk, ha kell
+					std::string leirasStr, datumStr, arStr, kmStr;
+
+					std::string tartalomStr = muveletElem.substr(2);
+					std::stringstream adatSS(tartalomStr);
+					std::getline(adatSS, leirasStr, ',');
 					std::getline(adatSS, datumStr, ',');
 					std::getline(adatSS, arStr, ',');
 					std::getline(adatSS, kmStr, ',');
-					std::getline(adatSS, extra);
 
-					// Azokat a mezőket, ahol alulvonás("_") karaktert használtunk szóköz helyett, visszaalakítjuk szóközökké(" ") a megjelenés egységesítése érdekében.
-					leiras = trim(leiras);
-					extra = trim(extra);
+					if (tipus == 'V') {
+						std::getline(adatSS, extraStr); // csak akkor olvassuk be, ha van ilyen mező
+					}
 
+					leirasStr = trim(leirasStr);
+					extraStr = trim(extraStr);
 					Datum datum = Datum::parseFromString(datumStr);
-					/* --- std::stoi() ---
-					   - Stringet számmá alakítani (string => int)
-					   - Olyan mint a C-ből már ismert atoi()
-					*/
 					int ar = std::stoi(arStr);
 					int km = std::stoi(kmStr);
 
 					if (tipus == 'J') {
-						muveletek.push_back(new Javitas(leiras, datum, ar, km));
-					}
-					else if (tipus == 'K') {
-						muveletek.push_back(new Karbantartas(leiras, datum, ar, km));
-					}
-					else if (tipus == 'V') {
-						bool sikeresE;
-						if (extra == "sikeres") sikeresE = true;
-						else sikeresE = false;
-						muveletek.push_back(new Vizsga(leiras, datum, ar, km, sikeresE));
+						szervizLista.push_back(new Javitas(leirasStr, datum, ar, km));
+					} else if (tipus == 'K') {
+						szervizLista.push_back(new Karbantartas(leirasStr, datum, ar, km));
+					} else if (tipus == 'V') {
+						bool sikeresE = extraStr == "sikeres";
+						szervizLista.push_back(new Vizsga(leirasStr, datum, ar, km, sikeresE));
 					}
 				}
 			}
-
-			Ugyfel& tulaj = keresUgyfel(tulajNev);
-			autok.push_back(Auto(rendszam, marka, tipus, kmOra, uzembeHelyezes, muveletek, &tulaj));
+			if (vanAuto(tulajNevStr)) {
+				Ugyfel& tulajStr = keresUgyfel(tulajNevStr);
+				autok.push_back(Auto(rendszamStr, markaStr, tipusStr, kmOra, uzembeHelyezes, szervizLista, &tulajStr));
+			} else {
+				Ugyfel backUgyfel(tulajNevStr, "", "");
+				autok.push_back(Auto(rendszamStr, markaStr, tipusStr, kmOra, uzembeHelyezes, szervizLista, &backUgyfel));
+			}	
 		}
 	}
 	fp.close();
@@ -385,40 +431,37 @@ void SzervizNyilvantartoRendszer::mentesFajlba(const std::string& f) const {
 
 	if (ugyfelFajl) {
 		for (const auto& ugyfelObj : ugyfelek) {
-			// Azokat a mezőket, ahol szóköz(" ") karaktert használtunk alulvonás helyett, visszaalakítjuk alulvonásoká("_") az adatok tárolásának egységesítése érdekében.
 			fp << reverse_trim(ugyfelObj.getNev()) << "-"
 				<< reverse_trim(ugyfelObj.getTelefonszam()) << "-"
 				<< ugyfelObj.getEmail() << '\n';
 		}
 	} else if (autoFajl) {
 		for (const auto& autoObj : autok) {
-			// Azokat a mezőket, ahol szóköz(" ") karaktert használtunk alulvonás helyett, visszaalakítjuk alulvonásoká("_") az adatok tárolásának egységesítése érdekében.
 			fp << autoObj.getRendszam() << "-"
 				<< reverse_trim(autoObj.getMarka()) << "-"
 				<< reverse_trim(autoObj.getTipus()) << "-"
 				<< autoObj.getKmOra() << "-"
 				<< autoObj.getUzembeHelyezes().toString() << "-";
 
-			const auto& muveletek = autoObj.getSzervizMuveletek();
+			const Vector<VegzettMuvelet*> muveletek = autoObj.getSzervizMuveletek();
 			if (muveletek.empty()) {
 				fp << "nincs";
-			}
-			else {
-				for (size_t i = 0; i < muveletek.size(); ++i) {
-					const auto* m = muveletek[i];
+			} else {
+				for (size_t i = 0; i < muveletek.size(); i++) {
+					const VegzettMuvelet* m = muveletek[i];
 					std::string tipusBetu;
+
 					if (dynamic_cast<const Javitas*>(m)) tipusBetu = "J";
 					else if (dynamic_cast<const Karbantartas*>(m)) tipusBetu = "K";
-					else if (auto* vizsga = dynamic_cast<const Vizsga*>(m)) { tipusBetu = "V"; }
+					else if (dynamic_cast<const Vizsga*>(m)) tipusBetu = "V";
+					else throw std::runtime_error("Ismeretlen muvelet tipus a mentesFajlba fuggvenyben! (mentesFajlba)");
 
 					fp << tipusBetu << " "
-						// Azokat a mezőket, ahol szóköz(" ") karaktert használtunk alulvonás helyett, visszaalakítjuk alulvonásoká("_") az adatok tárolásának egységesítése érdekében.
 						<< reverse_trim(m->getMuvelet()) << ","
 						<< m->getDatum().toString() << ","
 						<< m->getAr() << ","
 						<< m->getAktKmOra();
 
-					// Ha vizsga, akkor még jön a sikeresség is
 					if (const auto* vizsga = dynamic_cast<const Vizsga*>(m)) {
 						fp << "," << (vizsga->getSikeres() ? "sikeres" : "sikertelen");
 					}
@@ -427,18 +470,14 @@ void SzervizNyilvantartoRendszer::mentesFajlba(const std::string& f) const {
 				}
 			}
 
+			// Tulajdonos ellenőrzés
+			if (autoObj.getTulajdonos() == nullptr) {
+				throw std::runtime_error("Auto tulajdonosa nullptr! Hibas adatstruktura. (mentesFajlba)");
+			}
+
 			fp << "-" << reverse_trim(autoObj.getTulajdonos()->getNev()) << '\n';
 		}
 	}
 
 	fp.close();
 }
-
-
-
-/*
-	Típus				Célja								Tud írni(<<)		Tud olvasni(>>)
-	std::stringstream	Kétirányú stream(input / output)	Tud					Tud
-	std::istringstream	Csak bemeneti stream(input)			Nemtud				Tud
-	std::ostringstream	Csak kimeneti stream(output)		Tud					Nemtud
-*/

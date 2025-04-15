@@ -81,4 +81,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="init_auto_auo.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="init_ugyfel_ufl.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

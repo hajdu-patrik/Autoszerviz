@@ -42,6 +42,19 @@ public:
 
 
 	/*-------------------------------------------
+					Getter
+	-------------------------------------------*/
+	/// Visszaadja az összes autó objektumot.
+	/// @return - Egy Vector<Auto> példány, amely az összes jelenleg nyilvántartott autót tartalmazza.
+	Vector<Auto> getAutok();
+
+	/// Visszaadja az összes ügyfél objektumot.
+	/// @return - Egy Vector<Ugyfel> példány, amely az összes jelenleg nyilvántartott ügyfelet tartalmazza.
+	Vector<Ugyfel> getUgyfelek();
+
+
+
+	/*-------------------------------------------
 				Bõvítõ tagfüggvények
 	-------------------------------------------*/
 	/// Új autó hozzáadása az adatbázishoz.
@@ -95,13 +108,21 @@ public:
 	/// @throws std::out_of_range - Ha az autó nem található.
 	Auto& keresAuto(const std::string& r);
 
+	/// Ügyfél létezésének ellenõrzése név alapján.
+	/// @param r - A keresett autó rendszáma (teljes egyezés).
+	/// @return - True, ha az auto megtalálható a rendszerben, false egyébként.
+	bool vanAuto(const std::string& r) const;
+
 	/// Ügyfél keresése név alapján.
 	/// @param n - A keresett ügyfél neve (teljes egyezés).
 	/// @return - Az ügyfél referenciája, ha megtalálta.
 	/// @throws std::out_of_range - Ha a keresett ügyfél nem található.
 	Ugyfel& keresUgyfel(const std::string& n);
 
-
+	/// Ügyfél létezésének ellenõrzése név alapján.
+	/// @param n - A keresett ügyfél neve (teljes egyezés).
+	/// @return - True, ha az ügyfél megtalálható a rendszerben, false egyébként.
+	bool vanUgyfel(const std::string& n) const;
 
 	/*-------------------------------------------
 				Fontos tagmûveletek

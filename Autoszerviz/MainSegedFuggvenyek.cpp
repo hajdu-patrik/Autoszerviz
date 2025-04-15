@@ -110,3 +110,10 @@ bool fajlNevHelyessegBiztosito(bool mentesE, SzervizNyilvantartoRendszer& aDB) {
         varakozasEnterre();
     }
 }
+
+/*
+    Típus				Célja								Tud írni(<<)		Tud olvasni(>>)
+    std::stringstream	Kétirányú stream(input / output)	Tud					Tud
+    std::istringstream	Csak bemeneti stream(input)			Nemtud				Tud
+    std::ostringstream	Csak kimeneti stream(output)		Tud					Nemtud
+*/

@@ -151,6 +151,10 @@
     <ClInclude Include="VegzettMuvelet.h" />
     <ClInclude Include="Vizsga.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="init_auto_auo.txt" />
+    <Text Include="init_ugyfel_ufl.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

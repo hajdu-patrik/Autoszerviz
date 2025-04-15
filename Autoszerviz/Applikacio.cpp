@@ -31,7 +31,13 @@ int main() {
 
         switch (valasztottMenu) {
         case 1:
-            //autoszervizAdatbazis.ujUgyfel();
+            for (size_t i = 0; i < autoszervizAdatbazis.getAutok().size(); i++) {
+                std::cout << autoszervizAdatbazis.getAutok().at(i);
+            }
+
+            for (size_t i = 0; i < autoszervizAdatbazis.getUgyfelek().size(); i++) {
+                std::cout << autoszervizAdatbazis.getUgyfelek().at(i);
+            }
             break;
         case 2:
             //autoszervizAdatbazis.keresAuto();
