@@ -250,64 +250,17 @@ static std::string trim(const std::string& str) {
 	return result;
 }
 
-/// Az aktuális rendszeradatok mentése fájlba.
-/// @param f - A célfájl neve.
-void SzervizNyilvantartoRendszer::mentesFajlba(const std::string& f) const {
-	std::ofstream fp(f);
-	if (!fp.is_open()) throw std::runtime_error("Nem sikerult megnyitni a fajlt! (mentesFajlba)");
-
-	bool ugyfelFajl = f.find("_ufl.txt") != std::string::npos;
-	bool autoFajl = f.find("_auo.txt") != std::string::npos;
-	if (!ugyfelFajl && !autoFajl) throw std::invalid_argument("Ismeretlen fajlformatum! (mentesFajlba)");
-
-	if (ugyfelFajl) {
-		for (const auto& ugyfelObj : ugyfelek) {
-			fp << ugyfelObj.getNev() << "-"
-				<< ugyfelObj.getTelefonszam() << "-"
-				<< ugyfelObj.getEmail() << '\n';
-		}
-	} else if (autoFajl) {
-		for (const auto& autoObj : autok) {
-			fp << autoObj.getRendszam() << "-"
-				<< autoObj.getMarka() << "-"
-				<< autoObj.getTipus() << "-"
-				<< autoObj.getKmOra() << "-"
-				<< autoObj.getUzembeHelyezes().toString() << "-";
-
-			const auto& muveletek = autoObj.getSzervizMuveletek();
-			if (muveletek.empty()) {
-				fp << "nincs";
-			}
-			else {
-				for (size_t i = 0; i < muveletek.size(); ++i) {
-					const auto* m = muveletek[i];
-					std::string tipusBetu;
-					if (dynamic_cast<const Javitas*>(m)) tipusBetu = "J";
-					else if (dynamic_cast<const Karbantartas*>(m)) tipusBetu = "K";
-					else if (auto* vizsga = dynamic_cast<const Vizsga*>(m)) { tipusBetu = "V"; }
-
-					fp << tipusBetu << " "
-						<< m->getMuvelet() << ","
-						<< m->getDatum().toString() << ","
-						<< m->getAr() << ","
-						<< m->getAktKmOra();
-
-					// Ha vizsga, akkor még jön a sikeresség is
-					if (const auto* vizsga = dynamic_cast<const Vizsga*>(m)) {
-						fp << "," << (vizsga->getSikeres() ? "sikeres" : "sikertelen");
-					}
-
-					if (i < muveletek.size() - 1) fp << ";";
-				}
-			}
-
-			fp << " - " << autoObj.getTulajdonos()->getNev() << '\n';
-		}
+/// Lecseréli a szövegben található szóközjeleket ("_") aláhúzásra.
+/// @param str - A bemeneti string, amelyet formázni szeretnénk.
+/// @return - std::string
+static std::string reverse_trim(const std::string& str) {
+	std::string result;
+	for (char c : str) {
+		if (c == ' ') result += '_';
+		else result += c;
 	}
-
-	fp.close();
+	return result;
 }
-
 
 /// Rendszeradatok betöltése fájlból.
 /// @param f - A forrásfájl neve.
@@ -339,9 +292,9 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 			std::getline(iss, tel, '-');
 			std::getline(iss, email);
 
+			// Azokat a mezőket, ahol alulvonás("_") karaktert használtunk szóköz helyett, visszaalakítjuk szóközökké(" ") a megjelenés egységesítése érdekében.
 			nev = trim(nev);
 			tel = trim(tel);
-			email = trim(email);
 
 			ugyfelek.push_back(Ugyfel(nev, tel, email));
 		}
@@ -356,11 +309,9 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 			std::getline(iss, muveletekStr, '-');
 			std::getline(iss, tulajNev);
 
-			rendszam = trim(rendszam);
+			// Azokat a mezőket, ahol alulvonás("_") karaktert használtunk szóköz helyett, visszaalakítjuk szóközökké(" ") a megjelenés egységesítése érdekében.
 			marka = trim(marka);
 			tipus = trim(tipus);
-			kmOraStr = trim(kmOraStr);
-			datumStr = trim(datumStr);
 			muveletekStr = trim(muveletekStr);
 			tulajNev = trim(tulajNev);
 
@@ -388,10 +339,8 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 					std::getline(adatSS, kmStr, ',');
 					std::getline(adatSS, extra);
 
+					// Azokat a mezőket, ahol alulvonás("_") karaktert használtunk szóköz helyett, visszaalakítjuk szóközökké(" ") a megjelenés egységesítése érdekében.
 					leiras = trim(leiras);
-					datumStr = trim(datumStr);
-					arStr = trim(arStr);
-					kmStr = trim(kmStr);
 					extra = trim(extra);
 
 					Datum datum = Datum::parseFromString(datumStr);
@@ -423,6 +372,70 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 	}
 	fp.close();
 }
+
+/// Az aktuális rendszeradatok mentése fájlba.
+/// @param f - A célfájl neve.
+void SzervizNyilvantartoRendszer::mentesFajlba(const std::string& f) const {
+	std::ofstream fp(f);
+	if (!fp.is_open()) throw std::runtime_error("Nem sikerult megnyitni a fajlt! (mentesFajlba)");
+
+	bool ugyfelFajl = f.find("_ufl.txt") != std::string::npos;
+	bool autoFajl = f.find("_auo.txt") != std::string::npos;
+	if (!ugyfelFajl && !autoFajl) throw std::invalid_argument("Ismeretlen fajlformatum! (mentesFajlba)");
+
+	if (ugyfelFajl) {
+		for (const auto& ugyfelObj : ugyfelek) {
+			// Azokat a mezőket, ahol szóköz(" ") karaktert használtunk alulvonás helyett, visszaalakítjuk alulvonásoká("_") az adatok tárolásának egységesítése érdekében.
+			fp << reverse_trim(ugyfelObj.getNev()) << "-"
+				<< reverse_trim(ugyfelObj.getTelefonszam()) << "-"
+				<< ugyfelObj.getEmail() << '\n';
+		}
+	} else if (autoFajl) {
+		for (const auto& autoObj : autok) {
+			// Azokat a mezőket, ahol szóköz(" ") karaktert használtunk alulvonás helyett, visszaalakítjuk alulvonásoká("_") az adatok tárolásának egységesítése érdekében.
+			fp << autoObj.getRendszam() << "-"
+				<< reverse_trim(autoObj.getMarka()) << "-"
+				<< reverse_trim(autoObj.getTipus()) << "-"
+				<< autoObj.getKmOra() << "-"
+				<< autoObj.getUzembeHelyezes().toString() << "-";
+
+			const auto& muveletek = autoObj.getSzervizMuveletek();
+			if (muveletek.empty()) {
+				fp << "nincs";
+			}
+			else {
+				for (size_t i = 0; i < muveletek.size(); ++i) {
+					const auto* m = muveletek[i];
+					std::string tipusBetu;
+					if (dynamic_cast<const Javitas*>(m)) tipusBetu = "J";
+					else if (dynamic_cast<const Karbantartas*>(m)) tipusBetu = "K";
+					else if (auto* vizsga = dynamic_cast<const Vizsga*>(m)) { tipusBetu = "V"; }
+
+					fp << tipusBetu << " "
+						// Azokat a mezőket, ahol szóköz(" ") karaktert használtunk alulvonás helyett, visszaalakítjuk alulvonásoká("_") az adatok tárolásának egységesítése érdekében.
+						<< reverse_trim(m->getMuvelet()) << ","
+						<< m->getDatum().toString() << ","
+						<< m->getAr() << ","
+						<< m->getAktKmOra();
+
+					// Ha vizsga, akkor még jön a sikeresség is
+					if (const auto* vizsga = dynamic_cast<const Vizsga*>(m)) {
+						fp << "," << (vizsga->getSikeres() ? "sikeres" : "sikertelen");
+					}
+
+					if (i < muveletek.size() - 1) fp << ";";
+				}
+			}
+
+			fp << "-" << reverse_trim(autoObj.getTulajdonos()->getNev()) << '\n';
+		}
+	}
+
+	fp.close();
+}
+
+
+
 /*
 	Típus				Célja								Tud írni(<<)		Tud olvasni(>>)
 	std::stringstream	Kétirányú stream(input / output)	Tud					Tud

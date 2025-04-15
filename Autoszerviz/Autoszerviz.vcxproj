@@ -130,8 +130,10 @@
     <ClCompile Include="Applikacio.cpp" />
     <ClCompile Include="Auto.cpp" />
     <ClCompile Include="Datum.cpp" />
+    <ClCompile Include="MainSegedFuggvenyek.cpp" />
     <ClCompile Include="Memtrace.cpp" />
     <ClCompile Include="SzervizNyilvantartoRendszer.cpp" />
+    <ClCompile Include="Teszt.cpp" />
     <ClCompile Include="Ugyfel.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -140,16 +142,14 @@
     <ClInclude Include="Gtest_lite.h" />
     <ClInclude Include="Javitas.h" />
     <ClInclude Include="Karbantartas.h" />
+    <ClInclude Include="MainSegedFuggvenyek.h" />
     <ClInclude Include="Memtrace.h" />
     <ClInclude Include="SzervizNyilvantartoRendszer.h" />
+    <ClInclude Include="Teszt.h" />
     <ClInclude Include="Ugyfel.h" />
     <ClInclude Include="Vector.hpp" />
     <ClInclude Include="VegzettMuvelet.h" />
     <ClInclude Include="Vizsga.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="uj_auo.txt" />
-    <Text Include="uj_ufl.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -264,7 +264,7 @@ public:
 			tomb[i] = tomb[i - 1];
 		}
 		tomb[idx] = v;
-		++meret;
+		meret++;
 		return tomb + idx;
 	}
 

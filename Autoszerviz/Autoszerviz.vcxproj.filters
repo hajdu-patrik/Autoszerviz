@@ -33,6 +33,12 @@
     <ClCompile Include="Ugyfel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MainSegedFuggvenyek.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Teszt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Memtrace.h">
@@ -68,13 +74,11 @@
     <ClInclude Include="SzervizNyilvantartoRendszer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="uj_auo.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="uj_ufl.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
+    <ClInclude Include="Teszt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainSegedFuggvenyek.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
