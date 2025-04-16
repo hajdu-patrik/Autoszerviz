@@ -69,7 +69,7 @@ void Ugyfel::setNev(const std::string& n) { nev = n; }
 
 /// Az ügyfél telefonszámának beállítása.
 /// @param t - Az új telefonszám.
-void Ugyfel::setTelefonszam(const std::string& t) { telefonszam = t; }
+void Ugyfel::setTel(const std::string& t) { telefonszam = t; }
 
 /// Az ügyfél e-mail címének beállítása.
 /// @param e - Az új e-mail cím.
@@ -78,8 +78,14 @@ void Ugyfel::setEmail(const std::string& e) { email = e; }
 
 
 /*-------------------------------------------
- Tiszta absztrakt függvények felüldefiniálása
+            Fontos tagmûveletek
 -------------------------------------------*/
+/// Másoló függvény (virtuális, tisztán absztrakt)
+/// @return - új példány
+Ugyfel* Ugyfel::clone() const {
+    return new Ugyfel(*this);
+}
+
 /// Kiírja az ügyfél adatait az adott ostream-re.
 /// @param os - A kimeneti adatfolyam.
 /// @return - Az ostream referenciája (láncoláshoz).

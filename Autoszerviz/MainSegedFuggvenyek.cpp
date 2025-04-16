@@ -36,12 +36,13 @@ void kiirASCII2() {
 /// A program által biztosított funkciók használatához szükséges menü opciók kiírása
 void menuOpciok() {
     kiirASCII1();
-    std::cout << "\n\t1. Uj ugyfel es auto felvetele\n";
-    std::cout << "\t2. Ugyfel keresese nev alapjan\n";
-    std::cout << "\t3. Auto keresese rendszam alapjan\n";
-    std::cout << "\t4. Javitas rogzitese\n";
-    std::cout << "\t5. Autok vagy Ugyfelek adatainak fajlba irasa\n";
-    std::cout << "\t6. Autok vagy Ugyfelek adatainak fajbol beolvasasa\n";
+    std::cout << "\n\t1. Az ugyfel/auto tarolok listazasa\n";
+    std::cout << "\t2. Uj ugyfel/auto felvetele\n";
+    std::cout << "\t3. Ugyfel keresese nev alapjan\n";
+    std::cout << "\t4. Auto keresese rendszam alapjan\n";
+    std::cout << "\t5. Uj szerviz muvelet rogzitese\n";
+    std::cout << "\t6. Autok vagy Ugyfelek adatainak fajlba irasa\n";
+    std::cout << "\t7. Autok vagy Ugyfelek adatainak fajbol beolvasasa\n";
     std::cout << "\t0. Kilepes\n\n";
     std::cout << "\tValassz egy lehetoseget: ";
 }

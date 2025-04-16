@@ -50,7 +50,7 @@ public:
 	Auto(const Auto& a);
 
     /// Destruktor
-    ~Auto();
+    virtual ~Auto();
 
 
 
@@ -130,6 +130,10 @@ public:
     /*-------------------------------------------
 		        Fontos tagmûveletek
     -------------------------------------------*/
+    /// Másoló függvény (virtuális, tisztán absztrakt)
+    /// @return - új példány
+    virtual Auto* clone() const;
+
     /// Hozzáad egy szervizmûveletet az autó szervizlistájához.
     /// @param m - A hozzáadandó szervizmûvelet pointere
     void addVegzettSzerviz(VegzettMuvelet* m);

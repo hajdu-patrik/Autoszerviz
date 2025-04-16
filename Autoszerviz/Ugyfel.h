@@ -76,7 +76,7 @@ public:
 
     /// Az ügyfél telefonszámának beállítása.
     /// @param t - Az új telefonszám.
-    void setTelefonszam(const std::string& t);
+    void setTel(const std::string& t);
 
     /// Az ügyfél e-mail címének beállítása.
     /// @param e - Az új e-mail cím.
@@ -85,8 +85,12 @@ public:
 
 
     /*-------------------------------------------
-     Tiszta absztrakt függvények felüldefiniálása
+                Fontos tagmûveletek
     -------------------------------------------*/
+    /// Másoló függvény (virtuális, tisztán absztrakt)
+    /// @return - új példány
+    virtual Ugyfel* clone() const;
+
     /// Kiírja az ügyfél adatait az adott ostream-re.
     /// @param os - A kimeneti adatfolyam.
     /// @return - Az ostream referenciája (láncoláshoz).

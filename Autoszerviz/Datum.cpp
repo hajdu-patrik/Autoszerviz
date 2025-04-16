@@ -75,10 +75,11 @@ int Datum::elteltNap(const Datum& d) const {
     return e * 365 + h * 30 + n;
 }
 
+
+
 /*-------------------------------------------
                 Setterek
 -------------------------------------------*/
-
 /// Dátum beállítása
 /// @param e - év
 /// @param h - hónap
@@ -99,11 +100,12 @@ void Datum::setDatum(int e, int h, int n) {
 /// @param str - A dátumot tartalmazó string.
 /// @return - A létrehozott Datum objektum.
 Datum Datum::parseFromString(const std::string& str) {
+    int e, h, n;
+    char dot1, dot2;
     std::istringstream iss(str);
-    int e = 0, h = 0, n = 0;
-    char dot1 = '\0', dot2 = '\0';
 
-    if (!(iss >> e >> dot1 >> h >> dot2 >> n) || dot1 != '.' || dot2 != '.') throw std::invalid_argument("Hibas datum formatum! (parseFromString)");
+    if (!(iss >> e >> dot1 >> h >> dot2 >> n) || dot1 != '.' || dot2 != '.')
+        throw std::runtime_error("Hibas datum formatum! (parseFromString)");
 
     return Datum(e, h, n);
 }

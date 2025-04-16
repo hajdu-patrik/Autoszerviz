@@ -108,21 +108,23 @@ public:
 	/// @throws std::out_of_range - Ha az autó nem található.
 	Auto& keresAuto(const std::string& r);
 
-	/// Ügyfél létezésének ellenõrzése név alapján.
-	/// @param r - A keresett autó rendszáma (teljes egyezés).
-	/// @return - True, ha az auto megtalálható a rendszerben, false egyébként.
-	bool vanAuto(const std::string& r) const;
-
 	/// Ügyfél keresése név alapján.
 	/// @param n - A keresett ügyfél neve (teljes egyezés).
 	/// @return - Az ügyfél referenciája, ha megtalálta.
 	/// @throws std::out_of_range - Ha a keresett ügyfél nem található.
 	Ugyfel& keresUgyfel(const std::string& n);
 
+	/// Auto létezésének ellenõrzése név alapján.
+	/// @param r - A keresett autó rendszáma (teljes egyezés).
+	/// @return - True, ha az auto megtalálható a rendszerben, false egyébként.
+	bool vanAuto(const std::string& r) const;
+
 	/// Ügyfél létezésének ellenõrzése név alapján.
 	/// @param n - A keresett ügyfél neve (teljes egyezés).
 	/// @return - True, ha az ügyfél megtalálható a rendszerben, false egyébként.
 	bool vanUgyfel(const std::string& n) const;
+
+
 
 	/*-------------------------------------------
 				Fontos tagmûveletek
@@ -152,6 +154,34 @@ public:
 	/// Rendszeradatok betöltése fájlból.
 	/// @param f - A forrásfájl neve.
 	void betoltesFajlbol(const std::string& f);
+
+	/**
+	 * Fontos tudnivalók a fájlkezelõ függvények mûködésérõl:
+	 *
+	 * A fájlokban tárolt adatoknak pontosan meg kell felelniük az elõre definiált szabályoknak, melyek a következõk:
+	 *
+	 * Fájlnevek:
+	 *   - Ügyfél típusú fájl esetén a fájlnévnek tartalmaznia kell az "_ufl.txt" végzõdést.
+	 *   - Autó típusú fájl esetén a fájlnévnek "_auo.txt" végzõdést kell tartalmaznia.
+	 *
+	 * Fájlstruktúra:
+	 *   - Ügyfelek esetén a sorok formátuma: "ugyfel_neve-telefonszam-email"
+	 *   - Autók esetén a formátum: "rendszam-marka-tipus-kmora-uzembe_helyezes_datuma-szervizmuveletek-tulajdonos_neve"
+	 *
+	 * Megjegyzések az autós adatokhoz:
+	 *   - A "szervizmuveletek" mezõben szerepelhet:
+	 *     - a "nincs" szó, ha nem történt szervizelés,
+	 *     - vagy egy felsorolás az elvégzett mûveletekrõl, az alábbi formátumban:
+	 *       "tipus,leiras,datum,ar,kmora,extra;"
+	 *       ahol:
+	 *         - tipus: 'J' (javítás), 'K' (karbantartás), vagy 'V' (vizsga),
+	 *         - az "extra" mezõ kizárólag vizsga esetén tartalmazza a „sikeres” vagy „sikertelen” értéket.
+	 *		   - a mezõk közötti elválasztó karakter a vesszõ (,) és a végén pontosvesszõ (;) ha van további szervizmuvelet.
+	 *		   - azt is elvárjuk, hogy a kmora értékek mindig pozitív egész számok legyenek amik minden esettben <= mint az azt megelõzõ "szervizmuvelet kmora" értéke
+	 *
+	 * További szabály:
+	 *   - Amennyiben az autóhoz tartozó tulajdonos még nem szerepel a rendszerben, az új ügyfelet automatikusan felvesszük, viszont a telefonszám és e-mail mezõi üresen maradnak.
+	 */
 };
 
 #endif // SZERVIZNYILVANTARTORENDSZER_H

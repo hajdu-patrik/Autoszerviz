@@ -71,13 +71,17 @@ Vector<Ugyfel> SzervizNyilvantartoRendszer::getUgyfelek() {
 /// Új autó hozzáadása az adatbázishoz.
 /// @param a - Az új autó példány.
 void SzervizNyilvantartoRendszer::ujAuto(const Auto& a) {
-	autok.push_back(a);
+	if (!vanAuto(a.getRendszam())) {
+		autok.push_back(a);
+	}
 }
 
 /// Új ügyfél hozzáadása az adatbázishoz.
 /// @param u - Az új ügyfél példány.
 void SzervizNyilvantartoRendszer::ujUgyfel(const Ugyfel& u) {
-	ugyfelek.push_back(u);
+	if (!vanUgyfel(u.getNev())) {
+		ugyfelek.push_back(u);
+	}
 }
 
 
@@ -166,18 +170,6 @@ Auto& SzervizNyilvantartoRendszer::keresAuto(const std::string& r) {
 	throw std::out_of_range("A keresett auto nincs rendszerben! (keresAuto)");
 }
 
-/// Ügyfél létezésének ellenőrzése név alapján.
-/// @param r - A keresett autó rendszáma (teljes egyezés).
-/// @return - True, ha az auto megtalálható a rendszerben, false egyébként.
-bool SzervizNyilvantartoRendszer::vanAuto(const std::string& r) const {
-	for (const auto& au : autok) {
-		if (au.getRendszam() == r) {
-			return true;
-		}
-	}
-	return false;
-}
-
 /// Ügyfél keresése név alapján.
 /// @param n - A keresett ügyfél neve (teljes egyezés).
 /// @return - Az ügyfél referenciája, ha megtalálta.
@@ -191,17 +183,27 @@ Ugyfel& SzervizNyilvantartoRendszer::keresUgyfel(const std::string& n) {
 	throw std::out_of_range("A keresett ugyfel nincs rendszerben! (keresUgyfel)");
 }
 
+/// Auto létezésének ellenőrzése név alapján.
+/// @param r - A keresett autó rendszáma (teljes egyezés).
+/// @return - True, ha az auto megtalálható a rendszerben, false egyébként.
+
+bool SzervizNyilvantartoRendszer::vanAuto(const std::string& r) const {
+	for (const auto& a : autok) {
+		if (a.getRendszam() == r) return true;
+	}
+	return false;
+}
+
 /// Ügyfél létezésének ellenőrzése név alapján.
 /// @param n - A keresett ügyfél neve (teljes egyezés).
 /// @return - True, ha az ügyfél megtalálható a rendszerben, false egyébként.
 bool SzervizNyilvantartoRendszer::vanUgyfel(const std::string& n) const {
-	for (const auto& ugyfel : ugyfelek) {
-		if (ugyfel.getNev() == n) {
-			return true;
-		}
+	for (const auto& u : ugyfelek) {
+		if (u.getNev() == n) return true;
 	}
 	return false;
 }
+
 
 
 /*-------------------------------------------
@@ -280,6 +282,7 @@ void SzervizNyilvantartoRendszer::figyelmeztetesek(std::ostream& os, const Auto&
 		 Fájlkezelő tagfüggvények
 -------------------------------------------*/
 /// Lecseréli a szövegben található aláhúzásjeleket (_) szóközökre.
+/// A függvény static kulcsszóval van ellátva, mert csak a jelenlegi fordítási egységen (fájlban) belül használjuk, így nem szükséges kívülről elérhetővé tenni.
 /// @param str - A bemeneti string, amelyet formázni szeretnénk.
 /// @return - std::string
 static std::string trim(const std::string& str) {
@@ -292,6 +295,7 @@ static std::string trim(const std::string& str) {
 }
 
 /// Lecseréli a szövegben található szóközjeleket ("_") aláhúzásra.
+/// A függvény static kulcsszóval van ellátva, mert csak a jelenlegi fordítási egységen (fájlban) belül használjuk, így nem szükséges kívülről elérhetővé tenni.
 /// @param str - A bemeneti string, amelyet formázni szeretnénk.
 /// @return - std::string
 static std::string reverse_trim(const std::string& str) {
@@ -327,19 +331,26 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 
 		if (ugyfelFajl) {
 			std::istringstream iss(sor);
-			std::string nev, tel, email;
+			std::string nevStr, telStr, emailStr;
 
-			std::getline(iss, nev, '-');
-			std::getline(iss, tel, '-');
-			std::getline(iss, email);
+			std::getline(iss, nevStr, '-');
+			std::getline(iss, telStr, '-');
+			std::getline(iss, emailStr);
 
-			// Azokat a mezőket, ahol alulvonás("_") karaktert használtunk szóköz helyett, visszaalakítjuk szóközökké(" ") a megjelenés egységesítése érdekében.
-			nev = trim(nev);
-			tel = trim(tel);
+			nevStr = trim(nevStr);
+			telStr = trim(telStr);
 
-			ugyfelek.push_back(Ugyfel(nev, tel, email));
-		}
-		else if (autoFajl) {
+			if (vanUgyfel(nevStr)) {
+				// Frissítjük az ügyfél adatait
+				Ugyfel& letezoUgyfel = keresUgyfel(nevStr);
+				letezoUgyfel.setTel(telStr);
+				letezoUgyfel.setEmail(emailStr);
+			}
+			else {
+				// Új ügyfél hozzáadása
+				ugyfelek.push_back(Ugyfel(nevStr, telStr, emailStr));
+			}
+		} else if (autoFajl) {
 			std::string rendszamStr, markaStr, tipusStr, kmOraStr, datumStr, muveletekStr, tulajNevStr;
 			std::istringstream iss(sor);
 			std::getline(iss, rendszamStr, '-');
@@ -407,13 +418,16 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 					}
 				}
 			}
-			if (vanAuto(tulajNevStr)) {
+			if (vanUgyfel(tulajNevStr)) {
 				Ugyfel& tulajStr = keresUgyfel(tulajNevStr);
 				autok.push_back(Auto(rendszamStr, markaStr, tipusStr, kmOra, uzembeHelyezes, szervizLista, &tulajStr));
-			} else {
-				Ugyfel backUgyfel(tulajNevStr, "", "");
-				autok.push_back(Auto(rendszamStr, markaStr, tipusStr, kmOra, uzembeHelyezes, szervizLista, &backUgyfel));
-			}	
+			}
+			else {
+				// tulajdonos még nincs, létrehozás + beszúrás
+				ugyfelek.push_back(Ugyfel(tulajNevStr, "", ""));
+				Ugyfel& ujTulaj = ugyfelek.back();
+				autok.push_back(Auto(rendszamStr, markaStr, tipusStr, kmOra, uzembeHelyezes, szervizLista, &ujTulaj));
+			}
 		}
 	}
 	fp.close();
@@ -456,7 +470,7 @@ void SzervizNyilvantartoRendszer::mentesFajlba(const std::string& f) const {
 					else if (dynamic_cast<const Vizsga*>(m)) tipusBetu = "V";
 					else throw std::runtime_error("Ismeretlen muvelet tipus a mentesFajlba fuggvenyben! (mentesFajlba)");
 
-					fp << tipusBetu << " "
+					fp << tipusBetu << ":"
 						<< reverse_trim(m->getMuvelet()) << ","
 						<< m->getDatum().toString() << ","
 						<< m->getAr() << ","
@@ -481,3 +495,31 @@ void SzervizNyilvantartoRendszer::mentesFajlba(const std::string& f) const {
 
 	fp.close();
 }
+
+/**
+ * Fontos tudnivalók a fájlkezelő függvények működéséről:
+ *
+ * A fájlokban tárolt adatoknak pontosan meg kell felelniük az előre definiált szabályoknak, melyek a következők:
+ *
+ * Fájlnevek:
+ *   - Ügyfél típusú fájl esetén a fájlnévnek tartalmaznia kell az "_ufl.txt" végződést.
+ *   - Autó típusú fájl esetén a fájlnévnek "_auo.txt" végződést kell tartalmaznia.
+ *
+ * Fájlstruktúra:
+ *   - Ügyfelek esetén a sorok formátuma: "ugyfel_neve-telefonszam-email"
+ *   - Autók esetén a formátum: "rendszam-marka-tipus-kmora-uzembe_helyezes_datuma-szervizmuveletek-tulajdonos_neve"
+ *
+ * Megjegyzések az autós adatokhoz:
+ *   - A "szervizmuveletek" mezőben szerepelhet:
+ *     - a "nincs" szó, ha nem történt szervizelés,
+ *     - vagy egy felsorolás az elvégzett műveletekről, az alábbi formátumban:
+ *       "tipus,leiras,datum,ar,kmora,extra;"
+ *       ahol:
+ *         - tipus: 'J' (javítás), 'K' (karbantartás), vagy 'V' (vizsga),
+ *         - az "extra" mező kizárólag vizsga esetén tartalmazza a „sikeres” vagy „sikertelen” értéket.
+ *		   - a mezők közötti elválasztó karakter a vessző (,) és a végén pontosvessző (;) ha van további szervizmuvelet.
+ *		   - azt is elvárjuk, hogy a kmora értékek mindig pozitív egész számok legyenek amik minden esettben <= mint az azt megelőző "szervizmuvelet kmora" értéke
+ *
+ * További szabály:
+ *   - Amennyiben az autóhoz tartozó tulajdonos még nem szerepel a rendszerben, az új ügyfelet automatikusan felvesszük, viszont a telefonszám és e-mail mezői üresen maradnak.
+ */

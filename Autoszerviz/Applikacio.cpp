@@ -14,7 +14,7 @@ int main() {
     SzervizNyilvantartoRendszer autoszervizAdatbazis;
     int valasztottMenu;
 
-    
+	// Fájlok betöltése, hogy ha szûkséges teszt adatokkal induljon a program
     try {
         autoszervizAdatbazis.betoltesFajlbol("init_ugyfel_ufl.txt");
         autoszervizAdatbazis.betoltesFajlbol("init_auto_auo.txt");
@@ -30,48 +30,68 @@ int main() {
         torolKonzol();
 
         switch (valasztottMenu) {
-        case 1:
-            for (size_t i = 0; i < autoszervizAdatbazis.getAutok().size(); i++) {
-                std::cout << autoszervizAdatbazis.getAutok().at(i);
-            }
+            case 1:
+                // Az ugyfel/auto tarolok listazasa
+                for (size_t i = 0; i < autoszervizAdatbazis.getAutok().size(); i++) {
+                    std::cout << autoszervizAdatbazis.getAutok().at(i);
+                }
 
-            for (size_t i = 0; i < autoszervizAdatbazis.getUgyfelek().size(); i++) {
-                std::cout << autoszervizAdatbazis.getUgyfelek().at(i);
-            }
-            break;
-        case 2:
-            //autoszervizAdatbazis.keresAuto();
-            break;
-        case 3:
-        case 4:  // Összevonva, mivel mindkettõ ugyanazt csinálta
-            //autoszervizAdatbazis.rogzitesVegzettMuvelet();
-            break;
-        case 5: {
-            if (!fajlNevHelyessegBiztosito(true, autoszervizAdatbazis)) {
-                // visszalépés (exit) történt
-                torolKonzol();
+                for (size_t i = 0; i < autoszervizAdatbazis.getUgyfelek().size(); i++) {
+                    std::cout << autoszervizAdatbazis.getUgyfelek().at(i);
+                }
+                break;
+
+            case 2: {
+                // Uj ugyfel/auto felvetele
                 break;
             }
-            torolKonzol();
-            std::cout << "\t === Sikeres fajlba iras! ===";
-            break;
-        }
-        case 6: {
-            if (!fajlNevHelyessegBiztosito(false, autoszervizAdatbazis)) {
-                // visszalépés (exit) történt
-                torolKonzol();
+
+		    case 3: {
+			    // Ugyfel keresese nev alapjan
+			    break;
+            }
+
+            case 4: {
+                // Auto keresese rendszam alapjan
                 break;
             }
-            torolKonzol();
-            std::cout << "\t === Sikeres fajlbol olvasas! ===";
-            break;
-        }
 
-        case 0:
-            kiirASCII2();
-            break;
-        default:
-            std::cout << "\t>>> Ervenytelen valasztas! Probald ujra! <<<";
+            case 5: {
+                // Uj szerviz muvelet rogzitese
+                break;
+            }
+
+            case 6: {
+                if (!fajlNevHelyessegBiztosito(true, autoszervizAdatbazis)) {
+                    // visszalépés (exit) történt
+                    torolKonzol();
+                    break;
+                }
+                torolKonzol();
+                std::cout << "\t === Sikeres fajlba iras! ===";
+                break;
+            }
+
+            case 7: {
+                if (!fajlNevHelyessegBiztosito(false, autoszervizAdatbazis)) {
+                    // visszalépés (exit) történt
+                    torolKonzol();
+                    break;
+                }
+                torolKonzol();
+                std::cout << "\t === Sikeres fajlbol olvasas! ===";
+                break;
+            }
+
+            case 0:  {
+                kiirASCII2();
+                break;
+            }
+
+            default: {
+                std::cout << "\t>>> Ervenytelen valasztas! Probald ujra! <<<";
+                break;
+            }
         }
     } while (valasztottMenu != 0);
 

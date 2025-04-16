@@ -108,7 +108,7 @@ public:
     virtual VegzettMuvelet* clone() const = 0;
 
     /// Virtuális destruktor
-    virtual ~VegzettMuvelet() {}
+    virtual ~VegzettMuvelet() = default;
 };
 
 #endif // VEGZETTMUVELET_H

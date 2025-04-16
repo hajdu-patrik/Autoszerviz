@@ -26,8 +26,9 @@ Auto::Auto() : rendszam(""), marka(""), tipus(""), kmOra(0), uzembeHelyezes(Datu
 /// @param d - Az üzembe helyezés dátuma
 Auto::Auto(const std::string& r, const std::string& m, const std::string& t, int k, const Datum& d, const Vector<VegzettMuvelet*>& v, Ugyfel* u)
     : rendszam(r), marka(m), tipus(t), kmOra(k), uzembeHelyezes(d), tulajdonos(u) {
-    for (size_t i = 0; i < v.size(); ++i)
-        vegzettSzervizMuveletek.push_back(v[i]);
+    for (size_t i = 0; i < v.size(); i++) {
+        vegzettSzervizMuveletek.push_back(v.at(i)->clone());
+    }
 }
 
 
@@ -35,13 +36,13 @@ Auto::Auto(const std::string& r, const std::string& m, const std::string& t, int
 /// @param a - másolandó Auto objektum
 Auto::Auto(const Auto& a) : rendszam(a.rendszam), marka(a.marka), tipus(a.tipus), kmOra(a.kmOra), uzembeHelyezes(a.uzembeHelyezes), tulajdonos(a.tulajdonos) {
     for (size_t i = 0; i < a.vegzettSzervizMuveletek.size(); i++) {
-        vegzettSzervizMuveletek.push_back(a.vegzettSzervizMuveletek.at(i));
+        vegzettSzervizMuveletek.push_back(a.vegzettSzervizMuveletek[i]->clone());
     }
 }
 
 /// Destruktor
 Auto::~Auto() {
-    for (size_t i = 0; i < vegzettSzervizMuveletek.size(); ++i)
+    for (size_t i = 0; i < vegzettSzervizMuveletek.size(); i++)
         delete vegzettSzervizMuveletek[i]; // felszabadítjuk a dinamikusan foglalt szervizmûveletet
     vegzettSzervizMuveletek.clear(); // nem kötelezõ, de szép
 }
@@ -69,7 +70,7 @@ Auto& Auto::operator=(const Auto& a) {
         vegzettSzervizMuveletek.clear();
 
         for (size_t i = 0; i < a.vegzettSzervizMuveletek.size(); i++) {
-            vegzettSzervizMuveletek.push_back(a.vegzettSzervizMuveletek.at(i));
+            vegzettSzervizMuveletek.push_back(a.vegzettSzervizMuveletek[i]->clone());
         }
     }
     return *this;
@@ -176,6 +177,12 @@ void Auto::setTulajdonos(Ugyfel* u) {
 /*-------------------------------------------
             Fontos tagmûveletek
 -------------------------------------------*/
+/// Másoló függvény (virtuális, tisztán absztrakt)
+/// @return - új példány
+Auto* Auto::clone() const {
+    return new Auto(*this);
+}
+
 /// Hozzáad egy szervizmûveletet az autó szervizlistájához.
 /// @param m - A hozzáadandó szervizmûvelet pointere
 void Auto::addVegzettSzerviz(VegzettMuvelet* m) {
@@ -200,14 +207,15 @@ void Auto::kiir(std::ostream& os) const {
         << "Tipus: " << tipus << "\n"
         << "Km ora: " << kmOra << "\n"
         << "Uzembe helyezes: " << uzembeHelyezes << "\n"
-        << "Tulajdonos: " << (tulajdonos ? tulajdonos->getNev() : "Nincs") << "\n"
-        << "Szervizmuveletek:\n";
+        << "Tulajdonos: " << tulajdonos->getNev() << "\n"
+        << "Szervizmuveletek:" << (vegzettSzervizMuveletek.size() == 0 ? "nincs" : "") << "\n";
 
     for (size_t i = 0; i < vegzettSzervizMuveletek.size(); i++) {
         os << "- ";
         vegzettSzervizMuveletek.at(i)->kiir(os);
-        os << std::endl;
     }
+
+    os << std::endl;
 }
 
 
