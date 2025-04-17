@@ -90,9 +90,9 @@ Ugyfel* Ugyfel::clone() const {
 /// @param os - A kimeneti adatfolyam.
 /// @return - Az ostream referenciája (láncoláshoz).
 void Ugyfel::kiir(std::ostream& os) const {
-    os << "Nev: " << nev << "\n"
-        << "Telefonszam: " << telefonszam << "\n"
-        << "Email: " << email << "\n"
+    os << "\tNev: " << nev << "\n"
+        << "\tTelefonszam: " << telefonszam << "\n"
+        << "\tEmail: " << email << "\n"
         << std::endl;
 }
 

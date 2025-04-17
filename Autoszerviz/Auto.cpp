@@ -202,16 +202,16 @@ void Auto::torolVegzettSzerviz(size_t idx) {
 /// @param os - A kimeneti adatfolyam
 /// @return - Az ostream referenciája (láncoláshoz)
 void Auto::kiir(std::ostream& os) const {
-    os << "Rendszam: " << rendszam << "\n"
-        << "Marka: " << marka << "\n"
-        << "Tipus: " << tipus << "\n"
-        << "Km ora: " << kmOra << "\n"
-        << "Uzembe helyezes: " << uzembeHelyezes << "\n"
-        << "Tulajdonos: " << tulajdonos->getNev() << "\n"
-        << "Szervizmuveletek:" << (vegzettSzervizMuveletek.size() == 0 ? "nincs" : "") << "\n";
+    os << "\tRendszam: " << rendszam << "\n"
+        << "\tMarka: " << marka << "\n"
+        << "\tTipus: " << tipus << "\n"
+        << "\tKm ora: " << kmOra << "\n"
+        << "\tUzembe helyezes: " << uzembeHelyezes << "\n"
+        << "\tTulajdonos: " << tulajdonos->getNev() << "\n"
+        << "\tSzervizmuveletek:" << (vegzettSzervizMuveletek.size() == 0 ? "nincs" : "") << "\n";
 
     for (size_t i = 0; i < vegzettSzervizMuveletek.size(); i++) {
-        os << "- ";
+        os << "\t- ";
         vegzettSzervizMuveletek.at(i)->kiir(os);
     }
 

@@ -21,35 +21,44 @@
 #include "VegzettMuvelet.h"
 
 class Auto {
-    std::string rendszam;                               ///< Az autó rendszáma
-    std::string marka;                                  ///< Az autó márkája
-    std::string tipus;                                  ///< Az autó típusa
-    int kmOra;                                          ///< Kilométeróra állása
-    Datum uzembeHelyezes;                               ///< Üzembe helyezés dátuma
-    Vector<VegzettMuvelet*> vegzettSzervizMuveletek;    ///< Elvégzett szervizmûveletek
-    Ugyfel* tulajdonos;                                 ///< Az autó tulajdonosa
+    std::string rendszam;                               ///< Az autó rendszáma  
+    std::string marka;                                  ///< Az autó márkája  
+    std::string tipus;                                  ///< Az autó típusa  
+    int kmOra;                                          ///< Kilométeróra állása  
+    Datum uzembeHelyezes;                               ///< Üzembe helyezés dátuma  
+    Vector<VegzettMuvelet*> vegzettSzervizMuveletek;    ///< Elvégzett szervizmûveletek  
+    Ugyfel* tulajdonos;                                 ///< Az autó tulajdonosa  
 public:
     /*-------------------------------------------
             Konstruktorok és destruktor
-    -------------------------------------------*/ 
-    /// Alapértelmezett konstruktor.
+    -------------------------------------------*/
+    /// Alapértelmezett konstruktor.  
     Auto();
 
-    /// Paraméteres konstruktor.
-    /// @param r - Az autó rendszáma
-    /// @param m - Az autó márkája
-    /// @param t - Az autó típusa
-    /// @param k - A kilométeróra állása
-    /// @param d - Az üzembe helyezés dátuma
-    /// @param v - Az autón elvégzett mûveletek listája
-    /// @param u - Az autó tulajdonosa
+    /// Paraméteres konstruktor.  
+    /// @param r - Az autó rendszáma  
+    /// @param m - Az autó márkája  
+    /// @param t - Az autó típusa  
+    /// @param k - A kilométeróra állása  
+    Auto(const std::string& r, const std::string& m, const std::string& t, int k)
+        : rendszam(r), marka(m), tipus(t), kmOra(k), uzembeHelyezes(), tulajdonos(nullptr) {
+    }
+
+    /// Paraméteres konstruktor.  
+    /// @param r - Az autó rendszáma  
+    /// @param m - Az autó márkája  
+    /// @param t - Az autó típusa  
+    /// @param k - A kilométeróra állása  
+    /// @param d - Az üzembe helyezés dátuma  
+    /// @param v - Az autóhoz tartozó szervizmûveletek listája  
+    /// @param u - Az autó tulajdonosa  
     Auto(const std::string& r, const std::string& m, const std::string& t, int k, const Datum& d, const Vector<VegzettMuvelet*>& v, Ugyfel* u);
 
-	/// Másoló konstruktor.
-	/// @param a - másolandó Auto objektum
-	Auto(const Auto& a);
+    /// Másoló konstruktor.  
+    /// @param a - Másolandó Auto objektum  
+    Auto(const Auto& a);
 
-    /// Destruktor
+    /// Destruktor  
     virtual ~Auto();
 
 

@@ -48,10 +48,18 @@ public:
 	/// @return - Egy Vector<Auto> példány, amely az összes jelenleg nyilvántartott autót tartalmazza.
 	Vector<Auto> getAutok();
 
+	/// Visszaadja az összes auto objektumot (const változat).
+	/// @return - Egy const Vector<Auto> példány, amely az összes jelenleg nyilvántartott autott tartalmazza.
+	const Vector<Auto>& getAutok() const;
+
 	/// Visszaadja az összes ügyfél objektumot.
 	/// @return - Egy Vector<Ugyfel> példány, amely az összes jelenleg nyilvántartott ügyfelet tartalmazza.
 	Vector<Ugyfel> getUgyfelek();
 
+	/// Visszaadja az összes ügyfél objektumot (const változat).
+	/// @return - Egy const Vector<Ugyfel> példány, amely az összes jelenleg nyilvántartott ügyfelet tartalmazza.
+	const Vector<Ugyfel>& getUgyfelek() const;
+	
 
 
 	/*-------------------------------------------
@@ -134,14 +142,15 @@ public:
 	/// @param m - A végzett szervizmûvelet.
 	void rogzitesVegzettMuvelet(const std::string& r, const VegzettMuvelet& m);
 
-	/// Lekérdezi az adott autóhoz tartozó szervizmûveleteket.
+	/// Lekérdezi az adott autóhoz tartozó szervizmûveleteket.û
+	/// @param os - A kimeneti adatfolyam.
 	/// @param r - Az autó rendszáma.
 	void lekeroVegzettMuvelet(std::ostream& os, const std::string& r) const;
 
 	/// Figyelmeztetéseket generál az autó állapota alapján.
+	/// @param os - A kimeneti adatfolyam.
 	/// @param a - Az autó példány.
 	void figyelmeztetesek(std::ostream& os, const Auto& a) const;
-
 
 
 	/*-------------------------------------------

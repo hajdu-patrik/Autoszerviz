@@ -3,58 +3,87 @@
 
 #include "Memtrace.h"
 #include <stdexcept>
-#include <type_traits> // szükséges
 
+/// Típusjellemzõ sablon struktúra, amely meghatározza, hogy egy típus pointer-e.
+/// @tparam T A vizsgált típus.
+/// @note Alapértelmezetten false, azaz a típus nem pointer.
 template <typename T>
 struct IsPointer {
     enum { value = false };
 };
 
+/// Típusjellemzõ specializáció pointer típusokra.
+/// @tparam T A típus, amelynek pointer változata a specializáció célja.
+/// @note Ez a specializáció akkor aktiválódik, ha T pointer típus (pl. int*), és true-t ad vissza.
 template <typename T>
 struct IsPointer<T*> {
     enum { value = true };
 };
 
+/// Sablon alapú dinamikus tömbosztály, amely külön kezeli pointer és nem-pointer típusokat.
+/// @tparam T A tárolt típus.
+/// @tparam VECTOR_MERET A vektor kezdeti kapacitása, alapértelmezés szerint 100.
 template <typename T, size_t VECTOR_MERET = 100>
 class Vector {
-    size_t kapacitas;
-    size_t meret;
-    T* tomb;
+    size_t kapacitas; ///< Az aktuálisan lefoglalt tárhely mérete.
+    size_t meret;     ///< Az aktuálisan tárolt elemek száma.
+    T* tomb;          ///< A dinamikusan foglalt tömb mutatója.
 
+    /// Másoló függvény, amely delegál a típusnak megfelelõ implementációs változatra.
+    /// @param src - A másolandó Vector példány.
     void copy_elements(const Vector& src) {
         copy_elements_impl(src, std::integral_constant<bool, IsPointer<T>::value>());
+        /*  Itt az std::integral_constant<bool, IsPointer<T>::value>() egy típus szintû dispatcher: ha pointer típus, akkor true_type, különben false_type.
+            Ez azt jelenti, hogy típus alapján kiválasztjuk, melyik copy_elements_impl() vagy delete_elements_impl() függvény hívódjon meg — tehát:
+            Dispatcheles = döntéshozatal a függvényhívásról(futási vagy fordítási idõben)
+        */
     }
 
+    /// Pointer típusokra specializált másoló logika. Mély másolatot készít clone() segítségével.
+    /// @param src - A forrás vektor.
+    /// @param is_ptr - std::true_type jelzi, hogy pointer típusról van szó.
     void copy_elements_impl(const Vector& src, std::true_type) {
         for (size_t i = 0; i < meret; ++i)
             tomb[i] = src.tomb[i] ? src.tomb[i]->clone() : nullptr;
     }
 
+    /// Nem-pointer típusokra specializált másoló logika. Egyszerû értékadás történik.
+    /// @param src - A forrás vektor.
+    /// @param is_ptr - std::false_type jelzi, hogy nem pointer típusról van szó.
     void copy_elements_impl(const Vector& src, std::false_type) {
         for (size_t i = 0; i < meret; ++i)
             tomb[i] = src.tomb[i];
     }
 
+    /// Elemfelszabadító függvény, amely delegál a típusfüggõ implementációra.
     void delete_elements() {
         delete_elements_impl(std::integral_constant<bool, IsPointer<T>::value>());
     }
 
+    /// Pointer típus esetén felszabadítja a mutatott objektumokat.
+    /// @param is_ptr - std::true_type jelzi, hogy pointer típusról van szó.
     void delete_elements_impl(std::true_type) {
         for (size_t i = 0; i < meret; ++i)
             delete tomb[i];
     }
 
+    /// Nem-pointer típus esetén nem végez semmilyen mûveletet.
+    /// @param is_ptr - std::false_type jelzi, hogy nem pointer típusról van szó.
     void delete_elements_impl(std::false_type) {
         // Nem csinálunk semmit
     }
 
 public:
+    /// Alapértelmezett konstruktor. Inicializálja az üres vektort.
     Vector() : meret(0), kapacitas(VECTOR_MERET), tomb(new T[kapacitas]) {}
 
+    /// Másoló konstruktor. Mély vagy sekély másolatot készít a típus alapján.
+    /// @param v - A másolandó vektor példány.
     Vector(const Vector& v) : meret(v.meret), kapacitas(v.kapacitas), tomb(new T[kapacitas]) {
         copy_elements(v);
     }
 
+    /// Destruktor.
     ~Vector() {
         delete_elements();
         delete[] tomb;

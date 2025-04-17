@@ -6,13 +6,8 @@
 #include "Memtrace.h"
 #include <fstream>
 #include <sstream>
-#include <regex>
-#include "Vector.hpp"
-#include "Auto.h"
-#include "Ugyfel.h"
 #include "SzervizNyilvantartoRendszer.h"
 #include "VegzettMuvelet.h"
-#include "Datum.h"
 #include "Vizsga.h"
 #include "Karbantartas.h"
 #include "Javitas.h"
@@ -56,10 +51,21 @@ Vector<Auto> SzervizNyilvantartoRendszer::getAutok() {
 	return autok;
 }
 
+/// Visszaadja az összes auto objektumot (const változat).
+/// @return - Egy const Vector<Auto> példány, amely az összes jelenleg nyilvántartott autott tartalmazza.
+const Vector<Auto>& SzervizNyilvantartoRendszer::getAutok() const {
+	return autok;
+}
 
 /// Visszaadja az összes ügyfél objektumot.
 /// @return - Egy Vector<Ugyfel> példány, amely az összes jelenleg nyilvántartott ügyfelet tartalmazza.
 Vector<Ugyfel> SzervizNyilvantartoRendszer::getUgyfelek() {
+	return ugyfelek;
+}
+
+/// Visszaadja az összes ügyfél objektumot (const változat).
+/// @return - Egy const Vector<Ugyfel> példány, amely az összes jelenleg nyilvántartott ügyfelet tartalmazza.
+const Vector<Ugyfel>& SzervizNyilvantartoRendszer::getUgyfelek() const {
 	return ugyfelek;
 }
 
@@ -212,7 +218,6 @@ bool SzervizNyilvantartoRendszer::vanUgyfel(const std::string& n) const {
 /// Egy végzett szervizművelet rögzítése adott autóhoz.
 /// @param r - Az autó rendszáma.
 /// @param m - A végzett szervizművelet.
-/// @throws std::out_of_range - Ha az autó nem található.
 void SzervizNyilvantartoRendszer::rogzitesVegzettMuvelet(const std::string& r, const VegzettMuvelet& m) {
 	for (auto& autoObj : autok) {
 		if (autoObj.getRendszam() == r) {
@@ -221,10 +226,11 @@ void SzervizNyilvantartoRendszer::rogzitesVegzettMuvelet(const std::string& r, c
 			return;
 		}
 	}
-	throw std::out_of_range("A keresett auto nincs rendszerben, igy nem rogzitheto uj szervizmuvelet! (rogzitesVegzettMuvelet)");
+	std::cout << "\t>>> A keresett auto nincs rendszerben, igy nem rogzitheto uj szervizmuvelet! <<<";
 }
 
-/// Lekérdezi az adott autóhoz tartozó szervizműveleteket.
+/// Lekérdezi az adott autóhoz tartozó szervizműveleteket.ű
+/// @param os - A kimeneti adatfolyam.
 /// @param r - Az autó rendszáma.
 void SzervizNyilvantartoRendszer::lekeroVegzettMuvelet(std::ostream& os, const std::string& r) const {
 	for (const auto& autoObj : autok) {
@@ -236,10 +242,11 @@ void SzervizNyilvantartoRendszer::lekeroVegzettMuvelet(std::ostream& os, const s
 			return;
 		}
 	}
-	throw std::out_of_range("A keresett auto nincs rendszerben, igy nem kerdezheto le a hozza tartozo szervizmuveleteket! (lekeroVegzettMuvelet)");
+	os << "\t>>> A keresett auto nincs rendszerben, igy nem kerdezheto le a hozza tartozo szervizmuveleteket! <<<";
 }
 
 /// Figyelmeztetéseket generál az autó állapota alapján.
+/// @param os - A kimeneti adatfolyam.
 /// @param a - Az autó példány.
 void SzervizNyilvantartoRendszer::figyelmeztetesek(std::ostream& os, const Auto& a) const {
 	for (const auto& autoObj : autok) {
@@ -273,7 +280,7 @@ void SzervizNyilvantartoRendszer::figyelmeztetesek(std::ostream& os, const Auto&
 		}
 	}
 
-	throw std::out_of_range("A keresett auto nincs rendszerben, igy nem kaphat figyelmeztetest sem! (figyelmeztetesek)");
+	os << "\t>>> A keresett auto nincs rendszerben, igy nem kaphat figyelmeztetest sem! <<<";
 }
 
 
@@ -365,7 +372,7 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 			// Az utolsó '-' jel alapján vágjuk ketté: muveletekStr - tulajNev
 			size_t utolsoKotojelHelye = muveletekTulajStr.rfind('-');
 			if (utolsoKotojelHelye == std::string::npos)
-				throw std::runtime_error("Hibas sorformatum, nem talalhato tulajdonos neve!");
+				throw std::runtime_error("Hibas sorformatum, nem talalhato tulajdonos neve! (betoltesFajlbol)");
 
 			muveletekStr = muveletekTulajStr.substr(0, utolsoKotojelHelye);
 			tulajNevStr = muveletekTulajStr.substr(utolsoKotojelHelye + 1);
