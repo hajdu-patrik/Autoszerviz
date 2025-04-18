@@ -18,6 +18,15 @@
 /// Alapértelmezett konstruktor.
 Auto::Auto() : rendszam(""), marka(""), tipus(""), kmOra(0), uzembeHelyezes(Datum()), tulajdonos(nullptr) {}
 
+/// Paraméteres konstruktor.  
+/// @param r - Az autó rendszáma  
+/// @param m - Az autó márkája  
+/// @param t - Az autó típusa  
+/// @param k - A kilométeróra állása  
+Auto::Auto(const std::string& r, const std::string& m, const std::string& t, int k)
+    : rendszam(r), marka(m), tipus(t), kmOra(k), uzembeHelyezes(), tulajdonos(nullptr) {
+}
+
 /// Paraméteres konstruktor.
 /// @param r - Az autó rendszáma
 /// @param m - Az autó márkája
@@ -211,7 +220,6 @@ void Auto::kiir(std::ostream& os) const {
         << "\tSzervizmuveletek:" << (vegzettSzervizMuveletek.size() == 0 ? "nincs" : "") << "\n";
 
     for (size_t i = 0; i < vegzettSzervizMuveletek.size(); i++) {
-        os << "\t- ";
         vegzettSzervizMuveletek.at(i)->kiir(os);
     }
 

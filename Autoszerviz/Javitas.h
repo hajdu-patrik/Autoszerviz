@@ -62,7 +62,7 @@ public:
     /// Kiíró függvény felüldefiniálása
     /// @param os - kimeneti stream
     void kiir(std::ostream& os) const override {
-        os << "Javitas: " << getMuvelet()
+        os << "\tJavitas: " << getMuvelet()
             << ", Datum: " << getDatum()
             << ", Ar: " << getAr() << " Ft"
 			<< ", Akt. km: " << getAktKmOra()

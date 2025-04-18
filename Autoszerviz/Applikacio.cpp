@@ -33,31 +33,73 @@ int main() {
         case 1: {
                 if (!kiListazo(autoszervizAdatbazis)) {
                     torolKonzol();
-                    std::cout << "\t=== Sikeres kilepes! (exit) ===";
+                    std::cout << "\t=== Sikeres kilepes! ===";
                     break;
                 }
+                torolKonzol();
+                std::cout << "\t=== Sikeres listazas! ===";
                 break;
             }
 
             case 2: {
-                //ujUgyfelAuto(autoszervizAdatbazis);
+                if (!ugyfelAutoAdd(autoszervizAdatbazis)) {
+                    torolKonzol();
+                    std::cout << "\t=== Sikeres kilepes! ===";
+                    break;
+                }
+                torolKonzol();
+                std::cout << "\t=== Sikeres felvetel! ===";
                 break;
             }
 
             case 3: {
-                //ugyfelKereses(autoszervizAdatbazis);
+                if (!ugyfelAutoFrissit(autoszervizAdatbazis)) {
+                    torolKonzol();
+                    std::cout << "\t=== Sikeres kilepes! ===";
+                    break;
+                }
+                torolKonzol();
+                std::cout << "\t=== Sikeres frissites! ===";
                 break;
             }
-
+            
             case 4: {
-                //autoKereses(autoszervizAdatbazis);
+                if (!ugyfelAutoTorlo(autoszervizAdatbazis)) {
+                    torolKonzol();
+                    std::cout << "\t=== Sikeres kilepes! ===";
+                    break;
+                }
+                torolKonzol();
+                std::cout << "\t=== Sikeres torles! ===";
                 break;
             }
 
             case 5: {
+                if (!ugyfelKereses(autoszervizAdatbazis)) {
+                    torolKonzol();
+                    std::cout << "\t=== Sikeres kilepes! ===";
+                    break;
+                }
+                torolKonzol();
+                std::cout << "\t=== Sikeres kereses! ===";
+                break;
+            }
+
+            case 6: {
+                if (!autoKereses(autoszervizAdatbazis)) {
+                    torolKonzol();
+                    std::cout << "\t=== Sikeres kilepes! ===";
+                    break;
+                }
+                torolKonzol();
+                std::cout << "\t=== Sikeres kereses! ===";
+                break;
+            }
+
+            case 7: {
                 if (!ujSzervizMuvelet(autoszervizAdatbazis)) {
                     torolKonzol();
-                    std::cout << "\t=== Sikeres kilepes! (exit) ===";
+                    std::cout << "\t=== Sikeres kilepes! ===";
                     break;
                 }
                 torolKonzol();
@@ -65,11 +107,12 @@ int main() {
                 break;
             }
 
-            case 6: {
+            case 8: {
 				SzervizNyilvantartoRendszer tempBeolvasottAdatbazis;
+                // Kell egy merge fuggveny es jo lesz!
                 if (!fajlNevHelyessegBiztosito(true, autoszervizAdatbazis)) {
                     torolKonzol();
-                    std::cout << "\t=== Sikeres kilepes! (exit) ===";
+                    std::cout << "\t=== Sikeres kilepes! ===";
                     break;
                 }
                 torolKonzol();
@@ -77,11 +120,12 @@ int main() {
                 break;
             }
 
-            case 7: {
+            case 9: {
                 SzervizNyilvantartoRendszer tempBeolvasottAdatbazis;
+                // Kell egy merge fuggveny es jo lesz!
                 if (!fajlNevHelyessegBiztosito(false, autoszervizAdatbazis)) {
                     torolKonzol();
-                    std::cout << "\t=== Sikeres kilepes! (exit) ===";
+                    std::cout << "\t=== Sikeres kilepes! ===";
                     break;
                 }
                 torolKonzol();

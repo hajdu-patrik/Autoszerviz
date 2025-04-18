@@ -7,6 +7,8 @@
 #include <fstream>
 #include <sstream>
 #include "SzervizNyilvantartoRendszer.h"
+#include "Auto.h"
+#include "Ugyfel.h"
 #include "VegzettMuvelet.h"
 #include "Vizsga.h"
 #include "Karbantartas.h"
@@ -98,24 +100,19 @@ void SzervizNyilvantartoRendszer::ujUgyfel(const Ugyfel& u) {
 /// Egy autó adatainak frissítése a rendszeren belül.
 /// Ha a rendszeren belül már létezik az autó (rendszám alapján), akkor az adatai frissülnek.
 /// @param a - Az autó új adatai.
-/// @throws std::out_of_range - Ha az autó nem található.
 void SzervizNyilvantartoRendszer::frissitAuto(const Auto& a) {
-	// Az auto használata az iterátorok esetében a kódot egyszerűsíti, rugalmasabbá teszi és csökkenti a hibák lehetőségét,
-	// miközben biztosítja, hogy a típusok mindig pontosak legyenek a kód bármely részében.
 	for (auto it = autok.begin(); it != autok.end(); it++) {
 		if (it->getRendszam() == a.getRendszam()) {
 			*it = a;
 			return;
 		}
 	}
-	throw std::out_of_range("A megadott auto nincs rendszerben, igy nem frissitheto! (frissitAuto)");
 }
 
 
 /// Egy ügyfél adatainak frissítése a rendszeren belül.
 /// Ha a rendszeren belül már létezik az ügyfél (név alapján), akkor az adatai frissülnek.
 /// @param u - Az ügyfél új adatai.
-/// @throws std::out_of_range - Ha az ügyfél nem található.
 void SzervizNyilvantartoRendszer::frissitUgyfel(const Ugyfel& u) {
 	for (auto it = ugyfelek.begin(); it != ugyfelek.end(); it++) {
 		if (it->getNev() == u.getNev()) {
@@ -123,7 +120,6 @@ void SzervizNyilvantartoRendszer::frissitUgyfel(const Ugyfel& u) {
 			return;
 		}
 	}
-	throw std::out_of_range("A megadott ugyfel nincs rendszerben, igy nem firssitheto! (frissitUgyfel)");
 }
 
 
@@ -133,30 +129,36 @@ void SzervizNyilvantartoRendszer::frissitUgyfel(const Ugyfel& u) {
 -------------------------------------------*/
 /// Egy autó törlése rendszám alapján.
 /// @param r - A törlendő autó rendszáma.
-/// @throws std::out_of_range - Ha az autó nem található.
 void SzervizNyilvantartoRendszer::torolAuto(const std::string& r) {
-	for (auto it = autok.begin(); it != autok.end(); ++it) {
+	for (auto it = autok.begin(); it != autok.end(); it++) {
 		if (it->getRendszam() == r) {
-			autok.erase(it);  // Az iterátor használata
-			return;
+			autok.erase(it);
+			break;
 		}
 	}
-	throw std::out_of_range("A megadott auto nincs rendszerben, igy nem torolheto! (torolAuto)");
 }
 
 /// Egy ügyfél törlése név alapján.
 /// @param n - A törlendő ügyfél neve.
-/// @throws std::out_of_range - Ha az ügyfél nem található.
 void SzervizNyilvantartoRendszer::torolUgyfel(const std::string& n) {
-	for (auto it = ugyfelek.begin(); it != ugyfelek.end(); ++it) {
-		if (it->getNev() == n) {
-			ugyfelek.erase(it);
-			return;
+	for (auto jt = autok.begin(); jt != autok.end(); ) {
+		if (jt->getTulajdonos()->getNev() == n) {
+			jt = autok.erase(jt);
+		}
+		else {
+			jt++;
 		}
 	}
-	throw std::out_of_range("A megadott ugyfel nincs rendszerben, igy nem torolheto! (torolUgyfel)");
-}
 
+	for (auto it = ugyfelek.begin(); it != ugyfelek.end(); ) {
+		if (it->getNev() == n) {
+			it = ugyfelek.erase(it);
+		}
+		else {
+			it++;
+		}
+	}	
+}
 
 
 
@@ -166,37 +168,36 @@ void SzervizNyilvantartoRendszer::torolUgyfel(const std::string& n) {
 /// Autó keresése rendszám alapján.
 /// @param r - A keresett autó rendszáma (teljes egyezés).
 /// @return - Az autó referenciája, ha megtalálta.
-/// @throws std::out_of_range - Ha az autó nem található.
+/// @throw - Hibát dob ha nem talált meg a kerest rendszámu autot
 Auto& SzervizNyilvantartoRendszer::keresAuto(const std::string& r) {
-	for (auto it = autok.begin(); it != autok.end(); ++it) {
+	for (auto it = autok.begin(); it != autok.end(); it++) {
 		if (it->getRendszam() == r) {
-			return *it;  // Az iterált elem referenciája
+			return *it;
 		}
 	}
-	throw std::out_of_range("A keresett auto nincs rendszerben! (keresAuto)");
+	throw std::runtime_error("Nincs ilyen rendszamu auto!");
 }
 
 /// Ügyfél keresése név alapján.
 /// @param n - A keresett ügyfél neve (teljes egyezés).
 /// @return - Az ügyfél referenciája, ha megtalálta.
-/// @throws std::out_of_range - Ha a keresett ügyfél nem található.
+/// @throw - Hibát dob ha nem talált meg a kerest nevű embert
 Ugyfel& SzervizNyilvantartoRendszer::keresUgyfel(const std::string& n) {
-	for (auto it = ugyfelek.begin(); it != ugyfelek.end(); ++it) {
+	for (auto it = ugyfelek.begin(); it != ugyfelek.end(); it++) {
 		if (it->getNev() == n) {
-			return *it;  // Az iterált elem referenciája
+			return *it;
 		}
 	}
-	throw std::out_of_range("A keresett ugyfel nincs rendszerben! (keresUgyfel)");
+	throw std::runtime_error("Nincs ilyen nevu ugyfel!");
 }
 
 /// Auto létezésének ellenőrzése név alapján.
 /// @param r - A keresett autó rendszáma (teljes egyezés).
 /// @return - True, ha az auto megtalálható a rendszerben, false egyébként.
-
 bool SzervizNyilvantartoRendszer::vanAuto(const std::string& r) const {
-	for (const auto& a : autok) {
-		if (a.getRendszam() == r) return true;
-	}
+	for (const auto& a : autok)
+		if (a.getRendszam() == r)
+			return true;
 	return false;
 }
 
@@ -204,9 +205,9 @@ bool SzervizNyilvantartoRendszer::vanAuto(const std::string& r) const {
 /// @param n - A keresett ügyfél neve (teljes egyezés).
 /// @return - True, ha az ügyfél megtalálható a rendszerben, false egyébként.
 bool SzervizNyilvantartoRendszer::vanUgyfel(const std::string& n) const {
-	for (const auto& u : ugyfelek) {
-		if (u.getNev() == n) return true;
-	}
+	for (const auto& u : ugyfelek)
+		if (u.getNev() == n)
+			return true;
 	return false;
 }
 
@@ -226,7 +227,6 @@ void SzervizNyilvantartoRendszer::rogzitesVegzettMuvelet(const std::string& r, c
 			return;
 		}
 	}
-	std::cout << "\t>>> A keresett auto nincs rendszerben, igy nem rogzitheto uj szervizmuvelet! <<<";
 }
 
 /// Lekérdezi az adott autóhoz tartozó szervizműveleteket.ű
@@ -242,19 +242,18 @@ void SzervizNyilvantartoRendszer::lekeroVegzettMuvelet(std::ostream& os, const s
 			return;
 		}
 	}
-	os << "\t>>> A keresett auto nincs rendszerben, igy nem kerdezheto le a hozza tartozo szervizmuveleteket! <<<";
 }
 
 /// Figyelmeztetéseket generál az autó állapota alapján.
 /// @param os - A kimeneti adatfolyam.
 /// @param a - Az autó példány.
 void SzervizNyilvantartoRendszer::figyelmeztetesek(std::ostream& os, const Auto& a) const {
+	int hanyDBHiba = 0; // Hiba számláló
 	for (const auto& autoObj : autok) {
 		if (autoObj == a) {
 			const auto& muveletek = autoObj.getSzervizMuveletek();
 			if (muveletek.empty()) {
-				os << "Figyelmeztetes: A " << a.getRendszam()
-					<< " rendszamu autohoz nincsenek rogzitett szervizmuveletek!" << std::endl;
+				os << "\tA " << a.getRendszam() << " rendszamu autohoz nincsenek rogzitett szervizmuveletek!" << std::endl;
 				return;
 			}
 
@@ -263,24 +262,22 @@ void SzervizNyilvantartoRendszer::figyelmeztetesek(std::ostream& os, const Auto&
 
 			// Dátum alapú figyelmeztetés
 			if (utolso->getDatum().elteltNap(Datum(2025, 4, 14)) > (365 * 2)) { // Több mint 2 éve
-				os << "Figyelmeztetes: A " << a.getRendszam()
-					<< " rendszamu auto muszaki vizsgaja lejart! (Utolso vizsga: "
-					<< utolso->getDatum() << ")" << std::endl;
+				os << "\tA " << a.getRendszam() << " rendszamu auto muszaki vizsgaja lejart! (Utolso vizsga: " << utolso->getDatum() << ")" << std::endl;
+				hanyDBHiba++;
 			}
 
 			// Km alapú figyelmeztetés
 			int elteltKm = autoObj.getKmOra() - utolso->getAktKmOra();
 			if (elteltKm > 10000) {
-				os << "Figyelmeztetes: A " << a.getRendszam()
-					<< " rendszamu auto szervizelese esedekes! (Utolso szerviz ota "
-					<< elteltKm << " km telt el)" << std::endl;
+				os << "\tA " << a.getRendszam() << " rendszamu auto szervizelesre esedekes! (Utolso szerviz ota "	<< elteltKm << " km telt el)" << std::endl;
+				hanyDBHiba++;
 			}
 
-			return;
+			if (hanyDBHiba == 0) {
+				os << "\tNincsenek figyelmeztetesek!" << std::endl;
+			}
 		}
 	}
-
-	os << "\t>>> A keresett auto nincs rendszerben, igy nem kaphat figyelmeztetest sem! <<<";
 }
 
 

@@ -40,9 +40,7 @@ public:
     /// @param m - Az autó márkája  
     /// @param t - Az autó típusa  
     /// @param k - A kilométeróra állása  
-    Auto(const std::string& r, const std::string& m, const std::string& t, int k)
-        : rendszam(r), marka(m), tipus(t), kmOra(k), uzembeHelyezes(), tulajdonos(nullptr) {
-    }
+    Auto(const std::string& r, const std::string& m, const std::string& t, int k);
 
     /// Paraméteres konstruktor.  
     /// @param r - Az autó rendszáma  

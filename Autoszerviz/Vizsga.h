@@ -85,7 +85,7 @@ public:
     /// Kiíró függvény felüldefiniálása
     /// @param os - kimeneti stream
     void kiir(std::ostream& os) const override {
-        os << "Vizsga: " << getMuvelet()
+        os << "\tVizsga: " << getMuvelet()
             << ", Datum: " << getDatum()
             << ", Ar: " << getAr()
             << " Ft, Sikeres: " << (sikeres ? "igen" : "nem")

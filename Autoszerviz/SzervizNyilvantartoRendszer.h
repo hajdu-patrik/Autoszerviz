@@ -81,13 +81,11 @@ public:
 	/// Egy autó adatainak frissítése a rendszeren belül.
 	/// Ha a rendszeren belül már létezik az autó (rendszám alapján), akkor az adatai frissülnek.
 	/// @param a - Az autó új adatai.
-	/// @throws std::out_of_range - Ha az autó nem található.
 	void frissitAuto(const Auto& a);
 
 	/// Egy ügyfél adatainak frissítése a rendszeren belül.
 	/// Ha a rendszeren belül már létezik az ügyfél (név alapján), akkor az adatai frissülnek.
 	/// @param u - Az ügyfél új adatai.
-	/// @throws std::out_of_range - Ha az ügyfél nem található.
 	void frissitUgyfel(const Ugyfel& u);
 
 
@@ -97,12 +95,10 @@ public:
 	-------------------------------------------*/
 	/// Egy autó törlése rendszám alapján.
 	/// @param r - A törlendõ autó rendszáma.
-	/// @throws std::out_of_range - Ha az autó nem található.
 	void torolAuto(const std::string& r);
 
 	/// Egy ügyfél törlése név alapján.
 	/// @param n - A törlendõ ügyfél neve.
-	/// @throws std::out_of_range - Ha az ügyfél nem található.
 	void torolUgyfel(const std::string& n);
 
 
@@ -113,13 +109,13 @@ public:
 	// Autó keresése rendszám alapján.
 	/// @param r - A keresett autó rendszáma (teljes egyezés).
 	/// @return - Az autó referenciája, ha megtalálta.
-	/// @throws std::out_of_range - Ha az autó nem található.
+	/// @throw - Hibát dob ha nem talált meg a kerest rendszámu autot
 	Auto& keresAuto(const std::string& r);
 
 	/// Ügyfél keresése név alapján.
 	/// @param n - A keresett ügyfél neve (teljes egyezés).
 	/// @return - Az ügyfél referenciája, ha megtalálta.
-	/// @throws std::out_of_range - Ha a keresett ügyfél nem található.
+	/// @throw - Hibát dob ha nem talált meg a kerest nevû embert
 	Ugyfel& keresUgyfel(const std::string& n);
 
 	/// Auto létezésének ellenõrzése név alapján.

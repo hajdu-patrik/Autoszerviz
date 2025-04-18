@@ -1,5 +1,5 @@
-#ifndef MAINSEGEDFUGGVENYEK_H
-#define MAINSEGEDFUGGVENYEK_H
+#ifndef MAINSEGEDFUGGVENYEK_H  
+#define MAINSEGEDFUGGVENYEK_H  
 
 /**
 *	\file MainSegedFuggvenyek.h
@@ -11,7 +11,7 @@
 #include <string>
 
 /*-------------------------------------------
-             Menü rendszerhez
+            Menü rendszerhez
 -------------------------------------------*/
 /// "Autoszerviz" felirat ASCII art kiírása a konzolra, tabulátorral behúzva
 void kiirASCII1();
@@ -25,7 +25,7 @@ void menuOpciok();
 
 
 /*-------------------------------------------
-               UI élményhez
+              UI élményhez
 -------------------------------------------*/
 /// Megvárja, amíg a felhasználó lenyomja az Enter billentyût.
 /// Általában hibaüzenetek vagy információk megjelenítése után használatos, 
@@ -44,7 +44,32 @@ void varakozasTorol();
 
 
 /*-------------------------------------------
-            1. menüponthoz
+               Segéd
+-------------------------------------------*/
+/// Ellenõrzi, hogy a megadott rendszám formátuma helyes-e.
+/// @param rendszam - A vizsgált rendszám.
+/// @return - true, ha a formátum helytelen, false, ha helyes.
+bool helyesRendszamFormatum(const std::string& rendszam);
+
+/// Ellenõrzi, hogy a megadott fájl létezik-e.
+/// @param f - A vizsgált fájl neve (elérési útvonal is lehet).
+/// @return - true, ha a fájl létezik, különben false.
+bool letezikAFajl(const std::string& f);
+
+/// Bekéri a felhasználótól egy dátum (év, hónap, nap) értékeit.
+/// Addig ismétli a bekérést, amíg helyes formátumú (érvényes tartományban lévõ) dátumot nem kap.
+/// @return - A bekért dátum `Datum` típusban.
+Datum bekerDatum();
+
+/// Bekér egy sort a felhasználótól, miután kiír egy megadott üzenetet.
+/// @param t - A felhasználónak megjelenítendõ üzenet.
+/// @return - A felhasználó által beírt sor.
+std::string sorBeker(const std::string& t);
+
+
+
+/*-------------------------------------------
+           1. menüponthoz
 -------------------------------------------*/
 /// Listázza az ügyfeleket vagy az autókat a megadott adatbázisból.
 /// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
@@ -54,50 +79,68 @@ bool kiListazo(SzervizNyilvantartoRendszer& aDB);
 
 
 /*-------------------------------------------
-            2. menüponthoz
+           2. menüponthoz
 -------------------------------------------*/
 /// Új ügyfél vagy autó rögzítése.
 /// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
-void ujUgyfelAuto(SzervizNyilvantartoRendszer& aDB);
+/// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
+bool ugyfelAutoAdd(SzervizNyilvantartoRendszer& aDB);
 
 
 
 /*-------------------------------------------
-            3. menüponthoz
+           3. menüponthoz
+-------------------------------------------*/
+/// Meglévõ ügyfél vagy autó frissitése.
+/// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
+/// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
+bool ugyfelAutoFrissit(SzervizNyilvantartoRendszer& aDB);
+
+
+
+/*-------------------------------------------
+           4. menüponthoz
+-------------------------------------------*/
+/// A rendszerben lévõ ügyfél vagy autó törlésére szolgál.
+/// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
+/// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
+bool ugyfelAutoTorlo(SzervizNyilvantartoRendszer& aDB);
+
+
+
+/*-------------------------------------------
+           5. menüponthoz
 -------------------------------------------*/
 /// Keres egy ügyfelet a megadott név alapján.
 /// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
-void ugyfelKereses(SzervizNyilvantartoRendszer& rendszer);
+/// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
+bool ugyfelKereses(SzervizNyilvantartoRendszer& aDB);
 
 
 
 /*-------------------------------------------
-            4. menüponthoz
+           6. menüponthoz
 -------------------------------------------*/
 /// Keres egy autót a megadott rendszám alapján.
-/// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
-void autoKereses(SzervizNyilvantartoRendszer& rendszer);
+/// @param rendszer - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
+/// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
+bool autoKereses(SzervizNyilvantartoRendszer& aDB);
 
 
 
 /*-------------------------------------------
-            5. menüponthoz
+           7. menüponthoz
 -------------------------------------------*/
 /// Új szerviz mûvelet rögzítése egy autóhoz.
 /// @param rendszer - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
 /// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
-bool ujSzervizMuvelet(SzervizNyilvantartoRendszer& rendszer);
+bool ujSzervizMuvelet(SzervizNyilvantartoRendszer& aDB);
 
 
 
 /*-------------------------------------------
-            6-7. menüponthoz
+           8.-9. menüponthoz
 -------------------------------------------*/
-/// Ellenõrzi, hogy a megadott fájl létezik-e.
-/// @param f - A vizsgált fájl neve (elérési útvonal is lehet).
-/// @return - true, ha a fájl létezik, különben false.
-bool letezikAFajl(const std::string& f);
-
 /// Fájlnév bekérése, formátumának és létezésének ellenõrzése.
 /// Elfogadja az "exit" szót is, ami visszalépést jelent a fõmenübe.
 /// @param mentesE - A függvény célját jelzõ kapcsoló (mentés vagy betöltés)
@@ -105,4 +148,4 @@ bool letezikAFajl(const std::string& f);
 /// @return true, ha sikeres volt a mûvelet, false, ha a felhasználó kilépett.
 bool fajlNevHelyessegBiztosito(bool mentesE, SzervizNyilvantartoRendszer& aDB);
 
-#endif // !MAINSEGEDFUGGVENYEK_H
+#endif // MAINSEGEDFUGGVENYEK_H

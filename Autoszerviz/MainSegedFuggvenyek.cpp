@@ -43,13 +43,15 @@ void kiirASCII2() {
 /// A program által biztosított funkciók használatához szükséges menü opciók kiírása
 void menuOpciok() {
     kiirASCII1();
-    std::cout << "\n\t1. Az ugyfel/auto tarolok listazasa\n";
+    std::cout << "\n\t1. A tarolok listazasa\n"; // KÉSZ
     std::cout << "\t2. Uj ugyfel/auto felvetele\n";
-    std::cout << "\t3. Ugyfel keresese nev alapjan\n";
-    std::cout << "\t4. Auto keresese rendszam alapjan\n";
-    std::cout << "\t5. Uj szerviz muvelet rogzitese\n";
-    std::cout << "\t6. Autok vagy Ugyfelek adatainak fajlba irasa\n";
-    std::cout << "\t7. Autok vagy Ugyfelek adatainak fajbol beolvasasa\n";
+    std::cout << "\t3. Ugyfelek/autok frissitese\n";
+    std::cout << "\t4. Ugyfelek/autok torlese\n"; // KÉSZ
+    std::cout << "\t5. Ugyfel keresese nev alapjan\n"; // KÉSZ
+    std::cout << "\t6. Auto keresese rendszam alapjan\n"; // KÉSZ
+    std::cout << "\t7. Uj szerviz muvelet rogzitese\n"; // KÉSZ
+    std::cout << "\t8. Autok vagy Ugyfelek adatainak fajlba irasa\n"; // KÉSZ
+    std::cout << "\t9. Autok vagy Ugyfelek adatainak fajbol beolvasasa\n"; // KÉSZ
     std::cout << "\t0. Kilepes\n\n";
     std::cout << "\tValassz egy lehetoseget: ";
 }
@@ -90,258 +92,21 @@ void varakozasTorol() {
 }
 
 
+
 /*-------------------------------------------
-            1. menüponthoz
+                Segéd
 -------------------------------------------*/
-/// Listázza az ügyfeleket vagy az autókat a megadott adatbázisból.
-/// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
-/// @return - true, ha a kiirás sikeres volt, false, ha a felhasználó kilépett.
-bool kiListazo(SzervizNyilvantartoRendszer& aDB) {
-	std::string mitKerj;
-    do {
-        toroloMajdCim();
-        std::cout << "\tAdd meg 'ugyfel' vagy 'auto' szeretned listazni ('exit' a kilepeshez): ";
-        std::cin >> mitKerj;
+/// Ellenõrzi, hogy a megadott rendszám formátuma helyes-e.
+/// @param rendszam - A vizsgált rendszám.
+/// @return - true, ha a formátum helyes, false, ha helytelen.
+bool helyesRendszamFormatum(const std::string& rendszam) {
+    if (rendszam.length() != 6)
+        return false;
 
-        if (mitKerj == "exit") {
-            torolKonzol();
-            return false;
-            break;
-        }
-
-		if (mitKerj != "ugyfel" && mitKerj != "auto" &&
-            mitKerj != "Ugyfel" && mitKerj != "Auto") {
-			std::cout << "\n\tIsmeretlen parancs! (ugyfel/auto/exit)";
-			varakozasEnterre();
-			continue;
-		}
-
-        if (mitKerj == "auto") {
-            std::cout << "\n";
-            for (size_t i = 0; i < aDB.getAutok().size(); i++) {
-                std::cout << aDB.getAutok().at(i);
-            }
-            varakozasTorol();
-            continue;
-        }
-        else if (mitKerj == "ugyfel") {
-            std::cout << "\n";
-            for (size_t i = 0; i < aDB.getUgyfelek().size(); i++) {
-                std::cout << aDB.getUgyfelek().at(i);
-            }
-            varakozasTorol();
-            continue;
-        }
-        return true;
-	} while (mitKerj != "ugyfel" && mitKerj != "auto" && mitKerj != "exit");
-
-    return true; // Ha valami miatt mégsem lépett vissza korábba
+    return isupper(rendszam[0]) && isupper(rendszam[1]) && isupper(rendszam[2]) &&
+        isdigit(rendszam[3]) && isdigit(rendszam[4]) && isdigit(rendszam[5]);
 }
 
-
-
-/*-------------------------------------------
-            2. menüponthoz
--------------------------------------------*/
-/// Új ügyfél vagy autó rögzítése.
-/// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
-/*
-void ujUgyfelAuto(SzervizNyilvantartoRendszer& aDB) {
-    std::string nev, tel, cim;
-    std::cout << "Ugyfel neve: ";
-    std::cin.ignore();
-    std::getline(std::cin, nev);
-    std::cout << "Telefonszama: ";
-    std::getline(std::cin, tel);
-    std::cout << "Cime: ";
-    std::getline(std::cin, cim);
-
-    Ugyfel ujUgyfel(nev, tel, cim);
-    aDB.ujUgyfel(ujUgyfel);
-
-    std::string rendszam, marka, tipus;
-    int km;
-    std::cout << "Auto rendszama: ";
-    std::getline(std::cin, rendszam);
-    std::cout << "Marka: ";
-    std::getline(std::cin, marka);
-    std::cout << "Tipus: ";
-    std::getline(std::cin, tipus);
-    std::cout << "Kilometerora allasa: ";
-    std::cin >> km;
-
-    Auto ujAuto(rendszam, marka, tipus, km);
-    aDB.ujAuto(ujAuto);
-
-    std::cout << "\t>>> Uj ugyfel es auto sikeresen rogzitve! <<<" << std::endl;
-}
-*/
-
-
-/*-------------------------------------------
-            3. menüponthoz
--------------------------------------------*/
-/// Keres egy ügyfelet a megadott név alapján.
-/// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
-/*
-void ugyfelKereses(SzervizNyilvantartoRendszer& rendszer) {
-    std::string nev;
-    std::cin.ignore();
-    std::cout << "Add meg az ugyfel nevet: ";
-    std::getline(std::cin, nev);
-
-    try {
-        const Ugyfel& u = rendszer.keresUgyfel(nev);
-        std::cout << "Ugyfel adatai:\n" << u << std::endl;
-    }
-    catch (const std::exception& e) {
-        std::cout << "\t>>> " << e.what() << " <<<" << std::endl;
-    }
-}
-*/
-
-
-/*-------------------------------------------
-            4. menüponthoz
--------------------------------------------*/
-/// Keres egy autót a megadott rendszám alapján.
-/// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
-/*
-void autoKereses(SzervizNyilvantartoRendszer& rendszer) {
-    std::string rendszam;
-    std::cin.ignore();
-    std::cout << "Add meg az auto rendszamat: ";
-    std::getline(std::cin, rendszam);
-
-    try {
-        const Auto& a = rendszer.keresAuto(rendszam);
-        std::cout << "Auto adatai:\n" << a << std::endl;
-        rendszer.lekeroVegzettMuvelet(std::cout, rendszam);
-    }
-    catch (const std::exception& e) {
-        std::cout << "\t>>> " << e.what() << " <<<" << std::endl;
-    }
-}
-*/
-
-
-
-/*-------------------------------------------
-            5. menüponthoz
--------------------------------------------*/
-/// Új szerviz mûvelet rögzítése egy autóhoz.
-/// @param rendszer - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
-/// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
-bool ujSzervizMuvelet(SzervizNyilvantartoRendszer& aDB) {
-    std::string milyenSzerviz;
-    do {
-        toroloMajdCim();
-        std::cout << "\tAdd meg a szerviz muvelet tipusat 'vizsga', 'karbantartas' vagy 'javitas' ('exit' a kilepeshez): ";
-        std::cin >> milyenSzerviz;
-
-        if (milyenSzerviz == "exit") {
-            return false;
-            break;
-        }
-
-        if (milyenSzerviz != "vizsga" && milyenSzerviz != "karbantartas" && milyenSzerviz != "javitas" &&
-            milyenSzerviz != "Vizsga" && milyenSzerviz != "Karbantartas" && milyenSzerviz != "Javitas") {
-            std::cout << "\n\tIsmeretlen parancs! (vizsga/karbantartas/javitas/exit)";
-            varakozasEnterre();
-            continue;
-        }
-
-        std::string rendszam;
-		Auto talaltAuto;
-        std::cin.ignore();
-        do {
-            toroloMajdCim();
-            std::cout << "\tAdd meg az auto rendszamat, formatum: 3 nagybetu majd 3 szam (pl: ABC123): ";
-            std::getline(std::cin, rendszam);
-
-            if (rendszam.length() != 6 || !isupper(rendszam[0]) || !isupper(rendszam[1]) || !isupper(rendszam[2]) ||
-                !isdigit(rendszam[3]) || !isdigit(rendszam[4]) || !isdigit(rendszam[5])) {
-                std::cout << "\n\tIsmeretlen rendszam formatum! (pelda: ABC123)";
-                varakozasEnterre();
-                continue;
-            }
-
-            if (!aDB.vanAuto(rendszam)) {
-                std::cout << "\n\tA keresett auto nincs rendszerben, igy nem rogzitheto uj szervizmuvelet!";
-                varakozasEnterre();
-                continue;
-            }
-            talaltAuto = aDB.keresAuto(rendszam);
-            break; // autó létezik és formátum is jó, kilépünk a ciklusból
-        } while (true);
-
-        toroloMajdCim();
-        std::string muveletLeirasa;
-        int ev, ho, nap, ar, km;
-        std::cout << "\tAdd meg a javitas reszletes leirasat: ";
-        std::cin >> muveletLeirasa;
-
-		do {
-            toroloMajdCim();
-            std::cout << "\tAdd meg a datumot, formatum: ev ho nap (pl 2004 10 23): ";
-            std::cin >> std::setw(4) >> ev >> std::setw(2) >> ho >> std::setw(2) >> nap;
-
-			if (ho < 1 || ho > 12 || nap < 1 || nap > 31) {
-				std::cout << "\n\tIsmeretlen datum formatum! (pelda: ev, 1 <= ho <= 12, 1 <= nap <= 31)";
-				varakozasEnterre();
-				continue;
-			}
-			break; // datum helyes formátumú, kilépünk a ciklusból
-		} while (true);
-
-        toroloMajdCim();
-        std::cout << "\tAdd meg a szerviz muvelet arat: ";
-        std::cin >> ar;
-
-        do {
-            toroloMajdCim();
-            std::cout << "\tAdd meg az aktualis km allast: ";
-            std::cin >> km;
-
-            if (talaltAuto.getSzervizMuveletek().back()->getAktKmOra() > km) {
-                std::cout << "\n\tNem lehet kisebb a km ora allasa mint a legutobbi szerviz eseten volt!";
-				std::cout << "\n\tLegutolso szerviz km ora allasa: " << talaltAuto.getSzervizMuveletek().back()->getAktKmOra() << std::endl;
-                varakozasEnterre();
-                continue;
-            }
-            break;
-        } while (true); // km óra helyes értéket tartalmaz, kilépünk a ciklusból
-        
-
-        VegzettMuvelet* ujSzervizMuvelet;
-        if (milyenSzerviz == "vizsga") {
-			bool siker;
-			std::cout << "\tSikeres vizsga? (1 - Igen, 0 - Nem): ";
-			std::cin >> siker;
-
-            ujSzervizMuvelet = new Vizsga(muveletLeirasa, Datum(ev, ho, nap), km, ar, siker);
-        }
-        else if (milyenSzerviz == "karbantartas") {
-            ujSzervizMuvelet = new Karbantartas(muveletLeirasa, Datum(ev, ho, nap), km, ar);
-        } else {
-            ujSzervizMuvelet = new Javitas(muveletLeirasa, Datum(ev, ho, nap), km, ar);
-        }
-
-        aDB.rogzitesVegzettMuvelet(rendszam, *ujSzervizMuvelet);
-        delete ujSzervizMuvelet;
-        return true;
-    } while (milyenSzerviz != "vizsga" && milyenSzerviz != "karbantartas" && milyenSzerviz != "javitas" && milyenSzerviz != "exit" &&
-             milyenSzerviz != "Vizsga" && milyenSzerviz != "Karbantartas" && milyenSzerviz != "Javitas" && milyenSzerviz != "Exit");
-
-    return true; // Ha valami miatt mégsem lépett vissza korábba
-}
-// Lehetne szebben is egy tömbben vagy Vectorban beírva std::string-kent a lehetséges helyes megoldásokat
-
-
-
-/*-------------------------------------------
-            6-7. menüponthoz
--------------------------------------------*/
 /// Ellenõrzi, hogy a megadott fájl létezik-e.
 /// @param f - A vizsgált fájl neve (elérési útvonal is lehet).
 /// @return - true, ha a fájl létezik, különben false.
@@ -350,6 +115,535 @@ bool letezikAFajl(const std::string& f) {
     return fajl.good();
 }
 
+/// Bekéri a felhasználótól egy dátum (év, hónap, nap) értékeit.
+/// Addig ismétli a bekérést, amíg helyes formátumú (érvényes tartományban lévõ) dátumot nem kap.
+/// @return - A bekért dátum `Datum` típusban.
+Datum bekerDatum() {
+    int ev, ho, nap;
+
+    while (true) {
+        toroloMajdCim();
+        std::cout << "\tAdd meg a datumot (ev honap nap): ";
+        std::cin >> ev >> ho >> nap;
+
+        if (ho >= 1 && ho <= 12 && nap >= 1 && nap <= 31 && ev >= 1000 && ev <= 9999) {
+            break;
+        }
+        else {
+            std::cout << "\n\tIsmeretlen datum formatum!";
+            varakozasEnterre();
+        }
+    }
+
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    return Datum(ev, ho, nap);
+}
+
+
+/// Bekér egy sort a felhasználótól, miután kiír egy megadott üzenetet.
+/// @param t - A felhasználónak megjelenítendõ üzenet.
+/// @return - A felhasználó által beírt sor.
+std::string sorBeker(const std::string& t) {
+    toroloMajdCim();
+    std::string sor;
+    std::cout << t;
+    std::getline(std::cin, sor);
+    return sor;
+}
+
+
+
+
+/*-------------------------------------------
+            1. menüponthoz
+-------------------------------------------*/
+/// Listázza az ügyfeleket vagy az autókat a megadott adatbázisból.
+/// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
+/// @return - true, ha a kiirás sikeres volt, false, ha a felhasználó kilépett.
+bool kiListazo(SzervizNyilvantartoRendszer& aDB) {
+	std::string mitKerj;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    while(true) {
+        toroloMajdCim();
+        std::cout << "\tAdd meg a ki listazando adatbazist ('ugyfel', 'auto' vagy 'exit' a kilepeshez): ";
+        std::getline(std::cin, mitKerj);
+
+        if (mitKerj == "exit")
+            return false;
+
+		if (mitKerj != "ugyfel" && mitKerj != "auto") {
+			std::cout << "\n\tIsmeretlen parancs!";
+			varakozasEnterre();
+			continue;
+		}
+
+        if (mitKerj == "ugyfel") {
+            std::cout << "\n\t--- Ugyfelek adatai ---\n";
+            for (const auto& ugyfel : aDB.getUgyfelek()) {
+                std::cout << ugyfel;
+            }
+            varakozasTorol();
+        } else if (mitKerj == "auto") {
+            std::cout << "\n\t--- Autok adatai ---\n";
+            for (const auto& autok : aDB.getAutok()) {
+                std::cout << autok;
+            }
+            varakozasTorol();
+        }
+        return true;
+	}
+
+    return true;
+}
+
+
+
+/*-------------------------------------------
+           2. menüponthoz
+-------------------------------------------*/
+/// Új ügyfél vagy autó rögzítése.
+/// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
+/// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
+bool ugyfelAutoAdd(SzervizNyilvantartoRendszer& aDB) {
+    std::string mitFelvesz;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    while (true) {
+        toroloMajdCim();
+        std::cout << "\tMit szeretnel felvenni ('ugyfel', 'auto' vagy 'exit' a kilepeshez): ";
+        std::getline(std::cin, mitFelvesz);
+
+        if (mitFelvesz == "exit")
+            return false;
+
+        if (mitFelvesz != "ugyfel" && mitFelvesz != "auto") {
+            std::cout << "\n\tIsmeretlen parancs!";
+            varakozasEnterre();
+            continue;
+        }
+
+        toroloMajdCim();
+
+        // Új ügyfél felvitele
+        if (mitFelvesz == "ugyfel") {
+            std::string nev;
+            while (true) {
+                nev = sorBeker("\tAdd meg az ugyfel nevet (pelda: 'Hajdu Patrik Zsolt'): ");
+
+                if (aDB.vanUgyfel(nev)) {
+                    std::cout << "\n\tA keresett ugyfel mar a rendszerben van!";
+                    varakozasTorol();
+                    return false;
+                }
+                break;
+            }
+
+            std::string tel = sorBeker("\tAdd meg az ugyfel telefonszamat: ");
+            std::string cim = sorBeker("\tAdd meg az ugyfel cimet: ");
+
+            aDB.ujUgyfel(Ugyfel(nev, tel, cim));
+            return true;
+        }
+
+        // Új autó felvitele
+        if (mitFelvesz == "auto") {
+            std::string rendszam;
+            while (true) {
+                rendszam = sorBeker("\tAdd meg az auto rendszamat (pelda: 'ABC123'): ");
+
+                if (!helyesRendszamFormatum(rendszam)) {
+                    std::cout << "\n\tIsmeretlen rendszam formatum!";
+                    varakozasEnterre();
+                    continue;
+                }
+
+                if (aDB.vanAuto(rendszam)) {
+                    std::cout << "\n\tA keresett auto mar a rendszerben van!";
+                    varakozasTorol();
+                    return false;
+                }
+
+                break;
+            }
+
+            std::string marka = sorBeker("\tAdd meg az auto markajat: ");
+            std::string tipus = sorBeker("\tAdd meg az auto tipusat: ");
+
+            toroloMajdCim();
+            int km;
+            std::cout << "\tAdd meg az auto kilometerora allasat: ";
+            std::cin >> km;
+
+            Datum datum = bekerDatum();
+            std::string tulajNev = sorBeker("\tAdd meg az auto tulajdonosat (pelda: 'Hajdu Patrik Zsolt'): ");
+
+            Ugyfel* tulajPtr = nullptr;
+
+            if (aDB.vanUgyfel(tulajNev)) {
+                tulajPtr = &aDB.keresUgyfel(tulajNev);
+            }
+            else {
+                std::string tel = sorBeker("\tUj tulajdonos, kerlek add meg a telefonszamat: ");
+                std::string cim = sorBeker("\tAdd meg a lakcimet: ");
+                aDB.ujUgyfel(Ugyfel(tulajNev, tel, cim));
+                tulajPtr = &aDB.getUgyfelek().back();
+            }
+
+            aDB.ujAuto(Auto(rendszam, marka, tipus, km, datum, Vector<VegzettMuvelet*>(), tulajPtr));
+            return true;
+        }
+    }
+
+    return true;
+}
+
+
+
+/*-------------------------------------------
+           3. menüponthoz
+-------------------------------------------*/
+/// Meglévõ ügyfél vagy autó frissítése.
+/// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
+/// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
+bool ugyfelAutoFrissit(SzervizNyilvantartoRendszer& aDB) {
+    std::string MitFrissit;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    while (true) {
+        toroloMajdCim();
+        std::cout << "\tMit szeretnel frissiteni ('ugyfel', 'auto' vagy 'exit' a kilepeshez): ";
+        std::getline(std::cin, MitFrissit);
+
+        if (MitFrissit == "exit")
+            return false;
+
+        if (MitFrissit != "ugyfel" && MitFrissit != "auto") {
+            std::cout << "\n\tIsmeretlen parancs!";
+            varakozasEnterre();
+            continue;
+        }
+
+        // Ügyfél frissítése
+        if (MitFrissit == "ugyfel") {
+            std::string nev = sorBeker("\tAdd meg az ugyfel nevet (pelda: 'Hajdu Patrik Zsolt'): ");
+
+            if (!aDB.vanUgyfel(nev)) {
+                std::cout << "\n\tNincs ilyen nevu ugyfel a rendszerben!";
+                varakozasTorol();
+                return false;
+            }
+
+            Ugyfel u = aDB.keresUgyfel(nev);
+
+            std::string ujTel = sorBeker("\tAdd meg az uj telefonszamot: ");
+            std::string ujEmail = sorBeker("\tAdd meg az uj email cimet: ");
+
+            u.setTel(ujTel);
+            u.setEmail(ujEmail);
+            aDB.frissitUgyfel(u);
+
+            return true;
+        }
+
+        // Autó frissítése
+        if (MitFrissit == "auto") {
+            std::string rendszam;
+            while (true) {
+                rendszam = sorBeker("\tAdd meg az auto rendszamat (pelda: 'ABC123'): ");
+
+                if (!helyesRendszamFormatum(rendszam)) {
+                    std::cout << "\n\tIsmeretlen rendszam formatum!";
+                    varakozasEnterre();
+                    continue;
+                }
+
+                if (!aDB.vanAuto(rendszam)) {
+                    std::cout << "\n\tNincs ilyen rendszamu auto a rendszerben!";
+                    varakozasTorol();
+                    return false;
+                }
+
+                break;
+            }
+
+            Auto a = aDB.keresAuto(rendszam);
+
+            int km;
+            while (true) {
+                toroloMajdCim();
+                std::cout << "\tAdd meg az uj kilometerora allast: ";
+                std::cin >> km;
+
+                const auto& szervizek = a.getSzervizMuveletek();
+                if (!szervizek.empty() && szervizek.back()) {
+                    if (szervizek.back()->getAktKmOra() > km) {
+                        std::cout << "\n\tNem lehet kisebb a km ora allasa mint az ami a legutolso szerviznel lett rogzitve!";
+                        std::cout << "\n\tLegutolso szerviz km ora allasa: " << szervizek.back()->getAktKmOra() << std::endl;
+                        varakozasEnterre();
+                        continue;
+                    }
+                }
+
+                break;
+            }
+
+            a.setKmOra(km);
+            aDB.frissitAuto(a);
+
+            return true;
+        }
+    }
+
+    return true;
+}
+
+
+
+
+/*-------------------------------------------
+            4. menüponthoz
+-------------------------------------------*/
+/// A rendszerben lévõ ügyfél vagy autó törlésére szolgál.
+/// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
+/// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
+bool ugyfelAutoTorlo(SzervizNyilvantartoRendszer& aDB) {
+   std::string mitTorol;
+   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+   while (true) {
+       mitTorol = sorBeker("\tMit szeretnel torolni ('ugyfel', 'auto' vagy 'exit' a kilepeshez): ");
+
+       if (mitTorol == "exit")
+           return false;
+
+       if (mitTorol != "ugyfel" && mitTorol != "auto") {
+           std::cout << "\n\tIsmeretlen parancs!";
+           varakozasEnterre();
+           continue;
+       }
+
+       if (mitTorol == "ugyfel") {
+           std::string nev = sorBeker("\tAdd meg az ugyfel nevet, akit torolni szeretnel (pelda: 'Hajdu Patrik Zsolt'): ");
+
+           if (!aDB.vanUgyfel(nev)) {
+               std::cout << "\n\tA keresett ugyfel nincs rendszerben!";
+               varakozasTorol();
+               return false;
+           }
+
+           aDB.torolUgyfel(nev);
+       } else if (mitTorol == "auto") {
+           std::string rendszam;
+
+           while(true) {
+               rendszam = sorBeker("\tAdd meg az auto rendszamat, amit torolni szeretnel (pelda: 'ABC123'): ");
+
+               if (!helyesRendszamFormatum(rendszam)) {
+                   std::cout << "\n\tIsmeretlen rendszam formatum!";
+                   varakozasEnterre();
+                   continue;
+               }
+
+               if (!aDB.vanAuto(rendszam)) {
+                   std::cout << "\n\tA keresett auto nincs rendszerben!";
+                   varakozasTorol();
+                   return false;
+               }
+               break;
+		   }
+
+		   aDB.torolAuto(rendszam);
+       }
+	   torolKonzol();
+       return true;
+   }
+   return true;
+}
+
+
+
+/*-------------------------------------------
+            5. menüponthoz
+-------------------------------------------*/
+/// Keres egy ügyfelet a megadott név alapján.
+/// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
+/// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
+bool ugyfelKereses(SzervizNyilvantartoRendszer& aDB) {
+    std::string nev;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    while (true) {
+        nev = sorBeker("\tAdd meg az ugyfel nevet ('Hajdu Patrik Zsolt' vagy 'exit'): ");
+
+        if (nev == "exit")
+            return false;
+
+        if (!aDB.vanUgyfel(nev)) {
+            std::cout << "\n\tA keresett ugyfel nincs rendszerben!";
+            varakozasTorol();
+            return true;
+        }
+
+        toroloMajdCim();
+        const Ugyfel& ugyfelRef = aDB.keresUgyfel(nev);
+        std::cout << "\t--- Ugyfel adatai ---\n";
+        std::cout << ugyfelRef;
+
+        varakozasTorol();
+        return true;
+    }
+
+    return true;
+}
+
+
+
+/*-------------------------------------------
+            6. menüponthoz
+-------------------------------------------*/
+/// Keres egy autót a megadott rendszám alapján.
+/// @param rendszer - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
+/// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
+bool autoKereses(SzervizNyilvantartoRendszer& aDB) {
+    std::string rendszam;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    while (true) {
+        rendszam = sorBeker("\tAdd meg az auto rendszamat ('ABC123' vagy 'exit' a kilepeshez): ");
+
+        if (rendszam == "exit")
+            return false;
+        
+        if (!helyesRendszamFormatum(rendszam)) {
+            std::cout << "\n\tIsmeretlen rendszam formatum!";
+            varakozasEnterre();
+            continue;
+        }
+
+        if (!aDB.vanAuto(rendszam)) {
+            std::cout << "\n\tA keresett auto nincs rendszerben!";
+            varakozasTorol();
+            return true;
+        }
+
+        toroloMajdCim();
+        const Auto& autoRef = aDB.keresAuto(rendszam);
+        std::cout << "\t--- Auto adatai ---\n";
+        std::cout << autoRef;
+
+        std::cout << "\t--- Figyelmeztetesek ---\n";
+		aDB.figyelmeztetesek(std::cout, autoRef);
+
+		/* Ha külön ki szeretnéd csak a szerviz mûveleteket listázni van rá opció
+        std::cout << "\n\t--- Szerviz muveletek ---\n";
+        aDB.lekeroVegzettMuvelet(std::cout, rendszam);
+        */
+
+        varakozasTorol();
+        return true;
+    }
+    return true;
+}
+
+
+
+
+/*-------------------------------------------
+            7. menüponthoz
+-------------------------------------------*/
+/// Új szerviz mûvelet rögzítése egy autóhoz.
+/// @param rendszer - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
+/// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
+bool ujSzervizMuvelet(SzervizNyilvantartoRendszer& aDB) {
+    std::string milyenSzerviz;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    while (true) {
+        milyenSzerviz = sorBeker("\tAdd meg a szerviz muvelet tipusat ('vizsga', 'karbantartas', 'javitas' vagy 'exit' a kilepeshez): ");
+
+        if (milyenSzerviz == "exit")
+            return false;
+
+        if (milyenSzerviz != "vizsga" && milyenSzerviz != "karbantartas" && milyenSzerviz != "javitas") {
+            std::cout << "\n\tIsmeretlen parancs!";
+            varakozasEnterre();
+            continue;
+        }
+
+        std::string rendszam;
+        Auto talaltAuto;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        while (true) {
+            rendszam = sorBeker("\tAdd meg az auto rendszamat (pelda: 'ABC123'): ");
+
+            if (!helyesRendszamFormatum(rendszam)) {
+                std::cout << "\n\tIsmeretlen rendszam formatum!";
+                varakozasEnterre();
+                continue;
+            }
+
+            if (!aDB.vanAuto(rendszam)) {
+                std::cout << "\n\tA keresett auto nincs rendszerben, igy nem rogzitheto uj szervizmuvelet!";
+                varakozasEnterre();
+                return true;
+            }
+            talaltAuto = aDB.keresAuto(rendszam);
+            break; // autó létezik és formátum is jó, kilépünk a ciklusból
+        }
+
+        std::string muveletLeirasa = sorBeker("\tAdd meg a javitas reszletes leirasat: ");
+
+        Datum datum = bekerDatum();
+        
+        int ar, km;
+        toroloMajdCim();
+        std::cout << "\tAdd meg a szerviz muvelet arat: ";
+        std::cin >> ar;
+
+        while(true) {
+            toroloMajdCim();
+            std::cout << "\tAdd meg az aktualis km ora allast: ";
+            std::cin >> km;
+
+            if (talaltAuto.getSzervizMuveletek().back()->getAktKmOra() > km) {
+                std::cout << "\n\tNem lehet kisebb a km ora allasa mint az ami a legutolso szerviznel lett rogzitve!";
+                std::cout << "\n\tLegutolso szerviz km ora allasa: " << talaltAuto.getSzervizMuveletek().back()->getAktKmOra() << std::endl;
+                varakozasEnterre();
+                continue;
+            }
+            break;
+        } // km óra helyes értéket tartalmaz, kilépünk a ciklusból
+
+
+        VegzettMuvelet* ujSzervizMuvelet;
+        if (milyenSzerviz == "vizsga") {
+            bool siker;
+            toroloMajdCim();
+            std::cout << "\tSikeres vizsga? (1 - Igen, 0 - Nem): ";
+            std::cin >> siker;
+
+            ujSzervizMuvelet = new Vizsga(muveletLeirasa, datum, km, ar, siker);
+        }
+        else if (milyenSzerviz == "karbantartas") {
+            ujSzervizMuvelet = new Karbantartas(muveletLeirasa, datum, km, ar);
+        }
+        else {
+            ujSzervizMuvelet = new Javitas(muveletLeirasa, datum, km, ar);
+        }
+
+        aDB.rogzitesVegzettMuvelet(rendszam, *ujSzervizMuvelet);
+        delete ujSzervizMuvelet;
+        return true;
+    };
+    return true;
+}
+
+
+
+/*-------------------------------------------
+            8.-9. menüponthoz
+-------------------------------------------*/
 /// Fájlnév bekérése, formátumának és létezésének ellenõrzése.
 /// Elfogadja az "exit" szót is, ami visszalépést jelent a fõmenübe.
 /// @param mentesE - A függvény célját jelzõ kapcsoló (mentés vagy betöltés)
@@ -357,23 +651,26 @@ bool letezikAFajl(const std::string& f) {
 /// @return true, ha sikeres volt a mûvelet, false, ha a felhasználó kilépett.
 bool fajlNevHelyessegBiztosito(bool mentesE, SzervizNyilvantartoRendszer& aDB) {
     std::string fajlNev;
-    while (true) {
-        toroloMajdCim();
-        std::cout << "\tAdd meg a fajl nevet (vagy 'exit' a kilepeshez): ";
-        std::cin >> fajlNev;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-        if (fajlNev == "exit") {
+    while (true) {
+        fajlNev = sorBeker("\tAdd meg a fajl nevet ('xxx_auo.txt', 'xxx_ufl.txt' vagy 'exit' a kilepeshez): ");
+
+        if (fajlNev == "exit")
             return false;
-        }
 
         bool ugyfelFajl = fajlNev.find("_ufl.txt") != std::string::npos;
         bool autoFajl = fajlNev.find("_auo.txt") != std::string::npos;
 
         if (!ugyfelFajl && !autoFajl) {
-            std::cout << "\n\tIsmeretlen fajlformatum! (Helyes: xxx_auo.txt vagy xxx_ufl.txt)";
+            std::cout << "\n\tIsmeretlen fajlformatum!";
+            varakozasEnterre();
+			continue;
         }
         else if (!mentesE && !letezikAFajl(fajlNev)) {
             std::cout << "\n\tA megadott fajl nem letezik!";
+            varakozasEnterre();
+			continue;
         }
         else {
             if (mentesE)
@@ -382,9 +679,6 @@ bool fajlNevHelyessegBiztosito(bool mentesE, SzervizNyilvantartoRendszer& aDB) {
                 aDB.betoltesFajlbol(fajlNev);
             return true;
         }
-
-        varakozasEnterre();
     }
-
-    return false; // Ha valami miatt mégsem lépett vissza korábba
+    return true;
 }
