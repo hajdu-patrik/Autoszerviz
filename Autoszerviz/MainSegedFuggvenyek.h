@@ -66,6 +66,12 @@ Datum bekerDatum();
 /// @return - A felhasználó által beírt sor.
 std::string sorBeker(const std::string& t);
 
+/// Lefuttat egy adott mûveletet, majd a visszatérési értéktõl függõen kiírja a megfelelõ üzenetet.
+/// @param muvelet - A végrehajtandó függvény (pl. egy lambda vagy sima függvénypointer).
+/// @param sikerUzenet - Az üzenet, ha a mûvelet sikeres.
+/// @param kilepesUzenet - Az üzenet, ha a mûvelet félbeszakadt vagy nem történt meg.
+void muveletFuttato(bool (*muvelet)(SzervizNyilvantartoRendszer&), SzervizNyilvantartoRendszer& adatbazis, const std::string& sikerUzenet, const std::string& kilepesUzenet);
+
 
 
 /*-------------------------------------------

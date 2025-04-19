@@ -149,6 +149,7 @@ public:
 	void figyelmeztetesek(std::ostream& os, const Auto& a) const;
 
 
+
 	/*-------------------------------------------
 			 Fájlkezelõ tagfüggvények
 	-------------------------------------------*/

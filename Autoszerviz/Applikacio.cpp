@@ -14,6 +14,7 @@ int main() {
     SzervizNyilvantartoRendszer autoszervizAdatbazis;
     int valasztottMenu;
 
+    
 	// Fájlok betöltése, hogy ha szûkséges teszt adatokkal induljon a program
     try {
         autoszervizAdatbazis.betoltesFajlbol("init_ugyfel_ufl.txt");
@@ -30,86 +31,36 @@ int main() {
         torolKonzol();
 
         switch (valasztottMenu) {
-        case 1: {
-                if (!kiListazo(autoszervizAdatbazis)) {
-                    torolKonzol();
-                    std::cout << "\t=== Sikeres kilepes! ===";
-                    break;
-                }
-                torolKonzol();
-                std::cout << "\t=== Sikeres listazas! ===";
+            case 1:
+                muveletFuttato(kiListazo, autoszervizAdatbazis, "Sikeres listazas!", "Sikeres kilepes!");
                 break;
-            }
 
-            case 2: {
-                if (!ugyfelAutoAdd(autoszervizAdatbazis)) {
-                    torolKonzol();
-                    std::cout << "\t=== Sikeres kilepes! ===";
-                    break;
-                }
-                torolKonzol();
-                std::cout << "\t=== Sikeres felvetel! ===";
+            case 2:
+                muveletFuttato(ugyfelAutoAdd, autoszervizAdatbazis, "Sikeres felvetel!", "Sikeres kilepes!");
                 break;
-            }
 
-            case 3: {
-                if (!ugyfelAutoFrissit(autoszervizAdatbazis)) {
-                    torolKonzol();
-                    std::cout << "\t=== Sikeres kilepes! ===";
-                    break;
-                }
-                torolKonzol();
-                std::cout << "\t=== Sikeres frissites! ===";
+            case 3:
+                muveletFuttato(ugyfelAutoFrissit, autoszervizAdatbazis, "Sikeres frissites!", "Sikeres kilepes!");
                 break;
-            }
-            
-            case 4: {
-                if (!ugyfelAutoTorlo(autoszervizAdatbazis)) {
-                    torolKonzol();
-                    std::cout << "\t=== Sikeres kilepes! ===";
-                    break;
-                }
-                torolKonzol();
-                std::cout << "\t=== Sikeres torles! ===";
-                break;
-            }
 
-            case 5: {
-                if (!ugyfelKereses(autoszervizAdatbazis)) {
-                    torolKonzol();
-                    std::cout << "\t=== Sikeres kilepes! ===";
-                    break;
-                }
-                torolKonzol();
-                std::cout << "\t=== Sikeres kereses! ===";
+            case 4:
+                muveletFuttato(ugyfelAutoTorlo, autoszervizAdatbazis, "Sikeres torles!", "Sikeres kilepes!");
                 break;
-            }
 
-            case 6: {
-                if (!autoKereses(autoszervizAdatbazis)) {
-                    torolKonzol();
-                    std::cout << "\t=== Sikeres kilepes! ===";
-                    break;
-                }
-                torolKonzol();
-                std::cout << "\t=== Sikeres kereses! ===";
+            case 5:
+                muveletFuttato(ugyfelKereses, autoszervizAdatbazis, "Sikeres kereses!", "Sikeres kilepes!");
                 break;
-            }
 
-            case 7: {
-                if (!ujSzervizMuvelet(autoszervizAdatbazis)) {
-                    torolKonzol();
-                    std::cout << "\t=== Sikeres kilepes! ===";
-                    break;
-                }
-                torolKonzol();
-                std::cout << "\t=== Sikeres szerviz muvelet rogzitese! ===";
+            case 6:
+                muveletFuttato(autoKereses, autoszervizAdatbazis, "Sikeres kereses!", "Sikeres kilepes!");
                 break;
-            }
+
+            case 7:
+                muveletFuttato(ujSzervizMuvelet, autoszervizAdatbazis, "Sikeres szerviz muvelet rogzitese!", "Sikeres kilepes!");
+                break;
+
 
             case 8: {
-				SzervizNyilvantartoRendszer tempBeolvasottAdatbazis;
-                // Kell egy merge fuggveny es jo lesz!
                 if (!fajlNevHelyessegBiztosito(true, autoszervizAdatbazis)) {
                     torolKonzol();
                     std::cout << "\t=== Sikeres kilepes! ===";
@@ -121,8 +72,6 @@ int main() {
             }
 
             case 9: {
-                SzervizNyilvantartoRendszer tempBeolvasottAdatbazis;
-                // Kell egy merge fuggveny es jo lesz!
                 if (!fajlNevHelyessegBiztosito(false, autoszervizAdatbazis)) {
                     torolKonzol();
                     std::cout << "\t=== Sikeres kilepes! ===";

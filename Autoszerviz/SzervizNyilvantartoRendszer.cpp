@@ -6,6 +6,7 @@
 #include "Memtrace.h"
 #include <fstream>
 #include <sstream>
+#include <cctype>
 #include "SzervizNyilvantartoRendszer.h"
 #include "Auto.h"
 #include "Ugyfel.h"
@@ -422,6 +423,7 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 					}
 				}
 			}
+
 			if (vanUgyfel(tulajNevStr)) {
 				Ugyfel& tulajStr = keresUgyfel(tulajNevStr);
 				autok.push_back(Auto(rendszamStr, markaStr, tipusStr, kmOra, uzembeHelyezes, szervizLista, &tulajStr));

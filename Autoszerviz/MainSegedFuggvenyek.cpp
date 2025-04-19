@@ -151,6 +151,19 @@ std::string sorBeker(const std::string& t) {
     return sor;
 }
 
+/// Lefuttat egy adott mûveletet, majd a visszatérési értéktõl függõen kiírja a megfelelõ üzenetet.
+/// @param muvelet - A végrehajtandó függvény (pl. egy lambda vagy sima függvénypointer).
+/// @param sikerUzenet - Az üzenet, ha a mûvelet sikeres.
+/// @param kilepesUzenet - Az üzenet, ha a mûvelet félbeszakadt vagy nem történt meg.
+void muveletFuttato(bool (*muvelet)(SzervizNyilvantartoRendszer&), SzervizNyilvantartoRendszer& adatbazis, const std::string& sikerUzenet, const std::string& kilepesUzenet) {
+    if (!muvelet(adatbazis)) {
+        torolKonzol();
+        std::cout << "\t=== " << kilepesUzenet << " ===";
+    } else {
+        torolKonzol();
+        std::cout << "\t=== " << sikerUzenet << " ===";
+    }
+}
 
 
 
@@ -180,15 +193,23 @@ bool kiListazo(SzervizNyilvantartoRendszer& aDB) {
 
         if (mitKerj == "ugyfel") {
             std::cout << "\n\t--- Ugyfelek adatai ---\n";
-            for (const auto& ugyfel : aDB.getUgyfelek()) {
+			if (aDB.getUgyfelek().empty()) {
+				std::cout << "\tNincsenek ugyfelek a rendszerben!\n";
+				varakozasTorol();
+				return true;
+			}
+            for (const auto& ugyfel : aDB.getUgyfelek())
                 std::cout << ugyfel;
-            }
             varakozasTorol();
         } else if (mitKerj == "auto") {
             std::cout << "\n\t--- Autok adatai ---\n";
-            for (const auto& autok : aDB.getAutok()) {
+			if (aDB.getAutok().empty()) {
+				std::cout << "\tNincsenek autok a rendszerben!\n";
+				varakozasTorol();
+				return true;
+			}
+            for (const auto& autok : aDB.getAutok())
                 std::cout << autok;
-            }
             varakozasTorol();
         }
         return true;
@@ -279,11 +300,9 @@ bool ugyfelAutoAdd(SzervizNyilvantartoRendszer& aDB) {
             std::string tulajNev = sorBeker("\tAdd meg az auto tulajdonosat (pelda: 'Hajdu Patrik Zsolt'): ");
 
             Ugyfel* tulajPtr = nullptr;
-
             if (aDB.vanUgyfel(tulajNev)) {
                 tulajPtr = &aDB.keresUgyfel(tulajNev);
-            }
-            else {
+            } else {
                 std::string tel = sorBeker("\tUj tulajdonos, kerlek add meg a telefonszamat: ");
                 std::string cim = sorBeker("\tAdd meg a lakcimet: ");
                 aDB.ujUgyfel(Ugyfel(tulajNev, tel, cim));
