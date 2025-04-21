@@ -4,6 +4,7 @@
 *	szükséges segédfüggvények implementációját tartalmazza.
 */
 
+#include "Memtrace.h"
 #include "MainSegedFuggvenyek.h"
 #include "SzervizNyilvantartoRendszer.h"
 #include "VegzettMuvelet.h"
@@ -152,14 +153,29 @@ std::string sorBeker(const std::string& t) {
 }
 
 /// Lefuttat egy adott mûveletet, majd a visszatérési értéktõl függõen kiírja a megfelelõ üzenetet.
-/// @param muvelet - A végrehajtandó függvény (pl. egy lambda vagy sima függvénypointer).
+/// @param muvelet - A végrehajtandó függvény.
+/// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
 /// @param sikerUzenet - Az üzenet, ha a mûvelet sikeres.
-/// @param kilepesUzenet - Az üzenet, ha a mûvelet félbeszakadt vagy nem történt meg.
-void muveletFuttato(bool (*muvelet)(SzervizNyilvantartoRendszer&), SzervizNyilvantartoRendszer& adatbazis, const std::string& sikerUzenet, const std::string& kilepesUzenet) {
-    if (!muvelet(adatbazis)) {
+void muveletFuttato(bool (*muvelet)(SzervizNyilvantartoRendszer&), SzervizNyilvantartoRendszer& aDB, const std::string& sikerUzenet) {
+    if (!muvelet(aDB)) {
         torolKonzol();
-        std::cout << "\t=== " << kilepesUzenet << " ===";
+        std::cout << "\t=== " << "Sikeres vissza lepes a menube!" << " ===";
     } else {
+        torolKonzol();
+        std::cout << "\t=== " << sikerUzenet << " ===";
+    }
+}
+
+/// Lefuttatja fájl kezeléshez szûkséges mûveletet, majd a visszatérési értéktõl függõen kiírja a megfelelõ üzenetet.
+/// @param muvelet - A végrehajtandó függvény.
+/// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
+/// @param sikerUzenet - Az üzenet, ha a mûvelet sikeres.
+void fajlMuveletFuttato(bool (*muvelet)(bool, SzervizNyilvantartoRendszer&), SzervizNyilvantartoRendszer& aDB, bool tipus, const std::string& sikerUzenet) {
+    if (!muvelet(tipus, aDB)) {
+        torolKonzol();
+        std::cout << "\t=== " << "Sikeres vissza lepes a menube!" << " ===";
+    }
+    else {
         torolKonzol();
         std::cout << "\t=== " << sikerUzenet << " ===";
     }
@@ -394,19 +410,14 @@ bool ugyfelAutoFrissit(SzervizNyilvantartoRendszer& aDB) {
                 std::cout << "\tAdd meg az uj kilometerora allast: ";
                 std::cin >> km;
 
-                const auto& szervizek = a.getSzervizMuveletek();
-                if (!szervizek.empty() && szervizek.back()) {
-                    if (szervizek.back()->getAktKmOra() > km) {
-                        std::cout << "\n\tNem lehet kisebb a km ora allasa mint az ami a legutolso szerviznel lett rogzitve!";
-                        std::cout << "\n\tLegutolso szerviz km ora allasa: " << szervizek.back()->getAktKmOra() << std::endl;
-                        varakozasEnterre();
-                        continue;
-                    }
+                if (a.getSzervizMuveletek().back()->getAktKmOra() > km) {
+                    std::cout << "\n\tNem lehet kisebb a km ora allasa mint az ami a legutolso szerviznel lett rogzitve!";
+                    std::cout << "\n\tLegutolso szerviz km ora allasa: " << a.getSzervizMuveletek().back()->getAktKmOra() << std::endl;
+                    varakozasEnterre();
+                    continue;
                 }
-
                 break;
             }
-
             a.setKmOra(km);
             aDB.frissitAuto(a);
 
@@ -605,14 +616,13 @@ bool ujSzervizMuvelet(SzervizNyilvantartoRendszer& aDB) {
             if (!aDB.vanAuto(rendszam)) {
                 std::cout << "\n\tA keresett auto nincs rendszerben, igy nem rogzitheto uj szervizmuvelet!";
                 varakozasEnterre();
-                return true;
+                return false;
             }
             talaltAuto = aDB.keresAuto(rendszam);
             break; // autó létezik és formátum is jó, kilépünk a ciklusból
         }
 
         std::string muveletLeirasa = sorBeker("\tAdd meg a javitas reszletes leirasat: ");
-
         Datum datum = bekerDatum();
         
         int ar, km;
@@ -668,7 +678,7 @@ bool ujSzervizMuvelet(SzervizNyilvantartoRendszer& aDB) {
 /// @param mentesE - A függvény célját jelzõ kapcsoló (mentés vagy betöltés)
 /// @param aDB - A szerviz adatbázis objektum referenciája
 /// @return true, ha sikeres volt a mûvelet, false, ha a felhasználó kilépett.
-bool fajlNevHelyessegBiztosito(bool mentesE, SzervizNyilvantartoRendszer& aDB) {
+bool fajlHelyessegBiztosito(bool mentesE, SzervizNyilvantartoRendszer& aDB) {
     std::string fajlNev;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 

@@ -13,84 +13,65 @@
 int main() {
     SzervizNyilvantartoRendszer autoszervizAdatbazis;
     int valasztottMenu;
-
     
 	// Fájlok betöltése, hogy ha szûkséges teszt adatokkal induljon a program
     try {
         autoszervizAdatbazis.betoltesFajlbol("init_ugyfel_ufl.txt");
         autoszervizAdatbazis.betoltesFajlbol("init_auto_auo.txt");
-    }
-    catch (const std::exception& e) {
+    } catch (const std::exception& e) {
         std::cerr << "Hiba tortent a fajl beolvasasakor: " << e.what() << std::endl;
         return 1;
     }
-    
+
     do {
         menuOpciok();
         std::cin >> valasztottMenu;
         torolKonzol();
 
         switch (valasztottMenu) {
+            case 0:
+                kiirASCII2();
+                break;
+
             case 1:
-                muveletFuttato(kiListazo, autoszervizAdatbazis, "Sikeres listazas!", "Sikeres kilepes!");
+                muveletFuttato(kiListazo, autoszervizAdatbazis, "Sikeres listazas!");
                 break;
 
             case 2:
-                muveletFuttato(ugyfelAutoAdd, autoszervizAdatbazis, "Sikeres felvetel!", "Sikeres kilepes!");
+                muveletFuttato(ugyfelAutoAdd, autoszervizAdatbazis, "Sikeres felvetel!");
                 break;
 
             case 3:
-                muveletFuttato(ugyfelAutoFrissit, autoszervizAdatbazis, "Sikeres frissites!", "Sikeres kilepes!");
+                muveletFuttato(ugyfelAutoFrissit, autoszervizAdatbazis, "Sikeres frissites!");
                 break;
 
             case 4:
-                muveletFuttato(ugyfelAutoTorlo, autoszervizAdatbazis, "Sikeres torles!", "Sikeres kilepes!");
+                muveletFuttato(ugyfelAutoTorlo, autoszervizAdatbazis, "Sikeres torles!");
                 break;
 
             case 5:
-                muveletFuttato(ugyfelKereses, autoszervizAdatbazis, "Sikeres kereses!", "Sikeres kilepes!");
+                muveletFuttato(ugyfelKereses, autoszervizAdatbazis, "Sikeres kereses!");
                 break;
 
             case 6:
-                muveletFuttato(autoKereses, autoszervizAdatbazis, "Sikeres kereses!", "Sikeres kilepes!");
+                muveletFuttato(autoKereses, autoszervizAdatbazis, "Sikeres kereses!");
                 break;
 
             case 7:
-                muveletFuttato(ujSzervizMuvelet, autoszervizAdatbazis, "Sikeres szerviz muvelet rogzitese!", "Sikeres kilepes!");
+                muveletFuttato(ujSzervizMuvelet, autoszervizAdatbazis, "Sikeres szerviz muvelet rogzitese!");
                 break;
 
-
-            case 8: {
-                if (!fajlNevHelyessegBiztosito(true, autoszervizAdatbazis)) {
-                    torolKonzol();
-                    std::cout << "\t=== Sikeres kilepes! ===";
-                    break;
-                }
-                torolKonzol();
-                std::cout << "\t=== Sikeres fajlba iras! ===";
+            case 8:
+                fajlMuveletFuttato(fajlHelyessegBiztosito, autoszervizAdatbazis, true, "Mentes sikeres!");
                 break;
-            }
 
-            case 9: {
-                if (!fajlNevHelyessegBiztosito(false, autoszervizAdatbazis)) {
-                    torolKonzol();
-                    std::cout << "\t=== Sikeres kilepes! ===";
-                    break;
-                }
-                torolKonzol();
-                std::cout << "\t=== Sikeres fajlbol olvasas! ===";
+            case 9:
+                fajlMuveletFuttato(fajlHelyessegBiztosito, autoszervizAdatbazis, false, "Beolvasas sikeres!");
                 break;
-            }
 
-            case 0:  {
-                kiirASCII2();
-                break;
-            }
-
-            default: {
+            default:
                 std::cout << "\t>>> Ervenytelen valasztas! Probald ujra! <<<";
                 break;
-            }
         }
     } while (valasztottMenu != 0);
 

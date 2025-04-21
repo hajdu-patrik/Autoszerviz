@@ -67,10 +67,16 @@ Datum bekerDatum();
 std::string sorBeker(const std::string& t);
 
 /// Lefuttat egy adott mûveletet, majd a visszatérési értéktõl függõen kiírja a megfelelõ üzenetet.
-/// @param muvelet - A végrehajtandó függvény (pl. egy lambda vagy sima függvénypointer).
+/// @param muvelet - A végrehajtandó függvény.
+/// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
 /// @param sikerUzenet - Az üzenet, ha a mûvelet sikeres.
-/// @param kilepesUzenet - Az üzenet, ha a mûvelet félbeszakadt vagy nem történt meg.
-void muveletFuttato(bool (*muvelet)(SzervizNyilvantartoRendszer&), SzervizNyilvantartoRendszer& adatbazis, const std::string& sikerUzenet, const std::string& kilepesUzenet);
+void muveletFuttato(bool (*muvelet)(SzervizNyilvantartoRendszer&), SzervizNyilvantartoRendszer& aDB, const std::string& sikerUzenet);
+
+/// Lefuttatja fájl kezeléshez szûkséges mûveletet, majd a visszatérési értéktõl függõen kiírja a megfelelõ üzenetet.
+/// @param muvelet - A végrehajtandó függvény.
+/// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
+/// @param sikerUzenet - Az üzenet, ha a mûvelet sikeres.
+void fajlMuveletFuttato(bool (*muvelet)(bool, SzervizNyilvantartoRendszer&), SzervizNyilvantartoRendszer& aDB, bool tipus, const std::string& sikerUzenet);
 
 
 
@@ -152,6 +158,6 @@ bool ujSzervizMuvelet(SzervizNyilvantartoRendszer& aDB);
 /// @param mentesE - A függvény célját jelzõ kapcsoló (mentés vagy betöltés)
 /// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
 /// @return true, ha sikeres volt a mûvelet, false, ha a felhasználó kilépett.
-bool fajlNevHelyessegBiztosito(bool mentesE, SzervizNyilvantartoRendszer& aDB);
+bool fajlHelyessegBiztosito(bool mentesE, SzervizNyilvantartoRendszer& aDB);
 
 #endif // MAINSEGEDFUGGVENYEK_H
