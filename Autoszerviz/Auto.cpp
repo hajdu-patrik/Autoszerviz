@@ -3,10 +3,11 @@
 *   Az autó osztály tagfüggvényeinek megvalósítása.
 */
 
-#include "Memtrace.h"
 #include <string>
-#include "Auto.h"
 
+#include "Memtrace.h"
+
+#include "Auto.h"
 #include "Datum.h"
 #include "Ugyfel.h"
 #include "Vector.hpp"

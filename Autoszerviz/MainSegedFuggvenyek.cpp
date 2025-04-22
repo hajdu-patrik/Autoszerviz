@@ -5,18 +5,21 @@
 */
 
 #include "Memtrace.h"
-#include "MainSegedFuggvenyek.h"
-#include "SzervizNyilvantartoRendszer.h"
-#include "VegzettMuvelet.h"
-#include "Vizsga.h"
-#include "Karbantartas.h"
-#include "Javitas.h"
+
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <cstdlib>  // system()
 #include <limits>   // numeric_limits
 #include <cstdio>   // getchar()
+
+#include "MainSegedFuggvenyek.h"
+#include "SzervizNyilvantartoRendszer.h"
+#include "VegzettMuvelet.h"
+#include "Vizsga.h"
+#include "Karbantartas.h"
+#include "Javitas.h"
+#include "Teszt.h"
 
 /*-------------------------------------------
              Menü rendszerhez
@@ -44,16 +47,17 @@ void kiirASCII2() {
 /// A program által biztosított funkciók használatához szükséges menü opciók kiírása
 void menuOpciok() {
     kiirASCII1();
-    std::cout << "\n\t1. A tarolok listazasa\n"; // KÉSZ
-    std::cout << "\t2. Uj ugyfel/auto felvetele\n";
-    std::cout << "\t3. Ugyfelek/autok frissitese\n";
-    std::cout << "\t4. Ugyfelek/autok torlese\n"; // KÉSZ
-    std::cout << "\t5. Ugyfel keresese nev alapjan\n"; // KÉSZ
-    std::cout << "\t6. Auto keresese rendszam alapjan\n"; // KÉSZ
-    std::cout << "\t7. Uj szerviz muvelet rogzitese\n"; // KÉSZ
-    std::cout << "\t8. Autok vagy Ugyfelek adatainak fajlba irasa\n"; // KÉSZ
-    std::cout << "\t9. Autok vagy Ugyfelek adatainak fajbol beolvasasa\n"; // KÉSZ
-    std::cout << "\t0. Kilepes\n\n";
+    std::cout << '\t' << std::setw(2) << std::setfill('0') << 0 << ". Tesztek futatasa\n";
+    std::cout << '\t' << std::setw(2) << std::setfill('0') << 1 << ". A tarolok listazasa\n";
+    std::cout << '\t' << std::setw(2) << std::setfill('0') << 2 << ". Uj ugyfel/auto felvetele\n";
+    std::cout << '\t' << std::setw(2) << std::setfill('0') << 3 << ". Ugyfelek/autok frissitese\n";
+    std::cout << '\t' << std::setw(2) << std::setfill('0') << 4 << ". Ugyfelek/autok torlese\n";
+    std::cout << '\t' << std::setw(2) << std::setfill('0') << 5 << ". Ugyfel keresese nev alapjan\n";
+    std::cout << '\t' << std::setw(2) << std::setfill('0') << 6 << ". Auto keresese rendszam alapjan\n";
+    std::cout << '\t' << std::setw(2) << std::setfill('0') << 7 << ". Uj szerviz muvelet rogzitese\n";
+    std::cout << '\t' << std::setw(2) << std::setfill('0') << 8 << ". Autok vagy Ugyfelek adatainak fajlba irasa\n";
+    std::cout << '\t' << std::setw(2) << std::setfill('0') << 9 << ". Autok vagy Ugyfelek adatainak fajbol beolvasasa\n";
+	std::cout << '\t' << std::setw(2) << std::setfill('0') << 10 << ". Kilepes\n\n";
     std::cout << "\tValassz egy lehetoseget: ";
 }
 
@@ -63,10 +67,10 @@ void menuOpciok() {
                UI élményhez
 -------------------------------------------*/
 /// Megvárja, amíg a felhasználó lenyomja az Enter billentyût.
-/// Általában hibaüzenetek vagy információk megjelenítése után használatos, 
-/// hogy a felhasználónak legyen ideje elolvasni azokat.
-void varakozasEnterre() {
-    std::cout << "\n\tNyomj Entert a folytatashoz...";
+/// Általában hibaüzenetek vagy információk megjelenítése után használatos, hogy a felhasználónak legyen ideje elolvasni azokat.
+/// @param o - A kiírandó üzenet.
+void varakozasEnterre(const std::string& o) {
+    std::cout << o;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // bemeneti puffer kiürítése
     std::cin.get();  // várakozás
 }
@@ -88,7 +92,7 @@ void toroloMajdCim() {
 
 /// Varakozik az Enter billentyû lenyomására, majd törli a konzolt
 void varakozasTorol() {
-    varakozasEnterre();
+    varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
     torolKonzol();
 }
 
@@ -132,7 +136,7 @@ Datum bekerDatum() {
         }
         else {
             std::cout << "\n\tIsmeretlen datum formatum!";
-            varakozasEnterre();
+            varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
         }
     }
 
@@ -203,7 +207,7 @@ bool kiListazo(SzervizNyilvantartoRendszer& aDB) {
 
 		if (mitKerj != "ugyfel" && mitKerj != "auto") {
 			std::cout << "\n\tIsmeretlen parancs!";
-			varakozasEnterre();
+			varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
 			continue;
 		}
 
@@ -256,7 +260,7 @@ bool ugyfelAutoAdd(SzervizNyilvantartoRendszer& aDB) {
 
         if (mitFelvesz != "ugyfel" && mitFelvesz != "auto") {
             std::cout << "\n\tIsmeretlen parancs!";
-            varakozasEnterre();
+            varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
             continue;
         }
 
@@ -291,7 +295,7 @@ bool ugyfelAutoAdd(SzervizNyilvantartoRendszer& aDB) {
 
                 if (!helyesRendszamFormatum(rendszam)) {
                     std::cout << "\n\tIsmeretlen rendszam formatum!";
-                    varakozasEnterre();
+                    varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
                     continue;
                 }
 
@@ -355,7 +359,7 @@ bool ugyfelAutoFrissit(SzervizNyilvantartoRendszer& aDB) {
 
         if (MitFrissit != "ugyfel" && MitFrissit != "auto") {
             std::cout << "\n\tIsmeretlen parancs!";
-            varakozasEnterre();
+            varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
             continue;
         }
 
@@ -389,7 +393,7 @@ bool ugyfelAutoFrissit(SzervizNyilvantartoRendszer& aDB) {
 
                 if (!helyesRendszamFormatum(rendszam)) {
                     std::cout << "\n\tIsmeretlen rendszam formatum!";
-                    varakozasEnterre();
+                    varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
                     continue;
                 }
 
@@ -413,7 +417,7 @@ bool ugyfelAutoFrissit(SzervizNyilvantartoRendszer& aDB) {
                 if (a.getSzervizMuveletek().back()->getAktKmOra() > km) {
                     std::cout << "\n\tNem lehet kisebb a km ora allasa mint az ami a legutolso szerviznel lett rogzitve!";
                     std::cout << "\n\tLegutolso szerviz km ora allasa: " << a.getSzervizMuveletek().back()->getAktKmOra() << std::endl;
-                    varakozasEnterre();
+                    varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
                     continue;
                 }
                 break;
@@ -449,7 +453,7 @@ bool ugyfelAutoTorlo(SzervizNyilvantartoRendszer& aDB) {
 
        if (mitTorol != "ugyfel" && mitTorol != "auto") {
            std::cout << "\n\tIsmeretlen parancs!";
-           varakozasEnterre();
+           varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
            continue;
        }
 
@@ -471,7 +475,7 @@ bool ugyfelAutoTorlo(SzervizNyilvantartoRendszer& aDB) {
 
                if (!helyesRendszamFormatum(rendszam)) {
                    std::cout << "\n\tIsmeretlen rendszam formatum!";
-                   varakozasEnterre();
+                   varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
                    continue;
                }
 
@@ -547,7 +551,7 @@ bool autoKereses(SzervizNyilvantartoRendszer& aDB) {
         
         if (!helyesRendszamFormatum(rendszam)) {
             std::cout << "\n\tIsmeretlen rendszam formatum!";
-            varakozasEnterre();
+            varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
             continue;
         }
 
@@ -597,7 +601,7 @@ bool ujSzervizMuvelet(SzervizNyilvantartoRendszer& aDB) {
 
         if (milyenSzerviz != "vizsga" && milyenSzerviz != "karbantartas" && milyenSzerviz != "javitas") {
             std::cout << "\n\tIsmeretlen parancs!";
-            varakozasEnterre();
+            varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
             continue;
         }
 
@@ -609,13 +613,13 @@ bool ujSzervizMuvelet(SzervizNyilvantartoRendszer& aDB) {
 
             if (!helyesRendszamFormatum(rendszam)) {
                 std::cout << "\n\tIsmeretlen rendszam formatum!";
-                varakozasEnterre();
+                varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
                 continue;
             }
 
             if (!aDB.vanAuto(rendszam)) {
                 std::cout << "\n\tA keresett auto nincs rendszerben, igy nem rogzitheto uj szervizmuvelet!";
-                varakozasEnterre();
+                varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
                 return false;
             }
             talaltAuto = aDB.keresAuto(rendszam);
@@ -638,7 +642,7 @@ bool ujSzervizMuvelet(SzervizNyilvantartoRendszer& aDB) {
             if (talaltAuto.getSzervizMuveletek().back()->getAktKmOra() > km) {
                 std::cout << "\n\tNem lehet kisebb a km ora allasa mint az ami a legutolso szerviznel lett rogzitve!";
                 std::cout << "\n\tLegutolso szerviz km ora allasa: " << talaltAuto.getSzervizMuveletek().back()->getAktKmOra() << std::endl;
-                varakozasEnterre();
+                varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
                 continue;
             }
             break;
@@ -693,12 +697,12 @@ bool fajlHelyessegBiztosito(bool mentesE, SzervizNyilvantartoRendszer& aDB) {
 
         if (!ugyfelFajl && !autoFajl) {
             std::cout << "\n\tIsmeretlen fajlformatum!";
-            varakozasEnterre();
+            varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
 			continue;
         }
         else if (!mentesE && !letezikAFajl(fajlNev)) {
             std::cout << "\n\tA megadott fajl nem letezik!";
-            varakozasEnterre();
+            varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
 			continue;
         }
         else {

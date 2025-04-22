@@ -9,8 +9,9 @@
 *   Kiegészíti az õsosztályt egy sikeres logikai értékkel, ami a vizsga sikerességét jelzi.
 */
 
-#include "VegzettMuvelet.h"
 #include <iostream>
+
+#include "VegzettMuvelet.h"
 
 class Vizsga : public VegzettMuvelet {
     bool sikeres; ///< A vizsga sikeressége

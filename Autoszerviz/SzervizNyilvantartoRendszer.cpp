@@ -4,9 +4,11 @@
 */
 
 #include "Memtrace.h"
+
 #include <fstream>
 #include <sstream>
 #include <cctype>
+
 #include "SzervizNyilvantartoRendszer.h"
 #include "Auto.h"
 #include "Ugyfel.h"
@@ -79,18 +81,25 @@ const Vector<Ugyfel>& SzervizNyilvantartoRendszer::getUgyfelek() const {
 -------------------------------------------*/
 /// Új autó hozzáadása az adatbázishoz.
 /// @param a - Az új autó példány.
-void SzervizNyilvantartoRendszer::ujAuto(const Auto& a) {
+/// @return - True, ha az autó sikeresen hozzáadva, false, ha már létezik.
+bool SzervizNyilvantartoRendszer::ujAuto(const Auto& a) {
 	if (!vanAuto(a.getRendszam())) {
 		autok.push_back(a);
+		return true;
 	}
+	return false;
 }
+
 
 /// Új ügyfél hozzáadása az adatbázishoz.
 /// @param u - Az új ügyfél példány.
-void SzervizNyilvantartoRendszer::ujUgyfel(const Ugyfel& u) {
+/// @return - True, ha az ügyfél sikeresen hozzáadva, false, ha már létezik.
+bool SzervizNyilvantartoRendszer::ujUgyfel(const Ugyfel& u) {
 	if (!vanUgyfel(u.getNev())) {
 		ugyfelek.push_back(u);
+		return true;
 	}
+	return false;
 }
 
 
@@ -101,26 +110,29 @@ void SzervizNyilvantartoRendszer::ujUgyfel(const Ugyfel& u) {
 /// Egy autó adatainak frissítése a rendszeren belül.
 /// Ha a rendszeren belül már létezik az autó (rendszám alapján), akkor az adatai frissülnek.
 /// @param a - Az autó új adatai.
-void SzervizNyilvantartoRendszer::frissitAuto(const Auto& a) {
-	for (auto it = autok.begin(); it != autok.end(); it++) {
-		if (it->getRendszam() == a.getRendszam()) {
-			*it = a;
-			return;
+/// @return - True, ha az autó sikeresen frissítve lett, false, ha nem található.
+bool SzervizNyilvantartoRendszer::frissitAuto(const Auto& a) {
+	for (auto& autoRef : autok) {
+		if (autoRef.getRendszam() == a.getRendszam()) {
+			autoRef = a;
+			return true;
 		}
 	}
+	return false;
 }
-
 
 /// Egy ügyfél adatainak frissítése a rendszeren belül.
 /// Ha a rendszeren belül már létezik az ügyfél (név alapján), akkor az adatai frissülnek.
 /// @param u - Az ügyfél új adatai.
-void SzervizNyilvantartoRendszer::frissitUgyfel(const Ugyfel& u) {
-	for (auto it = ugyfelek.begin(); it != ugyfelek.end(); it++) {
-		if (it->getNev() == u.getNev()) {
-			*it = u;
-			return;
+/// @return - True, ha az ügyfél sikeresen frissítve lett, false, ha nem található.
+bool SzervizNyilvantartoRendszer::frissitUgyfel(const Ugyfel& u) {
+	for (auto& ugyfelRef : ugyfelek) {
+		if (ugyfelRef.getNev() == u.getNev()) {
+			ugyfelRef = u;
+			return true;
 		}
 	}
+	return false;
 }
 
 
@@ -130,35 +142,66 @@ void SzervizNyilvantartoRendszer::frissitUgyfel(const Ugyfel& u) {
 -------------------------------------------*/
 /// Egy autó törlése rendszám alapján.
 /// @param r - A törlendő autó rendszáma.
-void SzervizNyilvantartoRendszer::torolAuto(const std::string& r) {
+/// @return - True, ha az autó törölve lett, false, ha nem található.
+bool SzervizNyilvantartoRendszer::torolAuto(const std::string& r) {
 	for (auto it = autok.begin(); it != autok.end(); it++) {
 		if (it->getRendszam() == r) {
 			autok.erase(it);
-			break;
+			return true;
 		}
 	}
+	return false;
 }
 
 /// Egy ügyfél törlése név alapján.
 /// @param n - A törlendő ügyfél neve.
-void SzervizNyilvantartoRendszer::torolUgyfel(const std::string& n) {
+/// @return - True, ha az ügyfél törölve lett, false, ha nem található.
+bool SzervizNyilvantartoRendszer::torolUgyfel(const std::string& n) {
+	bool torolve = false;
+
+	// Töröljük az ügyfélhez tartozó autókat
 	for (auto jt = autok.begin(); jt != autok.end(); ) {
 		if (jt->getTulajdonos()->getNev() == n) {
 			jt = autok.erase(jt);
+			torolve = true;
 		}
 		else {
-			jt++;
+			++jt;
 		}
 	}
 
+	// Töröljük az ügyfelet
 	for (auto it = ugyfelek.begin(); it != ugyfelek.end(); ) {
 		if (it->getNev() == n) {
 			it = ugyfelek.erase(it);
+			torolve = true;
 		}
 		else {
 			it++;
 		}
-	}	
+	}
+
+	return torolve;
+}
+
+/// Egy adott rendszámú autóhoz tartozó szervizművelet törlése a megadott dátum alapján.
+/// @param r - Az autó rendszáma.
+/// @param d - A törlendő művelet dátuma.
+/// @return - True, ha a művelet sikeresen törölve lett, false, ha az autó vagy a megadott dátumú művelet nem található.
+bool SzervizNyilvantartoRendszer::torolMuvelet(const std::string& r, const Datum& d) {
+	for (auto& autoObj : autok) {
+		if (autoObj.getRendszam() == r) {
+			auto& muveletek = autoObj.getSzervizMuveletek();
+			for (size_t i = 0; i < muveletek.size(); ++i) {
+				if (muveletek[i]->getDatum() == d) {
+					autoObj.torolVegzettSzerviz(i);
+					return true;
+				}
+			}
+			return false; // Az autó létezik, de nincs ilyen dátumú művelet
+		}
+	}
+	return false; // Nincs ilyen rendszámú autó
 }
 
 
@@ -220,14 +263,16 @@ bool SzervizNyilvantartoRendszer::vanUgyfel(const std::string& n) const {
 /// Egy végzett szervizművelet rögzítése adott autóhoz.
 /// @param r - Az autó rendszáma.
 /// @param m - A végzett szervizművelet.
-void SzervizNyilvantartoRendszer::rogzitesVegzettMuvelet(const std::string& r, const VegzettMuvelet& m) {
+/// @return - True, ha a művelet sikeresen rögzítve lett, false, ha az autó nem található.
+bool SzervizNyilvantartoRendszer::rogzitesVegzettMuvelet(const std::string& r, const VegzettMuvelet& m) {
 	for (auto& autoObj : autok) {
 		if (autoObj.getRendszam() == r) {
 			VegzettMuvelet* ujMuvelet = m.clone();
 			autoObj.addVegzettSzerviz(ujMuvelet);
-			return;
+			return true;
 		}
 	}
+	return false;
 }
 
 /// Lekérdezi az adott autóhoz tartozó szervizműveleteket.ű

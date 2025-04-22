@@ -7,8 +7,9 @@
 *   Ez az osztály a VegzettMuvelet osztályból származik, és a karbantartási mûveletek adatait tárolja.
 */
 
-#include "VegzettMuvelet.h"
 #include <iostream>
+
+#include "VegzettMuvelet.h"
 
 class Karbantartas : public VegzettMuvelet {
 public:

@@ -9,6 +9,7 @@
 */
 
 #include <string>
+
 #include "Datum.h"
 
 class VegzettMuvelet {

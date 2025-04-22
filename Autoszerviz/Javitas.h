@@ -7,8 +7,9 @@
 *   Ez az osztály a VegzettMuvelet osztályból származik, és a javítási mûveletek adatait tárolja.
 */
 
-#include "VegzettMuvelet.h"
 #include <iostream>
+
+#include "VegzettMuvelet.h"
 
 class Javitas : public VegzettMuvelet {
 public:

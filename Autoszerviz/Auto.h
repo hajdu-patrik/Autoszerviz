@@ -15,6 +15,7 @@
 */
 
 #include <string>
+
 #include "Datum.h"
 #include "Ugyfel.h"
 #include "Vector.hpp"

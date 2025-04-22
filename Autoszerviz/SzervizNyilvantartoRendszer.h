@@ -11,6 +11,7 @@
 */
 
 #include <string>
+
 #include "Vector.hpp"
 #include "Auto.h"
 #include "Ugyfel.h"
@@ -67,11 +68,13 @@ public:
 	-------------------------------------------*/
 	/// Új autó hozzáadása az adatbázishoz.
 	/// @param a - Az új autó példány.
-	void ujAuto(const Auto& a);
+	/// @return - True, ha az autó sikeresen hozzáadva, false, ha már létezik.
+	bool ujAuto(const Auto& a);
 
 	/// Új ügyfél hozzáadása az adatbázishoz.
 	/// @param u - Az új ügyfél példány.
-	void ujUgyfel(const Ugyfel& u);
+	/// @return - True, ha az ügyfél sikeresen hozzáadva, false, ha már létezik.
+	bool ujUgyfel(const Ugyfel& u);
 
 
 
@@ -81,12 +84,14 @@ public:
 	/// Egy autó adatainak frissítése a rendszeren belül.
 	/// Ha a rendszeren belül már létezik az autó (rendszám alapján), akkor az adatai frissülnek.
 	/// @param a - Az autó új adatai.
-	void frissitAuto(const Auto& a);
+	/// @return - True, ha az autó sikeresen frissítve lett, false, ha nem található.
+	bool frissitAuto(const Auto& a);
 
 	/// Egy ügyfél adatainak frissítése a rendszeren belül.
 	/// Ha a rendszeren belül már létezik az ügyfél (név alapján), akkor az adatai frissülnek.
 	/// @param u - Az ügyfél új adatai.
-	void frissitUgyfel(const Ugyfel& u);
+	/// @return - True, ha az ügyfél sikeresen frissítve lett, false, ha nem található.
+	bool frissitUgyfel(const Ugyfel& u);
 
 
 
@@ -95,11 +100,19 @@ public:
 	-------------------------------------------*/
 	/// Egy autó törlése rendszám alapján.
 	/// @param r - A törlendõ autó rendszáma.
-	void torolAuto(const std::string& r);
+	/// @return - True, ha az autó törölve lett, false, ha nem található.
+	bool torolAuto(const std::string& r);
 
 	/// Egy ügyfél törlése név alapján.
 	/// @param n - A törlendõ ügyfél neve.
-	void torolUgyfel(const std::string& n);
+	/// @return - True, ha az ügyfél törölve lett, false, ha nem található.
+	bool torolUgyfel(const std::string& n);
+
+	/// Egy adott rendszámú autóhoz tartozó szervizmûvelet törlése a megadott dátum alapján.
+	/// @param r - Az autó rendszáma.
+	/// @param d - A törlendõ mûvelet dátuma.
+	/// @return - True, ha a mûvelet sikeresen törölve lett, false, ha az autó vagy a megadott dátumú mûvelet nem található.
+	bool torolMuvelet(const std::string& r, const Datum& d);
 
 
 
@@ -136,7 +149,8 @@ public:
 	/// Egy végzett szervizmûvelet rögzítése adott autóhoz.
 	/// @param r - Az autó rendszáma.
 	/// @param m - A végzett szervizmûvelet.
-	void rogzitesVegzettMuvelet(const std::string& r, const VegzettMuvelet& m);
+	/// @return - True, ha a mûvelet sikeresen rögzítve lett, false, ha az autó nem található.
+	bool rogzitesVegzettMuvelet(const std::string& r, const VegzettMuvelet& m);
 
 	/// Lekérdezi az adott autóhoz tartozó szervizmûveleteket.û
 	/// @param os - A kimeneti adatfolyam.

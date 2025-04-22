@@ -3,26 +3,21 @@
  *  Ez a fájl az autószerviz nyilvántartó rendszer belépési pontja, amely bemutatja a rendszer alapvetõ mûködését és fõ funkcióit.
  */
 
-#include "Teszt.h"
+
+#include "Memtrace.h"
+#include "Gtest_lite.h"
+
 #include "MainSegedFuggvenyek.h"
 #include "SzervizNyilvantartoRendszer.h"
-
-#include <iostream>
-#include <string>
+#include "Teszt.h"
 
 int main() {
     SzervizNyilvantartoRendszer autoszervizAdatbazis;
-    int valasztottMenu;
     
-	// Fájlok betöltése, hogy ha szûkséges teszt adatokkal induljon a program
-    try {
-        autoszervizAdatbazis.betoltesFajlbol("init_ugyfel_ufl.txt");
-        autoszervizAdatbazis.betoltesFajlbol("init_auto_auo.txt");
-    } catch (const std::exception& e) {
-        std::cerr << "Hiba tortent a fajl beolvasasakor: " << e.what() << std::endl;
-        return 1;
-    }
+	// Fájlok betöltése, hogy teszt adatokkal induljon a program amely elõsegíti a tesztelést és a hibakeresést
+    if (!tesztDBLetrehozas(autoszervizAdatbazis)) return 1;
 
+    int valasztottMenu;
     do {
         menuOpciok();
         std::cin >> valasztottMenu;
@@ -30,7 +25,7 @@ int main() {
 
         switch (valasztottMenu) {
             case 0:
-                kiirASCII2();
+                tesztek();
                 break;
 
             case 1:
@@ -69,11 +64,15 @@ int main() {
                 fajlMuveletFuttato(fajlHelyessegBiztosito, autoszervizAdatbazis, false, "Beolvasas sikeres!");
                 break;
 
+            case 10:
+                kiirASCII2();
+                break;
+
             default:
                 std::cout << "\t>>> Ervenytelen valasztas! Probald ujra! <<<";
                 break;
         }
-    } while (valasztottMenu != 0);
+    } while (valasztottMenu != 10);
 
     return 0;
 }

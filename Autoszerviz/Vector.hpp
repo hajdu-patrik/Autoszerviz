@@ -2,6 +2,7 @@
 #define VECTOR_HPP 
 
 #include "Memtrace.h"
+
 #include <stdexcept>
 
 /// Típusjellemzõ sablon struktúra, amely meghatározza, hogy egy típus pointer-e.

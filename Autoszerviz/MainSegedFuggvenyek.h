@@ -7,8 +7,9 @@
 *	A modul ellenõrzi, hogy a rendszer fõbb képességei helyesen mûködnek, és segít a hibák kiszûrésében a fejlesztés során.
 */
 
-#include "SzervizNyilvantartoRendszer.h"
 #include <string>
+
+#include "SzervizNyilvantartoRendszer.h"
 
 /*-------------------------------------------
             Menü rendszerhez
@@ -28,9 +29,9 @@ void menuOpciok();
               UI élményhez
 -------------------------------------------*/
 /// Megvárja, amíg a felhasználó lenyomja az Enter billentyût.
-/// Általában hibaüzenetek vagy információk megjelenítése után használatos, 
-/// hogy a felhasználónak legyen ideje elolvasni azokat.
-void varakozasEnterre();
+/// Általában hibaüzenetek vagy információk megjelenítése után használatos, hogy a felhasználónak legyen ideje elolvasni azokat.
+/// @param o - A kiírandó üzenet.
+void varakozasEnterre(const std::string& o);
 
 /// Törli a konzol képernyõt
 void torolKonzol();
