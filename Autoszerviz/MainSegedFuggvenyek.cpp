@@ -195,8 +195,6 @@ void fajlMuveletFuttato(bool (*muvelet)(bool, SzervizNyilvantartoRendszer&), Sze
 /// @return - true, ha a kiirás sikeres volt, false, ha a felhasználó kilépett.
 bool kiListazo(SzervizNyilvantartoRendszer& aDB) {
 	std::string mitKerj;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
     while(true) {
         toroloMajdCim();
         std::cout << "\tAdd meg a ki listazando adatbazist ('ugyfel', 'auto' vagy 'exit' a kilepeshez): ";
@@ -248,8 +246,6 @@ bool kiListazo(SzervizNyilvantartoRendszer& aDB) {
 /// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
 bool ugyfelAutoAdd(SzervizNyilvantartoRendszer& aDB) {
     std::string mitFelvesz;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
     while (true) {
         toroloMajdCim();
         std::cout << "\tMit szeretnel felvenni ('ugyfel', 'auto' vagy 'exit' a kilepeshez): ";
@@ -347,8 +343,6 @@ bool ugyfelAutoAdd(SzervizNyilvantartoRendszer& aDB) {
 /// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
 bool ugyfelAutoFrissit(SzervizNyilvantartoRendszer& aDB) {
     std::string MitFrissit;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
     while (true) {
         toroloMajdCim();
         std::cout << "\tMit szeretnel frissiteni ('ugyfel', 'auto' vagy 'exit' a kilepeshez): ";
@@ -443,8 +437,6 @@ bool ugyfelAutoFrissit(SzervizNyilvantartoRendszer& aDB) {
 /// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
 bool ugyfelAutoTorlo(SzervizNyilvantartoRendszer& aDB) {
    std::string mitTorol;
-   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
    while (true) {
        mitTorol = sorBeker("\tMit szeretnel torolni ('ugyfel', 'auto' vagy 'exit' a kilepeshez): ");
 
@@ -505,8 +497,6 @@ bool ugyfelAutoTorlo(SzervizNyilvantartoRendszer& aDB) {
 /// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
 bool ugyfelKereses(SzervizNyilvantartoRendszer& aDB) {
     std::string nev;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
     while (true) {
         nev = sorBeker("\tAdd meg az ugyfel nevet ('Hajdu Patrik Zsolt' vagy 'exit'): ");
 
@@ -541,8 +531,6 @@ bool ugyfelKereses(SzervizNyilvantartoRendszer& aDB) {
 /// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
 bool autoKereses(SzervizNyilvantartoRendszer& aDB) {
     std::string rendszam;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
     while (true) {
         rendszam = sorBeker("\tAdd meg az auto rendszamat ('ABC123' vagy 'exit' a kilepeshez): ");
 
@@ -591,8 +579,6 @@ bool autoKereses(SzervizNyilvantartoRendszer& aDB) {
 /// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
 bool ujSzervizMuvelet(SzervizNyilvantartoRendszer& aDB) {
     std::string milyenSzerviz;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
     while (true) {
         milyenSzerviz = sorBeker("\tAdd meg a szerviz muvelet tipusat ('vizsga', 'karbantartas', 'javitas' vagy 'exit' a kilepeshez): ");
 
@@ -684,8 +670,6 @@ bool ujSzervizMuvelet(SzervizNyilvantartoRendszer& aDB) {
 /// @return true, ha sikeres volt a mûvelet, false, ha a felhasználó kilépett.
 bool fajlHelyessegBiztosito(bool mentesE, SzervizNyilvantartoRendszer& aDB) {
     std::string fajlNev;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
     while (true) {
         fajlNev = sorBeker("\tAdd meg a fajl nevet ('xxx_auo.txt', 'xxx_ufl.txt' vagy 'exit' a kilepeshez): ");
 

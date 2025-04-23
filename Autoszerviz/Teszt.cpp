@@ -21,11 +21,11 @@ bool tesztDBLetrehozas(SzervizNyilvantartoRendszer& aDB) {
     try {
         aDB.betoltesFajlbol("init_ugyfel_ufl.txt");
         aDB.betoltesFajlbol("init_auto_auo.txt");
-    }
-    catch (const std::exception& e) {
+    } catch (const std::exception& e) {
         std::cerr << "Hiba tortent a fajl beolvasasakor: " << e.what() << std::endl;
-        return 1;
+        return false;;
     }
+    return true;
 }
 
 /// A tesztelési funkciók futtatására szolgáló függvény.
@@ -55,7 +55,7 @@ void tesztek() {
 
     TEST(Frissites, UgyfelEsAuto) {
         SzervizNyilvantartoRendszer aDB;
-        aDB.ujUgyfel(Ugyfel("Szabo Anna", "444555666", "Szeged"));
+        aDB.ujUgyfel(Ugyfel("Szabo Anna", "+36 70 779 9514", "anuskacsa@freemail.com"));
 
         Auto auto1("ABC123", "Ford", "Focus", 80000, Datum(2022, 6, 10), Vector<VegzettMuvelet*>(), &aDB.keresUgyfel("Szabo Anna"));
         aDB.ujAuto(auto1);
@@ -67,7 +67,7 @@ void tesztek() {
 
     TEST(Torles, UgyfelEsAuto) {
         SzervizNyilvantartoRendszer aDB;
-        aDB.ujUgyfel(Ugyfel("Teszt Elek", "123456789", "Teszt utca 1"));
+        aDB.ujUgyfel(Ugyfel("Teszt Elek", "+36 30 111 2121", "elek-tesztel@gmail.com"));
         aDB.ujAuto(Auto("ABC123", "Toyota", "Corolla", 123456, Datum(2023, 1, 1), Vector<VegzettMuvelet*>(), &aDB.keresUgyfel("Teszt Elek")));
 
         EXPECT_TRUE(aDB.torolUgyfel("Teszt Elek"));
@@ -77,7 +77,7 @@ void tesztek() {
 
     TEST(Szerviz, Rogzites) {
         SzervizNyilvantartoRendszer aDB;
-        aDB.ujUgyfel(Ugyfel("Lakatos Bela", "654321987", "Lakatos koz 3"));
+        aDB.ujUgyfel(Ugyfel("Lakatos Bela", "+36 20 420 6969", "lakatosbelosz889@edu.bme.hu"));
         aDB.ujAuto(Auto("GHI789", "Suzuki", "Swift", 789456, Datum(2021, 11, 5), Vector<VegzettMuvelet*>(), &aDB.keresUgyfel("Lakatos Bela")));
 
         Vizsga vizsga("Olajcsere", Datum(2025, 4, 20), 35000, 1500, true);
@@ -88,15 +88,15 @@ void tesztek() {
 
     TEST(Kereses, UgyfelNevAlapjan) {
         SzervizNyilvantartoRendszer aDB;
-        aDB.ujUgyfel(Ugyfel("Kovacs Anna", "987654321", "Kereszt utca 12"));
+        aDB.ujUgyfel(Ugyfel("Kovacs Anna", "+36 50 897 0012", "minecraft.mester20@outlook.com"));
 
         EXPECT_TRUE(aDB.vanUgyfel("Kovacs Anna"));
-        EXPECT_EQ(aDB.keresUgyfel("Kovacs Anna").getTelefonszam(), "987654321");
+        EXPECT_EQ(aDB.keresUgyfel("Kovacs Anna").getTelefonszam(), "+36 50 897 0012");
     } END
 
     TEST(Kereses, AutoRendszamAlapjan) {
         SzervizNyilvantartoRendszer aDB;
-        aDB.ujUgyfel(Ugyfel("Fekete Bela", "111222333", "Fekete ut 5"));
+        aDB.ujUgyfel(Ugyfel("Fekete Bela", "+36 50 666 7777", "fekete.vagyok@gmail.com"));
         aDB.ujAuto(Auto("XYZ789", "Honda", "Civic", 54321, Datum(2024, 2, 15), Vector<VegzettMuvelet*>(), &aDB.keresUgyfel("Fekete Bela")));
 
         EXPECT_TRUE(aDB.vanAuto("XYZ789"));
@@ -105,11 +105,11 @@ void tesztek() {
 
     TEST(Frissites, UgyfelAutoModositas) {
         SzervizNyilvantartoRendszer aDB;
-        aDB.ujUgyfel(Ugyfel("Toth Jozsef", "111111111", "Regi utca 10"));
+        aDB.ujUgyfel(Ugyfel("Toth Jozsef", "+36 30 450 6721", "jozsikacaj@edu.bme.hu"));
         aDB.ujAuto(Auto("DEF456", "Opel", "Astra", 222222, Datum(2022, 5, 20), Vector<VegzettMuvelet*>(), &aDB.keresUgyfel("Toth Jozsef")));
 
-        EXPECT_TRUE(aDB.frissitUgyfel(Ugyfel("Toth Jozsef", "999999999", "Uj utca 88")));
-        EXPECT_EQ(aDB.keresUgyfel("Toth Jozsef").getTelefonszam(), "999999999");
+        EXPECT_TRUE(aDB.frissitUgyfel(Ugyfel("Toth Jozsef", "+36 30 450 6721", "jozsika-toth@gamil.com")));
+        EXPECT_EQ(aDB.keresUgyfel("Toth Jozsef").getEmail(), "jozsika-toth@gamil.com");
 
         Auto modositott("DEF456", "Opel", "Astra G", 333333, Datum(2024, 3, 1), Vector<VegzettMuvelet*>(), &aDB.keresUgyfel("Toth Jozsef"));
         EXPECT_TRUE(aDB.frissitAuto(modositott));
@@ -118,7 +118,7 @@ void tesztek() {
 
     TEST(Szerviz, Listazas) {
         SzervizNyilvantartoRendszer aDB;
-        aDB.ujUgyfel(Ugyfel("Balogh Emese", "333333333", "Balogh ter 7"));
+        aDB.ujUgyfel(Ugyfel("Balogh Emese", "+36 70 661 3501", "meseloemese41@gamergirl.com"));
         aDB.ujAuto(Auto("LMN321", "Mazda", "3", 120000, Datum(2022, 6, 6), Vector<VegzettMuvelet*>(), &aDB.keresUgyfel("Balogh Emese")));
 
         Vizsga sz1("Vizsga 1", Datum(2025, 1, 15), 50000, 2000, true);
@@ -135,7 +135,7 @@ void tesztek() {
 
     TEST(MuveletTorles, EgyMuveletTorlese) {
         SzervizNyilvantartoRendszer aDB;
-        aDB.ujUgyfel(Ugyfel("Simon Gabor", "666555444", "Simon utca 4"));
+        aDB.ujUgyfel(Ugyfel("Simon Gabor", "+36 20 555 7117", "sonka.gusztav-simon@gmail.com"));
         aDB.ujAuto(Auto("TTT123", "Renault", "Clio", 50000, Datum(2023, 7, 7), Vector<VegzettMuvelet*>(), &aDB.keresUgyfel("Simon Gabor")));
 
         Vizsga vizsga1("Muszaki Vizsga", Datum(2025, 5, 1), 100000, 5000, true);
@@ -152,7 +152,7 @@ void tesztek() {
 
     TEST(SzervizMuveletTipusok, VizsgaEsKarbantartas) {
         SzervizNyilvantartoRendszer aDB;
-        aDB.ujUgyfel(Ugyfel("Varga Noemi", "321123321", "Varga koz 9"));
+        aDB.ujUgyfel(Ugyfel("Varga Noemi", "+36 20 102 3453", "varga.noemi@gmail.com"));
         aDB.ujAuto(Auto("BETA01", "BMW", "320d", 200000, Datum(2022, 9, 1), Vector<VegzettMuvelet*>(), &aDB.keresUgyfel("Varga Noemi")));
 
         Vizsga vizsga("Kotelezo vizsga", Datum(2025, 2, 2), 250000, 4500, false);

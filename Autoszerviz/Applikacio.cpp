@@ -7,6 +7,8 @@
 #include "Memtrace.h"
 #include "Gtest_lite.h"
 
+#include <sstream>
+
 #include "MainSegedFuggvenyek.h"
 #include "SzervizNyilvantartoRendszer.h"
 #include "Teszt.h"
@@ -18,9 +20,17 @@ int main() {
     if (!tesztDBLetrehozas(autoszervizAdatbazis)) return 1;
 
     int valasztottMenu;
+    std::string input;
     do {
         menuOpciok();
-        std::cin >> valasztottMenu;
+        std::getline(std::cin, input);
+
+        std::stringstream ss(input);
+        if (!(ss >> valasztottMenu)) {
+            torolKonzol();
+            std::cout << "\t>>> Ervenytelen bemenet! Szamot adj meg! <<<";
+            continue;
+        }
         torolKonzol();
 
         switch (valasztottMenu) {
@@ -69,7 +79,7 @@ int main() {
                 break;
 
             default:
-                std::cout << "\t>>> Ervenytelen valasztas! Probald ujra! <<<";
+                std::cout << "\t>>> Ilyen menupont nem letezik! Adj meg egy letezot! <<<";
                 break;
         }
     } while (valasztottMenu != 10);

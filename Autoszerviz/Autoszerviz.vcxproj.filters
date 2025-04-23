@@ -88,5 +88,16 @@
     <Text Include="init_ugyfel_ufl.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="extra_auo.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="extra_ufl.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Autószerviz UML.svg">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
