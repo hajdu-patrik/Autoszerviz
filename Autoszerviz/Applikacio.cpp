@@ -1,6 +1,6 @@
 /**
  *  \file Applikacio.cpp
- *  Ez a fájl az autószerviz nyilvántartó rendszer belépési pontja, amely bemutatja a rendszer alapvetõ mûködését és fõ funkcióit.
+ *  Ez a fájl amely bemutatja a rendszer alapvetõ mûködését és fõ funkcióit.
  */
 
 
@@ -9,15 +9,16 @@
 
 #include <sstream>
 
+#include "Applikacio.h"
 #include "MainSegedFuggvenyek.h"
 #include "SzervizNyilvantartoRendszer.h"
 #include "Teszt.h"
 
-int main() {
+void Applikacio::applikacio() {
     SzervizNyilvantartoRendszer autoszervizAdatbazis;
     
 	// Fájlok betöltése, hogy teszt adatokkal induljon a program amely elõsegíti a tesztelést és a hibakeresést
-    if (!tesztDBLetrehozas(autoszervizAdatbazis)) return 1;
+    if (!tesztDBLetrehozas(autoszervizAdatbazis)) return;
 
     int valasztottMenu;
     std::string input;
@@ -83,6 +84,4 @@ int main() {
                 break;
         }
     } while (valasztottMenu != 10);
-
-    return 0;
 }
