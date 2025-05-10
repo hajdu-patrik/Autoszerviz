@@ -4,7 +4,7 @@
 /**
 *   \file VegzettMuvelet.h
 *   Az VegzettMuvelet(et) leíró absztrakt osztály deklarációja és tagfüggvényeinek inline megvalósítása.
-* 
+*
 *   Az osztályban szereplõ összes std::string tipusú adattag feltételezi, hogy nem kell ékezetes betûket kezelnie.
 */
 
@@ -16,7 +16,7 @@ class VegzettMuvelet {
     std::string muvelet;    ///< A mûvelet megnevezése  
     Datum idopont;          ///< A mûvelet idõpontja  
     int ar;                 ///< A mûvelet ára  
-	int akt_kmOra;          ///< Az aktuális kilométeróra állás
+    int akt_kmOra;          ///< Az aktuális kilométeróra állás
 public:
     /*-------------------------------------------
                   Konstruktorok
@@ -48,7 +48,7 @@ public:
             muvelet = vm.muvelet;
             idopont = vm.idopont;
             ar = vm.ar;
-			akt_kmOra = vm.akt_kmOra;
+            akt_kmOra = vm.akt_kmOra;
         }
         return *this;
     }
@@ -70,9 +70,9 @@ public:
     /// @return - A mûvelet ára
     int getAr() const { return ar; }
 
-	/// Getter az aktuális kilométeróra állásához
-	/// @return - Az aktuális kilométeróra állás
-	int getAktKmOra() const { return akt_kmOra; }
+    /// Getter az aktuális kilométeróra állásához
+    /// @return - Az aktuális kilométeróra állás
+    int getAktKmOra() const { return akt_kmOra; }
 
 
 
@@ -91,21 +91,21 @@ public:
     /// @param m - Új mûvelet név
     void setMuvelet(const std::string& m) { muvelet = m; }
 
-	/// Setter az aktuális kilométeróra állásához
-	/// @param k - Új kilométeróra állás
-	void setAktKmOra(int k) { akt_kmOra = k; }
+    /// Setter az aktuális kilométeróra állásához
+    /// @param k - Új kilométeróra állás
+    void setAktKmOra(int k) { akt_kmOra = k; }
 
 
 
     /*-------------------------------------------
-				Virtuális függvények
+                Virtuális függvények
     -------------------------------------------*/
     /// Kiíró függvény (virtuális, tisztán absztrakt)
     /// @param os - A kimeneti stream, ahova a mûvelet kiírásra kerül
     virtual void kiir(std::ostream& os) const = 0;
 
-	/// Másoló függvény (virtuális, tisztán absztrakt)
-	/// @return - Egy új VegzettMuvelet pointer, amely a másolt objektumot reprezentálja
+    /// Másoló függvény (virtuális, tisztán absztrakt)
+    /// @return - Egy új VegzettMuvelet pointer, amely a másolt objektumot reprezentálja
     virtual VegzettMuvelet* clone() const = 0;
 
     /// Virtuális destruktor

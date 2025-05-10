@@ -5,6 +5,7 @@
 
 #include <string>
 
+#define MEMTRACE
 #include "Memtrace.h"
 
 #include "Auto.h"
@@ -108,37 +109,37 @@ bool Auto::operator==(const Auto& a) const {
 /// Visszaadja az autó rendszámát.
 /// @return - Rendszám
 const std::string& Auto::getRendszam() const {
-   return rendszam;
+    return rendszam;
 }
 
 /// Visszaadja az autó márkáját.
 /// @return - Márka.
 const std::string& Auto::getMarka() const {
-	return marka;
+    return marka;
 }
 
 /// Visszaadja az autó típusát.
 /// @return - Típus.
 const std::string& Auto::getTipus() const {
-	return tipus;
+    return tipus;
 }
 
 /// Visszaadja a kilométeróra aktuális értékét.
 /// @return - Km óra értéke.
 const int Auto::getKmOra() const {
-	return kmOra;
+    return kmOra;
 }
 
 /// Visszaadja az üzembe helyezés dátumát.
 /// @return - Dátum.
 const Datum& Auto::getUzembeHelyezes() const {
-	return uzembeHelyezes;
+    return uzembeHelyezes;
 }
 
 /// Visszaadja az autóhoz tartozó szervizmûveletek listáját.
 /// @return - Szervizmûveletek vektora.
 Vector<VegzettMuvelet*>& Auto::getSzervizMuveletek() {
-	return vegzettSzervizMuveletek;
+    return vegzettSzervizMuveletek;
 }
 
 /// Visszaadja az autóhoz tartozó szervizmûveletek listáját (const változat).
@@ -196,7 +197,7 @@ Auto* Auto::clone() const {
 /// Hozzáad egy szervizmûveletet az autó szervizlistájához.
 /// @param m - A hozzáadandó szervizmûvelet pointere
 void Auto::addVegzettSzerviz(VegzettMuvelet* m) {
-	vegzettSzervizMuveletek.push_back(m);
+    vegzettSzervizMuveletek.push_back(m);
 }
 
 /// Törli a megadott indexû szervizmûveletet a listából.
@@ -237,6 +238,6 @@ void Auto::kiir(std::ostream& os) const {
 /// @param a - kiírandó Auto objektum
 /// @return - módosított kimeneti stream
 std::ostream& operator<<(std::ostream& os, const Auto& a) {
-	a.kiir(os);
+    a.kiir(os);
     return os;
 }

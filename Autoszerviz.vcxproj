@@ -159,9 +159,6 @@
     <Text Include="init_auto_auo.txt" />
     <Text Include="init_ugyfel_ufl.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Autószerviz UML.svg" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

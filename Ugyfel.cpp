@@ -3,6 +3,9 @@
 *   Az ugyfel osztály tagfüggvényeinek megvalósítása.
 */
 
+#define MEMTRACE
+#include "Memtrace.h"
+
 #include "Ugyfel.h"
 
 /*-------------------------------------------
@@ -20,9 +23,6 @@ Ugyfel::Ugyfel(const std::string& n, const std::string& t, const std::string& e)
 /// Másoló konstruktor
 /// @param u - másolandó Karbantartas objektum
 Ugyfel::Ugyfel(const Ugyfel& u) : nev(u.nev), telefonszam(u.telefonszam), email(u.email) {}
-
-/// Destruktor
-Ugyfel::~Ugyfel() {}
 
 
 
@@ -83,7 +83,7 @@ void Ugyfel::setEmail(const std::string& e) { email = e; }
 /// Másoló függvény (virtuális, tisztán absztrakt)
 /// @return - új példány
 Ugyfel* Ugyfel::clone() const {
-    return new Ugyfel(*this);
+   return new Ugyfel(*this);
 }
 
 /// Kiírja az ügyfél adatait az adott ostream-re.
@@ -99,13 +99,13 @@ void Ugyfel::kiir(std::ostream& os) const {
 
 
 /*-------------------------------------------
-			Globális operátorok
+            Globális operátorok
 -------------------------------------------*/
 /// Kimeneti operátor Datum objektumhoz
 /// @param os - kimeneti stream
 /// @param u - kiírandó Ugyfel objektum
 /// @return - módosított kimeneti stream
 std::ostream& operator<<(std::ostream& os, const Ugyfel& u) {
-	u.kiir(os);
-	return os;
+    u.kiir(os);
+    return os;
 }

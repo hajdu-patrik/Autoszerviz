@@ -1,6 +1,7 @@
 #ifndef VECTOR_HPP  
 #define VECTOR_HPP 
 
+#define MEMTRACE
 #include "Memtrace.h"
 
 #include <stdexcept>

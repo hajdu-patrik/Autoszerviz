@@ -23,33 +23,31 @@ public:
     /// @param m - mûvelet megnevezése
     /// @param d - dátum
     /// @param a - ár
+    /// @param k - aktuális km óra állás
     Karbantartas(const std::string& m, const Datum& d, int a, int k) : VegzettMuvelet(m, d, a, k) {}
 
-	/// Másoló konstruktor
-	/// @param k - másolandó Karbantartas objektum
-	Karbantartas(const Karbantartas& k) : VegzettMuvelet(k.getMuvelet(), k.getDatum(), k.getAr(), k.getAktKmOra()) {}
+    /// Másoló konstruktor
+    /// @param k - másolandó Karbantartas objektum
+    Karbantartas(const Karbantartas& k) : VegzettMuvelet(k.getMuvelet(), k.getDatum(), k.getAr(), k.getAktKmOra()) {}
 
     /// Destruktor
     ~Karbantartas() {}
 
-
-
     /*-------------------------------------------
                     Operátorok
     -------------------------------------------*/
-	/// Értékadó operátor
-	/// @param k - másolandó Karbantartas objektum
-	Karbantartas& operator=(const Karbantartas& k) {
-		if (this != &k) {
-			setMuvelet(k.getMuvelet());
-			setDatum(k.getDatum());
-			setAr(k.getAr());
-			setAktKmOra(k.getAktKmOra());
-		}
-		return *this;
-	}
-
-
+    /// Értékadó operátor
+    /// @param k - másolandó Karbantartas objektum
+	/// @return - Az aktuális objektum referenciája
+    Karbantartas& operator=(const Karbantartas& k) {
+        if (this != &k) {
+            setMuvelet(k.getMuvelet());
+            setDatum(k.getDatum());
+            setAr(k.getAr());
+            setAktKmOra(k.getAktKmOra());
+        }
+        return *this;
+    }
 
     /*-------------------------------------------
      Tiszta absztrakt függvények felüldefiniálása
@@ -66,7 +64,7 @@ public:
         os << "\tKarbantartas: " << getMuvelet()
             << ", Datum: " << getDatum()
             << ", Ar: " << getAr() << " Ft"
-			<< ", Akt. km: " << getAktKmOra()
+            << ", Akt. km: " << getAktKmOra()
             << std::endl;
     }
 };

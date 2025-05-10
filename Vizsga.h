@@ -1,12 +1,12 @@
-#ifndef VIZSGA_H
+ï»¿#ifndef VIZSGA_H
 #define VIZSGA_H
 
 /**
 *   \file Vizsga.h
-*   A Vizsga(t) leíró osztály deklarációja és tagfüggvényeinek inline megvalósítása.
-*   Ez az osztály a VegzettMuvelet osztályból származik, és a vizsgák adatait tárolja.
-* 
-*   Kiegészíti az õsosztályt egy sikeres logikai értékkel, ami a vizsga sikerességét jelzi.
+*   A Vizsga(t) leÃ­rÃ³ osztÃ¡ly deklarÃ¡ciÃ³ja Ã©s tagfÃ¼ggvÃ©nyeinek inline megvalÃ³sÃ­tÃ¡sa.
+*   Ez az osztÃ¡ly a VegzettMuvelet osztÃ¡lybÃ³l szÃ¡rmazik, Ã©s a vizsgÃ¡k adatait tÃ¡rolja.
+*
+*   KiegÃ©szÃ­ti az Å‘sosztÃ¡lyt egy sikeres logikai Ã©rtÃ©kkel, ami a vizsga sikeressÃ©gÃ©t jelzi.
 */
 
 #include <iostream>
@@ -14,83 +14,82 @@
 #include "VegzettMuvelet.h"
 
 class Vizsga : public VegzettMuvelet {
-    bool sikeres; ///< A vizsga sikeressége
+    bool sikeres; ///< A vizsga sikeressÃ©ge
 public:
     /*-------------------------------------------
-            Konstruktorok és destruktor
+            Konstruktorok Ã©s destruktor
     -------------------------------------------*/
-    /// Alapértelmezett konstruktor
+    /// AlapÃ©rtelmezett konstruktor
     Vizsga() : VegzettMuvelet(), sikeres(false) {}
 
-    /// Paraméteres konstruktor
-    /// @param m - mûvelet megnevezése
-    /// @param d - dátum
-    /// @param a - ár
-    /// @param s - sikeresség
-    Vizsga(const std::string& m, const Datum& d, int a, int k, bool s) : VegzettMuvelet(m, d, a, k), sikeres(s) {}
+    /// ParamÃ©teres konstruktor
+    /// @param m - mÅ±velet megnevezÃ©se
+    /// @param d - dÃ¡tum
+    /// @param a - Ã¡r
+    /// @param k - aktuÃ¡lis km Ã³ra Ã¡llÃ¡s
+    /// @param s - sikeressÃ©g
+    Vizsga(const std::string& m, const Datum& d, int a, int k, bool s)
+        : VegzettMuvelet(m, d, a, k), sikeres(s) {
+    }
 
-	/// Másoló konstruktor
-	/// @param v - másolandó Vizsga objektum
-	Vizsga(const Vizsga& v) : VegzettMuvelet(v.getMuvelet(), v.getDatum(), v.getAr(), v.getAktKmOra()), sikeres(v.sikeres) {}
+    /// MÃ¡solÃ³ konstruktor
+    /// @param v - mÃ¡solandÃ³ Vizsga objektum
+    Vizsga(const Vizsga& v)
+        : VegzettMuvelet(v.getMuvelet(), v.getDatum(), v.getAr(), v.getAktKmOra()),
+        sikeres(v.sikeres) {
+    }
 
     /// Destruktor
     ~Vizsga() {}
 
-
-
     /*-------------------------------------------
-                    Operátorok
+                    OperÃ¡torok
     -------------------------------------------*/
-	/// Értékadó operátor
-	/// @param v - másolandó Vizsga objektum
-	Vizsga& operator=(const Vizsga& v) {
-		if (this != &v) {
-			setMuvelet(v.getMuvelet());
-			setDatum(v.getDatum());
-			setAr(v.getAr());
-			setAktKmOra(v.getAktKmOra());
-			sikeres = v.sikeres;
-		}
-		return *this;
-	}
-
-
+    /// Ã‰rtÃ©kadÃ³ operÃ¡tor
+    /// @param v - mÃ¡solandÃ³ Vizsga objektum
+	/// @return - az aktuÃ¡lis objektum referenciÃ¡ja
+    Vizsga& operator=(const Vizsga& v) {
+        if (this != &v) {
+            setMuvelet(v.getMuvelet());
+            setDatum(v.getDatum());
+            setAr(v.getAr());
+            setAktKmOra(v.getAktKmOra());
+            sikeres = v.sikeres;
+        }
+        return *this;
+    }
 
     /*-------------------------------------------
                      Getterek
     -------------------------------------------*/
-    /// Sikeresség lekérdezése
+    /// SikeressÃ©g lekÃ©rdezÃ©se
     /// @return - igaz, ha sikeres volt
     bool getSikeres() const { return sikeres; }
-
-
 
     /*-------------------------------------------
                     Setterek
     -------------------------------------------*/
-    /// Sikeresség beállítása
-    /// @param s - új sikerességi érték
+    /// SikeressÃ©g beÃ¡llÃ­tÃ¡sa
+    /// @param s - Ãºj sikeressÃ©gi Ã©rtÃ©k
     void setSikeres(bool s) { sikeres = s; }
 
-
-
     /*-------------------------------------------
-     Tiszta absztrakt függvények felüldefiniálása
+     Tiszta absztrakt fÃ¼ggvÃ©nyek felÃ¼ldefiniÃ¡lÃ¡sa
     -------------------------------------------*/
-	/// Másoló függvény (virtuális, tisztán absztrakt)
-	/// @return - új példány
+    /// MÃ¡solÃ³ fÃ¼ggvÃ©ny (virtuÃ¡lis, tisztÃ¡n absztrakt)
+    /// @return - Ãºj pÃ©ldÃ¡ny
     VegzettMuvelet* clone() const override {
         return new Vizsga(*this);
     }
 
-    /// Kiíró függvény felüldefiniálása
+    /// KiÃ­rÃ³ fÃ¼ggvÃ©ny felÃ¼ldefiniÃ¡lÃ¡sa
     /// @param os - kimeneti stream
     void kiir(std::ostream& os) const override {
         os << "\tVizsga: " << getMuvelet()
             << ", Datum: " << getDatum()
             << ", Ar: " << getAr()
             << " Ft, Sikeres: " << (sikeres ? "igen" : "nem")
-			<< ", Akt. km: " << getAktKmOra()
+            << ", Akt. km: " << getAktKmOra()
             << std::endl;
     }
 };

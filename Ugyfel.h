@@ -4,10 +4,10 @@
 /**
 *   \file Ugyfel.h
 *   Az Ugyfel(et) leíró osztály deklarációja és tagfüggvényeinek inline megvalósítása.
-* 
+*
 *   Az osztály célja, hogy reprezentálja egy autószerviz ügyfeleit,
 *   beleértve a nevüket, elérhetõségeiket.
-* 
+*
 *   Az osztályban szereplõ összes std::string tipusú adattag feltételezi, hogy nem kell ékezetes betûket kezelnie.
 */
 
@@ -24,7 +24,7 @@ public:
     -------------------------------------------*/
     /// Alapértelmezett konstruktor
     Ugyfel();
-    
+
     /// Paraméteres konstruktor.
     /// @param n - Az ügyfél neve
     /// @param t - Az ügyfél telefonszáma
@@ -36,7 +36,7 @@ public:
     Ugyfel(const Ugyfel& u);
 
     /// Destruktor
-    ~Ugyfel();
+    virtual ~Ugyfel() = default;
 
 
 
@@ -45,7 +45,7 @@ public:
     -------------------------------------------*/
     /// Értékadó operátor
     /// @param u - másolandó Vizsga objektum
-	/// @return - Az aktuális objektum referenciája
+    /// @return - Az aktuális objektum referenciája
     Ugyfel& operator=(const Ugyfel& u);
 
 

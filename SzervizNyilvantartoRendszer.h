@@ -60,7 +60,7 @@ public:
 	/// Visszaadja az összes ügyfél objektumot (const változat).
 	/// @return - Egy const Vector<Ugyfel> példány, amely az összes jelenleg nyilvántartott ügyfelet tartalmazza.
 	const Vector<Ugyfel>& getUgyfelek() const;
-	
+
 
 
 	/*-------------------------------------------

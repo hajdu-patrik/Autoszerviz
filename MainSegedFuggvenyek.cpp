@@ -4,6 +4,7 @@
 *	szükséges segédfüggvények implementációját tartalmazza.
 */
 
+#define MEMTRACE
 #include "Memtrace.h"
 
 #include <iostream>
@@ -26,7 +27,7 @@
              Menü rendszerhez
 -------------------------------------------*/
 /// "Autoszerviz" felirat ASCII art kiírása a konzolra, tabulátorral behúzva
-void kiirASCII1() {
+void MainSegedFuggvenyei::kiirASCII1() {
     std::cout <<
         "\n\n\t    /\\         | |                                (_)\n"
         "\t   /  \\  _    _| |_ ___    ___ _______ _ ______   ___ ____\n"
@@ -36,7 +37,7 @@ void kiirASCII1() {
 }
 
 /// "Arrivederci" felirat ASCII art kiírása a konzolra, tabulátorral behúzva
-void kiirASCII2() {
+void MainSegedFuggvenyei::kiirASCII2() {
     std::cout <<
         "\n\n\t    /\\             (_)             | |             (_)\n"
         "\t   /  \\   _ __ _ __ ___   _____  __| | ___ _ __ ___ _ \n"
@@ -46,7 +47,7 @@ void kiirASCII2() {
 }
 
 /// A program által biztosított funkciók használatához szükséges menü opciók kiírása
-void menuOpciok() {
+void MainSegedFuggvenyei::menuOpciok() {
     kiirASCII1();
     std::cout << '\t' << std::setw(2) << std::setfill('0') << 0 << ". Tesztek futatasa\n";
     std::cout << '\t' << std::setw(2) << std::setfill('0') << 1 << ". A tarolok listazasa\n";
@@ -70,14 +71,14 @@ void menuOpciok() {
 /// Megvárja, amíg a felhasználó lenyomja az Enter billentyût.
 /// Általában hibaüzenetek vagy információk megjelenítése után használatos, hogy a felhasználónak legyen ideje elolvasni azokat.
 /// @param o - A kiírandó üzenet.
-void varakozasEnterre(const std::string& o) {
+void MainSegedFuggvenyei::varakozasEnterre(const std::string& o) {
     std::cout << o;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // bemeneti puffer kiürítése
     std::cin.get();  // várakozás
 }
 
 /// Törli a konzol képernyõt
-void torolKonzol() {
+void MainSegedFuggvenyei::torolKonzol() {
 #ifdef _WIN32
     system("cls");
 #else
@@ -86,13 +87,13 @@ void torolKonzol() {
 }
 
 /// Meghívja a torolKonzol-t majd kiírja a "Szerviz Nyilvántartó Rendszer" feliratot ASCII art formátumban
-void toroloMajdCim() {
+void MainSegedFuggvenyei::toroloMajdCim() {
     torolKonzol();
     kiirASCII1();
 }
 
 /// Varakozik az Enter billentyû lenyomására, majd törli a konzolt
-void varakozasTorol() {
+void MainSegedFuggvenyei::varakozasTorol() {
     varakozasEnterre("\n\tNyomj Entert a folytatashoz...");
     torolKonzol();
 }
@@ -105,7 +106,7 @@ void varakozasTorol() {
 /// Ellenõrzi, hogy a megadott rendszám formátuma helyes-e.
 /// @param rendszam - A vizsgált rendszám.
 /// @return - true, ha a formátum helyes, false, ha helytelen.
-bool helyesRendszamFormatum(const std::string& rendszam) {
+bool MainSegedFuggvenyei::helyesRendszamFormatum(const std::string& rendszam) {
     if (rendszam.length() != 6)
         return false;
 
@@ -116,7 +117,7 @@ bool helyesRendszamFormatum(const std::string& rendszam) {
 /// Ellenõrzi, hogy a megadott fájl létezik-e.
 /// @param f - A vizsgált fájl neve (elérési útvonal is lehet).
 /// @return - true, ha a fájl létezik, különben false.
-bool letezikAFajl(const std::string& f) {
+bool MainSegedFuggvenyei::letezikAFajl(const std::string& f) {
     std::ifstream fajl(f);
     return fajl.good();
 }
@@ -124,7 +125,7 @@ bool letezikAFajl(const std::string& f) {
 /// Bekéri a felhasználótól egy dátum (év, hónap, nap) értékeit.
 /// Addig ismétli a bekérést, amíg helyes formátumú (érvényes tartományban lévõ) dátumot nem kap.
 /// @return - A bekért dátum `Datum` típusban.
-Datum bekerDatum() {
+Datum MainSegedFuggvenyei::bekerDatum() {
     int ev, ho, nap;
 
     while (true) {
@@ -132,7 +133,7 @@ Datum bekerDatum() {
         std::cout << "\tAdd meg a datumot (ev honap nap): ";
         std::cin >> ev >> ho >> nap;
 
-        if ((ho == 2 && nap <= 29) || ((ho == 4 || ho == 6 || ho == 9 || ho == 11) && nap <= 30) || (nap <= 31)) {
+        if (ev >= 1000 && ev <= 3000 && ho >= 1 && ho <= 12 && nap >= 1 && nap <= 31) {
             break;
         }
         else {
@@ -148,7 +149,7 @@ Datum bekerDatum() {
 /// Bekér egy sort a felhasználótól, miután kiír egy megadott üzenetet.
 /// @param t - A felhasználónak megjelenítendõ üzenet.
 /// @return - A felhasználó által beírt sor.
-std::string sorBeker(const std::string& t) {
+std::string MainSegedFuggvenyei::sorBeker(const std::string& t) {
     toroloMajdCim();
     std::string sor;
     std::cout << t;
@@ -160,8 +161,8 @@ std::string sorBeker(const std::string& t) {
 /// @param muvelet - A végrehajtandó függvény.
 /// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
 /// @param sikerUzenet - Az üzenet, ha a mûvelet sikeres.
-void muveletFuttato(MuveletAllapot(*muvelet)(SzervizNyilvantartoRendszer&), SzervizNyilvantartoRendszer& aDB, const std::string& sikerUzenet) {
-    MuveletAllapot eredmeny = muvelet(aDB);
+void MainSegedFuggvenyei::muveletFuttato(MuveletAllapot(MainSegedFuggvenyei::* muvelet)(SzervizNyilvantartoRendszer&), SzervizNyilvantartoRendszer& aDB, const std::string& sikerUzenet) {
+    MuveletAllapot eredmeny = (this->*muvelet)(aDB);
     torolKonzol();
     switch (eredmeny) {
     case MuveletAllapot::Siker:
@@ -181,8 +182,8 @@ void muveletFuttato(MuveletAllapot(*muvelet)(SzervizNyilvantartoRendszer&), Szer
 /// @param aDB - A szerviz nyilvántartó rendszer.
 /// @param tipus - Igaz (true) ha mentés, hamis (false) ha beolvasás.
 /// @param sikerUzenet - Az üzenet, ha a mûvelet sikeres.
-void fajlMuveletFuttato(MuveletAllapot(*muvelet)(bool, SzervizNyilvantartoRendszer&), SzervizNyilvantartoRendszer& aDB, bool mentesE, const std::string& sikerUzenet) {
-    MuveletAllapot eredmeny = muvelet(mentesE, aDB);
+void MainSegedFuggvenyei::fajlMuveletFuttato(MuveletAllapot(MainSegedFuggvenyei::* muvelet)(bool, SzervizNyilvantartoRendszer&), SzervizNyilvantartoRendszer& aDB, bool tipus, const std::string& sikerUzenet) {
+    MuveletAllapot eredmeny = (this->*muvelet)(tipus, aDB);
     torolKonzol();
     switch (eredmeny) {
     case MuveletAllapot::Siker:
@@ -205,10 +206,11 @@ void fajlMuveletFuttato(MuveletAllapot(*muvelet)(bool, SzervizNyilvantartoRendsz
 /// Listázza az ügyfeleket vagy az autókat a megadott adatbázisból.
 /// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
 /// @return - true, ha a kiirás sikeres volt, false, ha a felhasználó kilépett.
-MuveletAllapot kiListazo(SzervizNyilvantartoRendszer& aDB) {
+MuveletAllapot MainSegedFuggvenyei::kiListazo(SzervizNyilvantartoRendszer& aDB) {
     std::string mitKerj;
     while (true) {
         toroloMajdCim();
+
         std::cout << "\tAdd meg a ki listazando adatbazist ('ugyfel', 'auto' vagy 'exit' a kilepeshez): ";
         std::getline(std::cin, mitKerj);
 
@@ -256,7 +258,7 @@ MuveletAllapot kiListazo(SzervizNyilvantartoRendszer& aDB) {
 /// Új ügyfél vagy autó rögzítése.
 /// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
 /// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
-MuveletAllapot ugyfelAutoAdd(SzervizNyilvantartoRendszer& aDB) {
+MuveletAllapot MainSegedFuggvenyei::ugyfelAutoAdd(SzervizNyilvantartoRendszer& aDB) {
     std::string mitFelvesz;
     while (true) {
         toroloMajdCim();
@@ -354,7 +356,7 @@ MuveletAllapot ugyfelAutoAdd(SzervizNyilvantartoRendszer& aDB) {
 /// Meglévõ ügyfél vagy autó frissítése.
 /// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
 /// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
-MuveletAllapot ugyfelAutoFrissit(SzervizNyilvantartoRendszer& aDB) {
+MuveletAllapot MainSegedFuggvenyei::ugyfelAutoFrissit(SzervizNyilvantartoRendszer& aDB) {
     std::string MitFrissit;
     while (true) {
         toroloMajdCim();
@@ -445,7 +447,7 @@ MuveletAllapot ugyfelAutoFrissit(SzervizNyilvantartoRendszer& aDB) {
 /// A rendszerben lévõ ügyfél vagy autó törlésére szolgál.
 /// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
 /// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
-MuveletAllapot ugyfelAutoTorlo(SzervizNyilvantartoRendszer& aDB) {
+MuveletAllapot MainSegedFuggvenyei::ugyfelAutoTorlo(SzervizNyilvantartoRendszer& aDB) {
     std::string mitTorol;
     while (true) {
         mitTorol = sorBeker("\tMit szeretnel torolni ('ugyfel', 'auto' vagy 'exit' a kilepeshez): ");
@@ -506,7 +508,7 @@ MuveletAllapot ugyfelAutoTorlo(SzervizNyilvantartoRendszer& aDB) {
 /// Keres egy ügyfelet a megadott név alapján.
 /// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
 /// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
-MuveletAllapot ugyfelKereses(SzervizNyilvantartoRendszer& aDB) {
+MuveletAllapot MainSegedFuggvenyei::ugyfelKereses(SzervizNyilvantartoRendszer& aDB) {
     std::string nev;
     while (true) {
         nev = sorBeker("\tAdd meg az ugyfel nevet ('Hajdu Patrik Zsolt' vagy 'exit'): ");
@@ -538,7 +540,7 @@ MuveletAllapot ugyfelKereses(SzervizNyilvantartoRendszer& aDB) {
 /// Keres egy autót a megadott rendszám alapján.
 /// @param rendszer - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
 /// @return - true, ha a mûvelet sikeresen rögzítve lett, false, ha a felhasználó kilépett.
-MuveletAllapot autoKereses(SzervizNyilvantartoRendszer& aDB) {
+MuveletAllapot MainSegedFuggvenyei::autoKereses(SzervizNyilvantartoRendszer& aDB) {
     std::string rendszam;
     while (true) {
         rendszam = sorBeker("\tAdd meg az auto rendszamat ('ABC123' vagy 'exit' a kilepeshez): ");
@@ -585,7 +587,7 @@ MuveletAllapot autoKereses(SzervizNyilvantartoRendszer& aDB) {
 /// Új szerviz mûvelet rögzítése egy autóhoz.
 /// @param rendszer - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
 /// @return - MuveletAllapot érték a mûvelet eredménye szerint.
-MuveletAllapot ujSzervizMuvelet(SzervizNyilvantartoRendszer& aDB) {
+MuveletAllapot MainSegedFuggvenyei::ujSzervizMuvelet(SzervizNyilvantartoRendszer& aDB) {
     std::string milyenSzerviz;
     while (true) {
         milyenSzerviz = sorBeker("\tAdd meg a szerviz muvelet tipusat ('vizsga', 'karbantartas', 'javitas' vagy 'exit' a kilepeshez): ");
@@ -677,7 +679,7 @@ MuveletAllapot ujSzervizMuvelet(SzervizNyilvantartoRendszer& aDB) {
 /// @param mentesE - A függvény célját jelzõ kapcsoló (mentés vagy betöltés)
 /// @param aDB - A szerviz adatbázis objektum referenciája
 /// @return - MuveletAllapot érték a mûvelet eredménye szerint.
-MuveletAllapot fajlHelyessegBiztosito(bool mentesE, SzervizNyilvantartoRendszer& aDB) {
+MuveletAllapot MainSegedFuggvenyei::fajlHelyessegBiztosito(bool mentesE, SzervizNyilvantartoRendszer& aDB) {
     std::string fajlNev;
     while (true) {
         fajlNev = sorBeker("\tAdd meg a fajl nevet ('xxx_auo.txt', 'xxx_ufl.txt' vagy 'exit' a kilepeshez): ");

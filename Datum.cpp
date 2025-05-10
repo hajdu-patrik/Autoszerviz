@@ -1,25 +1,28 @@
-/**
+ï»¿/**
 *   \file Datum.cpp
-*   A datum osztály tagfüggvényeinek megvalósítása.
+*   A datum osztÃ¡ly tagfÃ¼ggvÃ©nyeinek megvalÃ³sÃ­tÃ¡sa.
 */
+
+#define MEMTRACE
+#include "Memtrace.h"
 
 #include "Datum.h"
 
 /*-------------------------------------------
-        Konstruktorok és destruktor
+        Konstruktorok Ã©s destruktor
 -------------------------------------------*/
-/// Alapértelmezett konstruktor
-/// 0-ra inicializálja az évet, hónapot és napot.
+/// AlapÃ©rtelmezett konstruktor
+/// 0-ra inicializÃ¡lja az Ã©vet, hÃ³napot Ã©s napot.
 Datum::Datum() : ev(0), ho(0), nap(0) {}
 
-/// Paraméteres konstruktor
-/// @param e - év
-/// @param h - hónap
+/// ParamÃ©teres konstruktor
+/// @param e - Ã©v
+/// @param h - hÃ³nap
 /// @param n - nap
 Datum::Datum(int e, int h, int n) : ev(e), ho(h), nap(n) {}
 
-/// Másoló konstruktor
-/// @param d - másolandó Datum objektum
+/// MÃ¡solÃ³ konstruktor
+/// @param d - mÃ¡solandÃ³ Datum objektum
 Datum::Datum(const Datum& d) : ev(d.ev), ho(d.ho), nap(d.nap) {}
 
 /// Destruktor
@@ -28,11 +31,11 @@ Datum::~Datum() {}
 
 
 /*-------------------------------------------
-                Operátorok
+                OperÃ¡torok
 -------------------------------------------*/
-/// Értékadó operátor
-/// @param d - másolandó Datum objektum
-/// @return - az aktuális objektum referenciája
+/// Ã‰rtÃ©kadÃ³ operÃ¡tor
+/// @param d - mÃ¡solandÃ³ Datum objektum
+/// @return - az aktuÃ¡lis objektum referenciÃ¡ja
 Datum& Datum::operator=(const Datum& d) {
     if (this != &d) {
         ev = d.ev;
@@ -42,9 +45,9 @@ Datum& Datum::operator=(const Datum& d) {
     return *this;
 }
 
-/// Összehasonlító operátor
-/// @param d - összehasonlítandó Datum objektum
-/// @return - true, ha az objektumok megegyeznek, különben false.
+/// Ã–sszehasonlÃ­tÃ³ operÃ¡tor
+/// @param d - Ã¶sszehasonlÃ­tandÃ³ Datum objektum
+/// @return - true, ha az objektumok megegyeznek, kÃ¼lÃ¶nben false.
 bool Datum::operator==(const Datum& d) const {
     return ev == d.ev && ho == d.ho && nap == d.nap;
 }
@@ -54,20 +57,20 @@ bool Datum::operator==(const Datum& d) const {
 /*-------------------------------------------
                  Getterek
 -------------------------------------------*/
-/// Év lekérdezése
-/// @return - év
+/// Ã‰v lekÃ©rdezÃ©se
+/// @return - Ã©v
 int Datum::getEv() const { return ev; }
 
-/// Hónap lekérdezése
-/// @return - hónap
+/// HÃ³nap lekÃ©rdezÃ©se
+/// @return - hÃ³nap
 int Datum::getHo() const { return ho; }
 
-/// Nap lekérdezése
+/// Nap lekÃ©rdezÃ©se
 /// @return - nap
 int Datum::getNap() const { return nap; }
 
-/// Dátum eltelt napok számának lekérdezése
-/// @param d - másik Datum objektum
+/// DÃ¡tum eltelt napok szÃ¡mÃ¡nak lekÃ©rdezÃ©se
+/// @param d - mÃ¡sik Datum objektum
 int Datum::elteltNap(const Datum& d) const {
     int e = d.getEv() - ev;
     int h = d.getHo() - ho;
@@ -80,9 +83,9 @@ int Datum::elteltNap(const Datum& d) const {
 /*-------------------------------------------
                 Setterek
 -------------------------------------------*/
-/// Dátum beállítása
-/// @param e - év
-/// @param h - hónap
+/// DÃ¡tum beÃ¡llÃ­tÃ¡sa
+/// @param e - Ã©v
+/// @param h - hÃ³nap
 /// @param n - nap
 void Datum::setDatum(int e, int h, int n) {
     ev = e;
@@ -93,12 +96,12 @@ void Datum::setDatum(int e, int h, int n) {
 
 
 /*-------------------------------------------
-               Segédfüggvények
+               SegÃ©dfÃ¼ggvÃ©nyek
 -------------------------------------------*/
-/// Létrehoz egy Datum objektumot egy stringbõl.
-/// A string formátuma: "ÉÉÉÉ.HH.NN".
-/// @param str - A dátumot tartalmazó string.
-/// @return - A létrehozott Datum objektum.
+/// LÃ©trehoz egy Datum objektumot egy stringbÃµl.
+/// A string formÃ¡tuma: "Ã‰Ã‰Ã‰Ã‰.HH.NN".
+/// @param str - A dÃ¡tumot tartalmazÃ³ string.
+/// @return - A lÃ©trehozott Datum objektum.
 Datum Datum::parseFromString(const std::string& str) {
     int e, h, n;
     char dot1, dot2;
@@ -110,8 +113,8 @@ Datum Datum::parseFromString(const std::string& str) {
     return Datum(e, h, n);
 }
 
-/// Egy Datum objektumot stringgé alakít "ÉÉÉÉ.HH.NN" formátumban.
-/// @return std::string A formázott dátum szövegként.
+/// Egy Datum objektumot stringgÃ© alakÃ­t "Ã‰Ã‰Ã‰Ã‰.HH.NN" formÃ¡tumban.
+/// @return std::string A formÃ¡zott dÃ¡tum szÃ¶vegkÃ©nt.
 const std::string Datum::toString() const {
     std::ostringstream oss;
 
@@ -126,12 +129,12 @@ const std::string Datum::toString() const {
 
 
 /*-------------------------------------------
-            Globális operátorok
+            GlobÃ¡lis operÃ¡torok
 -------------------------------------------*/
-/// Kimeneti operátor Datum objektumhoz
+/// Kimeneti operÃ¡tor Datum objektumhoz
 /// @param os - kimeneti stream
-/// @param d - kiírandó Datum objektum
-/// @return - módosított kimeneti stream
+/// @param d - kiÃ­randÃ³ Datum objektum
+/// @return - mÃ³dosÃ­tott kimeneti stream
 std::ostream& operator<<(std::ostream& os, const Datum& d) {
     return os << std::setw(4) << std::setfill('0') << d.getEv() << "."
         << std::setw(2) << std::setfill('0') << d.getHo() << "."

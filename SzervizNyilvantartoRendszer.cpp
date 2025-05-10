@@ -3,6 +3,7 @@
 *   A SzervizNyilvantartoRendszer osztály tagfüggvényeinek megvalósítása.
 */
 
+#define MEMTRACE
 #include "Memtrace.h"
 
 #include <fstream>
@@ -315,7 +316,7 @@ void SzervizNyilvantartoRendszer::figyelmeztetesek(std::ostream& os, const Auto&
 			// Km alapú figyelmeztetés
 			int elteltKm = autoObj.getKmOra() - utolso->getAktKmOra();
 			if (elteltKm > 10000) {
-				os << "\tA " << a.getRendszam() << " rendszamu auto szervizelesre esedekes! (Utolso szerviz ota "	<< elteltKm << " km telt el)" << std::endl;
+				os << "\tA " << a.getRendszam() << " rendszamu auto szervizelesre esedekes! (Utolso szerviz ota " << elteltKm << " km telt el)" << std::endl;
 				hanyDBHiba++;
 			}
 
@@ -400,7 +401,8 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 				// Új ügyfél hozzáadása
 				ugyfelek.push_back(Ugyfel(nevStr, telStr, emailStr));
 			}
-		} else if (autoFajl) {
+		}
+		else if (autoFajl) {
 			std::string rendszamStr, markaStr, tipusStr, kmOraStr, datumStr, muveletekStr, tulajNevStr;
 			std::istringstream iss(sor);
 			std::getline(iss, rendszamStr, '-');
@@ -460,9 +462,11 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 
 					if (tipus == 'J') {
 						szervizLista.push_back(new Javitas(leirasStr, datum, ar, km));
-					} else if (tipus == 'K') {
+					}
+					else if (tipus == 'K') {
 						szervizLista.push_back(new Karbantartas(leirasStr, datum, ar, km));
-					} else if (tipus == 'V') {
+					}
+					else if (tipus == 'V') {
 						bool sikeresE = extraStr == "sikeres";
 						szervizLista.push_back(new Vizsga(leirasStr, datum, ar, km, sikeresE));
 					}
@@ -500,7 +504,8 @@ void SzervizNyilvantartoRendszer::mentesFajlba(const std::string& f) const {
 				<< reverse_trim(ugyfelObj.getTelefonszam()) << "-"
 				<< ugyfelObj.getEmail() << '\n';
 		}
-	} else if (autoFajl) {
+	}
+	else if (autoFajl) {
 		for (const auto& autoObj : autok) {
 			fp << autoObj.getRendszam() << "-"
 				<< reverse_trim(autoObj.getMarka()) << "-"
@@ -511,7 +516,8 @@ void SzervizNyilvantartoRendszer::mentesFajlba(const std::string& f) const {
 			const Vector<VegzettMuvelet*> muveletek = autoObj.getSzervizMuveletek();
 			if (muveletek.empty()) {
 				fp << "nincs";
-			} else {
+			}
+			else {
 				for (size_t i = 0; i < muveletek.size(); i++) {
 					const VegzettMuvelet* m = muveletek[i];
 					std::string tipusBetu;
@@ -546,31 +552,3 @@ void SzervizNyilvantartoRendszer::mentesFajlba(const std::string& f) const {
 
 	fp.close();
 }
-
-/**
- * Fontos tudnivalók a fájlkezelő függvények működéséről:
- *
- * A fájlokban tárolt adatoknak pontosan meg kell felelniük az előre definiált szabályoknak, melyek a következők:
- *
- * Fájlnevek:
- *   - Ügyfél típusú fájl esetén a fájlnévnek tartalmaznia kell az "_ufl.txt" végződést.
- *   - Autó típusú fájl esetén a fájlnévnek "_auo.txt" végződést kell tartalmaznia.
- *
- * Fájlstruktúra:
- *   - Ügyfelek esetén a sorok formátuma: "ugyfel_neve-telefonszam-email"
- *   - Autók esetén a formátum: "rendszam-marka-tipus-kmora-uzembe_helyezes_datuma-szervizmuveletek-tulajdonos_neve"
- *
- * Megjegyzések az autós adatokhoz:
- *   - A "szervizmuveletek" mezőben szerepelhet:
- *     - a "nincs" szó, ha nem történt szervizelés,
- *     - vagy egy felsorolás az elvégzett műveletekről, az alábbi formátumban:
- *       "tipus,leiras,datum,ar,kmora,extra;"
- *       ahol:
- *         - tipus: 'J' (javítás), 'K' (karbantartás), vagy 'V' (vizsga),
- *         - az "extra" mező kizárólag vizsga esetén tartalmazza a „sikeres” vagy „sikertelen” értéket.
- *		   - a mezők közötti elválasztó karakter a vessző (,) és a végén pontosvessző (;) ha van további szervizmuvelet.
- *		   - azt is elvárjuk, hogy a kmora értékek mindig pozitív egész számok legyenek amik minden esettben <= mint az azt megelőző "szervizmuvelet kmora" értéke
- *
- * További szabály:
- *   - Amennyiben az autóhoz tartozó tulajdonos még nem szerepel a rendszerben, az új ügyfelet automatikusan felvesszük, viszont a telefonszám és e-mail mezői üresen maradnak.
- */

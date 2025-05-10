@@ -1,9 +1,10 @@
 /**
-*	\file Teszt.cpp
-*   Ez a fájl a program alapvetõ funkcióinak tesztelését végzi.
-*	A modul ellenõrzi, hogy a rendszer fõbb képességei helyesen mûködnek, és segít a hibák kiszûrésében a fejlesztés során.
+*   \file Teszt.cpp
+*   Ez a fajl a program alapveto funkcioinak teszteleset vegzi.
+*   A modul ellenorzi, hogy a rendszer fobb kepessegei helyesen mukodnek, es segit a hibak kiszureseben a fejlesztes soran.
 */
 
+#define MEMTRACE
 #include "Memtrace.h"
 #include "Gtest_lite.h"
 
@@ -21,7 +22,8 @@ bool tesztDBLetrehozas(SzervizNyilvantartoRendszer& aDB) {
     try {
         aDB.betoltesFajlbol("init_ugyfel_ufl.txt");
         aDB.betoltesFajlbol("init_auto_auo.txt");
-    } catch (const std::exception& e) {
+    }
+    catch (const std::exception& e) {
         std::cerr << "Hiba tortent a fajl beolvasasakor: " << e.what() << std::endl;
         return false;;
     }
@@ -30,6 +32,8 @@ bool tesztDBLetrehozas(SzervizNyilvantartoRendszer& aDB) {
 
 /// A tesztelési funkciók futtatására szolgáló függvény.
 void tesztek() {
+	MainSegedFuggvenyei segedFuggvenyekEleresehez;
+
     TEST(Listazas, UgyfelekEsAutok) {
         SzervizNyilvantartoRendszer aDB;
 
@@ -60,7 +64,7 @@ void tesztek() {
         Auto auto1("ABC123", "Ford", "Focus", 80000, Datum(2022, 6, 10), Vector<VegzettMuvelet*>(), &aDB.keresUgyfel("Szabo Anna"));
         aDB.ujAuto(auto1);
 
-		auto1.setKmOra(80500); // Ez a teszt nyilván hibás lesz ha 80000-nél kisebb km értéket állítunk be
+        auto1.setKmOra(80500); // Ez a teszt nyilván hibás lesz ha 80000-nél kisebb km értéket állítunk be
         EXPECT_TRUE(aDB.frissitAuto(auto1));
         EXPECT_EQ(aDB.keresAuto("ABC123").getKmOra(), 80500u);
     } END
@@ -167,6 +171,6 @@ void tesztek() {
         EXPECT_TRUE(dynamic_cast<Vizsga*>(muvek[1]) != nullptr || dynamic_cast<Karbantartas*>(muvek[1]) != nullptr);
     } END
 
-    varakozasEnterre("\nNyomj Entert a folytatashoz...");
-    torolKonzol();
+    segedFuggvenyekEleresehez.varakozasEnterre("\nNyomj Entert a folytatashoz...");
+    segedFuggvenyekEleresehez.torolKonzol();
 }

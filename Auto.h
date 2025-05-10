@@ -4,13 +4,13 @@
 /**
 *   \file Auto.h
 *   Az autó adatait leíró osztály.
-* 
+*
 *   Az osztály célja, hogy reprezentálja egy autó adatait, beleértve a
 *   rendszám, márka, típus, kilométeróra állása, üzembe helyezés dátuma,
 *   valamint a hozzá tartozó szervizmûveletek listáját.
 *   Az osztály lehetõséget biztosít az adatok kezelésére, módosítására,
 *   valamint a szerviztörténet nyilvántartására.
-* 
+*
 *   Az osztályban szereplõ összes std::string tipusú adattag feltételezi, hogy nem kell ékezetes betûket kezelnie.
 */
 
@@ -62,13 +62,13 @@ public:
 
 
 
-	/*-------------------------------------------
-			        Operátorok
-	-------------------------------------------*/
-	/// Értékadó operátor.
-	/// @param a - másolandó Auto objektum
-	/// @return - Az aktuális objektum referenciája
-	Auto& operator=(const Auto& a);
+    /*-------------------------------------------
+                    Operátorok
+    -------------------------------------------*/
+    /// Értékadó operátor.
+    /// @param a - másolandó Auto objektum
+    /// @return - Az aktuális objektum referenciája
+    Auto& operator=(const Auto& a);
 
     /// Egyenlõség operátor túlterhelése az Auto osztályhoz.
     /// @param a - Az összehasonlítandó Auto objektum.
@@ -78,7 +78,7 @@ public:
 
 
     /*-------------------------------------------
-			         Getterek
+                     Getterek
     -------------------------------------------*/
     /// Visszaadja az autó rendszámát.
     /// @return - Rendszám.
@@ -106,14 +106,14 @@ public:
 
     /// Visszaadja az autóhoz tartozó szervizmûveletek listáját (const változat).
     /// @return - Szervizmûveletek vektora.
-    const Vector<VegzettMuvelet*>& getSzervizMuveletek() const;  
-    
+    const Vector<VegzettMuvelet*>& getSzervizMuveletek() const;
+
     // Visszaadja az autó tulajdonosát.
     /// @return - Az autó tulajdonosa.
     Ugyfel* getTulajdonos();
 
-	// Visszaadja az autó tulajdonosát (const változat).
-	/// @return - Az autó tulajdonosa.
+    // Visszaadja az autó tulajdonosát (const változat).
+    /// @return - Az autó tulajdonosa.
     const Ugyfel* getTulajdonos() const;
 
 
@@ -129,14 +129,14 @@ public:
     /// @param k - Az új km óra érték.
     void setKmOra(int k);
 
-	/// Beállítja a tulajdonost.
-	/// @param u - Az új tulajdonos.
+    /// Beállítja a tulajdonost.
+    /// @param u - Az új tulajdonos.
     void setTulajdonos(Ugyfel* u);
 
 
 
     /*-------------------------------------------
-		        Fontos tagmûveletek
+                Fontos tagmûveletek
     -------------------------------------------*/
     /// Másoló függvény (virtuális, tisztán absztrakt)
     /// @return - új példány

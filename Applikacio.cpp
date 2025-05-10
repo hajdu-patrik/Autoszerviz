@@ -11,7 +11,7 @@
 #include <sstream>
 
 #include "Applikacio.h"
-#include "MainSegedFuggvenyek.h"
+#include "MainsegedFuggvenyek.h"
 #include "SzervizNyilvantartoRendszer.h"
 #include "Teszt.h"
 
@@ -24,16 +24,18 @@ void Applikacio::applikacio() {
     int valasztottMenu;
     std::string input;
     do {
-        menuOpciok();
+		MainSegedFuggvenyei segedFuggvenyekEleresehez;
+
+        segedFuggvenyekEleresehez.menuOpciok();
         std::getline(std::cin, input);
 
         std::stringstream ss(input);
         if (!(ss >> valasztottMenu)) {
-            torolKonzol();
+            segedFuggvenyekEleresehez.torolKonzol();
             std::cout << "\t>>> Ervenytelen bemenet! Szamot adj meg! <<<";
             continue;
         }
-        torolKonzol();
+        segedFuggvenyekEleresehez.torolKonzol();
 
         switch (valasztottMenu) {
         case 0:
@@ -41,43 +43,43 @@ void Applikacio::applikacio() {
             break;
 
         case 1:
-            muveletFuttato(kiListazo, autoszervizAdatbazis, "Sikeres listazas!");
+            segedFuggvenyekEleresehez.muveletFuttato(&MainSegedFuggvenyei::kiListazo, autoszervizAdatbazis, "Sikeres listazas!");
             break;
 
         case 2:
-            muveletFuttato(ugyfelAutoAdd, autoszervizAdatbazis, "Sikeres felvetel!");
+            segedFuggvenyekEleresehez.muveletFuttato(&MainSegedFuggvenyei::ugyfelAutoAdd, autoszervizAdatbazis, "Sikeres felvetel!");
             break;
 
         case 3:
-            muveletFuttato(ugyfelAutoFrissit, autoszervizAdatbazis, "Sikeres frissites!");
+            segedFuggvenyekEleresehez.muveletFuttato(&MainSegedFuggvenyei::ugyfelAutoFrissit, autoszervizAdatbazis, "Sikeres frissites!");
             break;
 
         case 4:
-            muveletFuttato(ugyfelAutoTorlo, autoszervizAdatbazis, "Sikeres torles!");
+            segedFuggvenyekEleresehez.muveletFuttato(&MainSegedFuggvenyei::ugyfelAutoTorlo, autoszervizAdatbazis, "Sikeres torles!");
             break;
 
         case 5:
-            muveletFuttato(ugyfelKereses, autoszervizAdatbazis, "Sikeres kereses!");
+            segedFuggvenyekEleresehez.muveletFuttato(&MainSegedFuggvenyei::ugyfelKereses, autoszervizAdatbazis, "Sikeres kereses!");
             break;
 
         case 6:
-            muveletFuttato(autoKereses, autoszervizAdatbazis, "Sikeres kereses!");
+            segedFuggvenyekEleresehez.muveletFuttato(&MainSegedFuggvenyei::autoKereses, autoszervizAdatbazis, "Sikeres kereses!");
             break;
 
         case 7:
-            muveletFuttato(ujSzervizMuvelet, autoszervizAdatbazis, "Sikeres szerviz muvelet rogzitese!");
+            segedFuggvenyekEleresehez.muveletFuttato(&MainSegedFuggvenyei::ujSzervizMuvelet, autoszervizAdatbazis, "Sikeres szerviz muvelet rogzitese!");
             break;
 
         case 8:
-            fajlMuveletFuttato(fajlHelyessegBiztosito, autoszervizAdatbazis, true, "Mentes sikeres!");
+            segedFuggvenyekEleresehez.fajlMuveletFuttato(&MainSegedFuggvenyei::fajlHelyessegBiztosito, autoszervizAdatbazis, true, "Mentes sikeres!");
             break;
 
         case 9:
-            fajlMuveletFuttato(fajlHelyessegBiztosito, autoszervizAdatbazis, false, "Beolvasas sikeres!");
+            segedFuggvenyekEleresehez.fajlMuveletFuttato(&MainSegedFuggvenyei::fajlHelyessegBiztosito, autoszervizAdatbazis, false, "Beolvasas sikeres!");
             break;
 
         case 10:
-            kiirASCII2();
+            segedFuggvenyekEleresehez.kiirASCII2();
             break;
 
         default:

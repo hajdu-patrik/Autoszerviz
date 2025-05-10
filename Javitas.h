@@ -1,10 +1,10 @@
-#ifndef JAVITAS_H
+ï»¿#ifndef JAVITAS_H
 #define JAVITAS_H
 
 /**
 *   \file Javitas.h
-*   A Javitas(t) leíró osztály deklarációja és tagfüggvényeinek inline megvalósítása.
-*   Ez az osztály a VegzettMuvelet osztályból származik, és a javítási mûveletek adatait tárolja.
+*   A Javitas(t) leÃ­rÃ³ osztÃ¡ly deklarÃ¡ciÃ³ja Ã©s tagfÃ¼ggvÃ©nyeinek inline megvalÃ³sÃ­tÃ¡sa.
+*   Ez az osztÃ¡ly a VegzettMuvelet osztÃ¡lybÃ³l szÃ¡rmazik, Ã©s a javÃ­tÃ¡si mÅ±veletek adatait tÃ¡rolja.
 */
 
 #include <iostream>
@@ -14,59 +14,57 @@
 class Javitas : public VegzettMuvelet {
 public:
     /*-------------------------------------------
-            Konstruktorok és destruktor
+            Konstruktorok Ã©s destruktor
     -------------------------------------------*/
-    /// Alapértelmezett konstruktor
+    /// AlapÃ©rtelmezett konstruktor
     Javitas() : VegzettMuvelet() {}
 
-    /// Paraméteres konstruktor
-    /// @param m - mûvelet megnevezése
-    /// @param d - dátum
-    /// @param a - ár
+    /// ParamÃ©teres konstruktor
+    /// @param m - mÅ±velet megnevezÃ©se
+    /// @param d - dÃ¡tum
+    /// @param a - Ã¡r
+    /// @param k - aktuÃ¡lis km Ã³ra Ã¡llÃ¡s
     Javitas(const std::string& m, const Datum& d, int a, int k) : VegzettMuvelet(m, d, a, k) {}
 
-	/// Másoló konstruktor
-	/// @param j - másolandó Javitas objektum
+    /// MÃ¡solÃ³ konstruktor
+    /// @param j - mÃ¡solandÃ³ Javitas objektum
     Javitas(const Javitas& j) : VegzettMuvelet(j.getMuvelet(), j.getDatum(), j.getAr(), j.getAktKmOra()) {}
 
     /// Destruktor
     ~Javitas() {}
 
-
-
     /*-------------------------------------------
-                    Operátorok
+                    OperÃ¡torok
     -------------------------------------------*/
-	/// Értékadó operátor
-	/// @param j - másolandó Javitas objektum
+    /// Ã‰rtÃ©kadÃ³ operÃ¡tor
+    /// @param j - mÃ¡solandÃ³ Javitas objektum
+	/// @return - Az aktuÃ¡lis objektum referenciÃ¡ja
     Javitas& operator=(const Javitas& j) {
         if (this != &j) {
-			setMuvelet(j.getMuvelet());
-			setDatum(j.getDatum());
-			setAr(j.getAr());
-			setAktKmOra(j.getAktKmOra());
+            setMuvelet(j.getMuvelet());
+            setDatum(j.getDatum());
+            setAr(j.getAr());
+            setAktKmOra(j.getAktKmOra());
         }
-		return *this;
+        return *this;
     }
 
-
-
     /*-------------------------------------------
-     Tiszta absztrakt függvények felüldefiniálása
+    Tiszta absztrakt fÃ¼ggvÃ©nyek felÃ¼ldefiniÃ¡lÃ¡sa
     -------------------------------------------*/
-    /// Másoló függvény (virtuális, tisztán absztrakt)
-    /// @return - új példány
+    /// MÃ¡solÃ³ fÃ¼ggvÃ©ny (virtuÃ¡lis, tisztÃ¡n absztrakt)
+    /// @return - Ãºj pÃ©ldÃ¡ny
     VegzettMuvelet* clone() const override {
         return new Javitas(*this);
     }
 
-    /// Kiíró függvény felüldefiniálása
+    /// KiÃ­rÃ³ fÃ¼ggvÃ©ny felÃ¼ldefiniÃ¡lÃ¡sa
     /// @param os - kimeneti stream
     void kiir(std::ostream& os) const override {
         os << "\tJavitas: " << getMuvelet()
             << ", Datum: " << getDatum()
             << ", Ar: " << getAr() << " Ft"
-			<< ", Akt. km: " << getAktKmOra()
+            << ", Akt. km: " << getAktKmOra()
             << std::endl;
     }
 };

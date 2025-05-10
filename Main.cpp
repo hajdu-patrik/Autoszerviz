@@ -3,6 +3,9 @@
  *  Ez a fájl az autószerviz nyilvántartó rendszer belépési pontja.
  */
 
+#define MEMTRACE
+#include "Memtrace.h"
+
 #include "Applikacio.h"
 
 int main() {
