@@ -3,10 +3,10 @@
 *   Az autó osztály tagfüggvényeinek megvalósítása.
 */
 
-#include <string>
-
 #define MEMTRACE
 #include "Memtrace.h"
+
+#include <string>
 
 #include "Auto.h"
 #include "Datum.h"

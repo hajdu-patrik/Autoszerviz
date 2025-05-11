@@ -5,7 +5,6 @@
 
 #define MEMTRACE
 #include "Memtrace.h"
-
 #include "Gtest_lite.h"
 
 #include <sstream>

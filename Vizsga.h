@@ -1,13 +1,13 @@
-﻿#ifndef VIZSGA_H
-#define VIZSGA_H
-
-/**
+﻿/**
 *   \file Vizsga.h
 *   A Vizsga(t) leíró osztály deklarációja és tagfüggvényeinek inline megvalósítása.
 *   Ez az osztály a VegzettMuvelet osztályból származik, és a vizsgák adatait tárolja.
 *
 *   Kiegészíti az ősosztályt egy sikeres logikai értékkel, ami a vizsga sikerességét jelzi.
 */
+
+#ifndef VIZSGA_H
+#define VIZSGA_H
 
 #include <iostream>
 

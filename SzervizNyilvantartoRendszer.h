@@ -1,6 +1,3 @@
-#ifndef SZERVIZNYILVANTARTORENDSZER_H
-#define SZERVIZNYILVANTARTORENDSZER_H
-
 /**
 *   \file SzervizNyilvantartoRendszer.h
 *   A SzervizNyilvantartoRendszer adatait leíró osztály.
@@ -9,6 +6,9 @@
 *   Felelõs az autók adatainak kezeléséért, új szervizmûveletek rögzítéséért,
 *   meglévõ adatok lekérdezéséért és módosításáért.
 */
+
+#ifndef SZERVIZNYILVANTARTORENDSZER_H
+#define SZERVIZNYILVANTARTORENDSZER_H
 
 #include <string>
 

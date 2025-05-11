@@ -1,10 +1,10 @@
-﻿#ifndef DATUM_H  
-#define DATUM_H  
-
-/**
+﻿/**
 *   \file Datum.h
 *   A Datum(mot) leíró osztály deklarációja és tagfüggvényeinek inline megvalósítása.
 */
+
+#ifndef DATUM_H  
+#define DATUM_H  
 
 #include <iostream>
 #include <iomanip>

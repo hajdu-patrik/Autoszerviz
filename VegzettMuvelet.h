@@ -1,12 +1,12 @@
-#ifndef VEGZETTMUVELET_H  
-#define VEGZETTMUVELET_H  
-
 /**
 *   \file VegzettMuvelet.h
 *   Az VegzettMuvelet(et) leíró absztrakt osztály deklarációja és tagfüggvényeinek inline megvalósítása.
 *
 *   Az osztályban szereplõ összes std::string tipusú adattag feltételezi, hogy nem kell ékezetes betûket kezelnie.
 */
+
+#ifndef VEGZETTMUVELET_H  
+#define VEGZETTMUVELET_H 
 
 #include <string>
 

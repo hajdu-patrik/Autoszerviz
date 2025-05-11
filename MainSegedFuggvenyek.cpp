@@ -17,6 +17,7 @@
 
 #include "MainSegedFuggvenyek.h"
 #include "SzervizNyilvantartoRendszer.h"
+#include "MuveletAllapot.h"
 #include "VegzettMuvelet.h"
 #include "Vizsga.h"
 #include "Karbantartas.h"
@@ -422,7 +423,7 @@ MuveletAllapot MainSegedFuggvenyei::ugyfelAutoFrissit(SzervizNyilvantartoRendsze
                 std::cout << "\tAdd meg az uj kilometerora allast: ";
                 std::cin >> km;
 
-                if (a.getSzervizMuveletek().back()->getAktKmOra() > km) {
+                if (a.getSzervizMuveletek().back()->getAktKmOra() >= km) {
                     std::cout << "\n\tNem lehet kisebb a km ora allasa mint az ami a legutolso szerviznel lett rogzitve!";
                     std::cout << "\n\tLegutolso szerviz km ora allasa: " << a.getSzervizMuveletek().back()->getAktKmOra() << std::endl;
                     varakozasEnterre("\n\tNyomj Entert a folytatashoz...");

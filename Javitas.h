@@ -1,11 +1,11 @@
-﻿#ifndef JAVITAS_H
-#define JAVITAS_H
-
-/**
+﻿/**
 *   \file Javitas.h
 *   A Javitas(t) leíró osztály deklarációja és tagfüggvényeinek inline megvalósítása.
 *   Ez az osztály a VegzettMuvelet osztályból származik, és a javítási műveletek adatait tárolja.
 */
+
+#ifndef JAVITAS_H
+#define JAVITAS_H
 
 #include <iostream>
 

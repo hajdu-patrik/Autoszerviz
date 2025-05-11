@@ -146,6 +146,7 @@
     <ClInclude Include="Karbantartas.h" />
     <ClInclude Include="MainSegedFuggvenyek.h" />
     <ClInclude Include="Memtrace.h" />
+    <ClInclude Include="MuveletAllapot.h" />
     <ClInclude Include="SzervizNyilvantartoRendszer.h" />
     <ClInclude Include="Teszt.h" />
     <ClInclude Include="Ugyfel.h" />

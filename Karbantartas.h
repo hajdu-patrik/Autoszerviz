@@ -1,11 +1,11 @@
-#ifndef KARBANTARTAS_H
-#define KARBANTARTAS_H
-
 /**
 *   \file Karbantartas.h
 *   A Karbantartas(t) leíró osztály deklarációja és tagfüggvényeinek inline megvalósítása.
 *   Ez az osztály a VegzettMuvelet osztályból származik, és a karbantartási mûveletek adatait tárolja.
 */
+
+#ifndef KARBANTARTAS_H
+#define KARBANTARTAS_H
 
 #include <iostream>
 

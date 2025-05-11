@@ -1,6 +1,3 @@
-#ifndef AUTO_H
-#define AUTO_H
-
 /**
 *   \file Auto.h
 *   Az autó adatait leíró osztály.
@@ -13,6 +10,9 @@
 *
 *   Az osztályban szereplõ összes std::string tipusú adattag feltételezi, hogy nem kell ékezetes betûket kezelnie.
 */
+
+#ifndef AUTO_H
+#define AUTO_H
 
 #include <string>
 

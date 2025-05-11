@@ -86,6 +86,9 @@
     <ClInclude Include="Applikacio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MuveletAllapot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="init_auto_auo.txt">

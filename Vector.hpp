@@ -1,3 +1,9 @@
+/**
+*   \file Vector.hpp
+*   Ez egy template osztályt leíró fájl, amely dinamikus tömböt valósít meg.
+*   Az osztály célja, hogy különbözõ típusú elemeket tároljon dinamikusan mint az std::vector.
+*/
+
 #ifndef VECTOR_HPP  
 #define VECTOR_HPP 
 

@@ -1,22 +1,16 @@
-#ifndef MAINSEGEDFUGGVENYEK_H  
-#define MAINSEGEDFUGGVENYEK_H  
-
 /**
 *	\file MainSegedFuggvenyek.h
 *   Ez a fájl a program alapvetõ funkcióinak tesztelését végzi.
 *	A modul ellenõrzi, hogy a rendszer fõbb képességei helyesen mûködnek, és segít a hibák kiszûrésében a fejlesztés során.
 */
 
+#ifndef MAINSEGEDFUGGVENYEK_H  
+#define MAINSEGEDFUGGVENYEK_H  
+
 #include <string>
 
 #include "SzervizNyilvantartoRendszer.h"
-
-/// A mûvelet végrehajtásának állapotát jelzõ enum.
-enum class MuveletAllapot {
-    Siker,
-    Kilepes,
-    Hiba
-};
+#include "MuveletAllapot.h"
 
 struct MainSegedFuggvenyei {
     /*-------------------------------------------
