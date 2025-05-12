@@ -1,9 +1,8 @@
 /**
  *  \file Main.cpp
- *  Ez a fájl az autószerviz nyilvántartó rendszer belépési pontja.
+ *  Ez a fajl az autoszerviz nyilvantarto rendszer belepesi pontja.
  */
 
-#define MEMTRACE
 #include "Memtrace.h"
 
 #include "Applikacio.h"

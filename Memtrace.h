@@ -3,7 +3,7 @@ Memoriaszivargas-detektor
 Keszitette: Peregi Tamas, BME IIT, 2011
 			petamas@iit.bme.hu
 Kanari:     Szeberenyi Imre, 2013.,
-VS 2012:    Szeberényi Imre, 2015.,
+VS 2012:    Szeberenyi Imre, 2015.,
 mem_dump:   2016.
 inclue-ok:  2017., 2018., 2019., 2021.
 *********************************/
@@ -13,7 +13,7 @@ inclue-ok:  2017., 2018., 2019., 2021.
 
 #if defined(MEMTRACE)
 
-/*ha definiálva van, akkor a hibakat ebbe a fajlba írja, egyébkent stderr-re*/
+/*ha definialva van, akkor a hibakat ebbe a fajlba irja, egyebkent stderr-re*/
 /*#define MEMTRACE_ERRFILE MEMTRACE.ERR*/
 
 /*ha definialva van, akkor futas kozben lancolt listat epit. Javasolt a hasznalata*/
@@ -71,25 +71,25 @@ inclue-ok:  2017., 2018., 2019., 2021.
 #define TRACEC(func) func
 #endif
 
-// THROW deklaráció változatai
+// THROW deklaracio valtozatai
 #if defined(_MSC_VER)
   // VS rosszul kezeli az __cplusplus makrot
 #if _MSC_VER < 1900
-  // * nem biztos, hogy jó így *
+  // * nem biztos, hogy jo igy *
 #define THROW_BADALLOC
 #define THROW_NOTHING
 #else
-  // C++11 vagy újabb
+  // C++11 vagy ujabb
 #define THROW_BADALLOC noexcept(false)
 #define THROW_NOTHING noexcept
 #endif
 #else
 #if __cplusplus < 201103L
-  // C++2003 vagy régebbi
+  // C++2003 vagy regebbi
 #define THROW_BADALLOC throw (std::bad_alloc)
 #define THROW_NOTHING throw ()
 #else
-  // C++11 vagy újabb
+  // C++11 vagy ujabb
 #define THROW_BADALLOC noexcept(false)
 #define THROW_NOTHING noexcept
 #endif
@@ -144,9 +144,9 @@ END_NAMESPACE
 #include <stdlib.h>
 #ifdef __cplusplus
 #include <iostream>
-/* ide gyûjtjük a nemtrace-vel összeakadó headereket, hogy elõbb legyenek */
+/* ide gyûjtjuk a nemtrace-vel osszeakado headereket, hogy elõbb legyenek */
 
-#include <fstream>  // VS 2013 headerjében van deleted definició
+#include <fstream>  // VS 2013 headerjeben van deleted definicio
 #include <sstream>
 #include <vector>
 #include <list>
@@ -211,7 +211,7 @@ void operator delete[](void* p) THROW_NOTHING;
 void operator delete(void* p, size_t)  THROW_NOTHING;
 void operator delete[](void* p, size_t) THROW_NOTHING;
 
-/* Visual C++ 2012 miatt kell, mert háklis, hogy nincs megfelelõ delete, bár senki sem használja */
+/* Visual C++ 2012 miatt kell, mert haklis, hogy nincs megfelelõ delete, bar senki sem hasznalja */
 void operator delete(void* p, int, const char*) THROW_NOTHING;
 void operator delete[](void* p, int, const char*) THROW_NOTHING;
 

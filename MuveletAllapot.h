@@ -1,12 +1,12 @@
 /**
 *	\file MuveletAllapot.h
-*   Ez a fájl a menürendszer állapotait definiálja.
+*   Ez a fajl a menurendszer allapotait definialja.
 */
 
 #ifndef MUVELETALLAPOT_H
 #define MUVELETALLAPOT_H
 
-/// A mûvelet végrehajtásának állapotát jelzõ enum.
+/// A muvelet vegrehajtasanak allapotat jelzo enum.
 enum class MuveletAllapot {
     Siker,
     Kilepes,

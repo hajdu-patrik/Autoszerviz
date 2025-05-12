@@ -1,7 +1,7 @@
 /**
 *   \file Karbantartas.h
-*   A Karbantartas(t) leíró osztály deklarációja és tagfüggvényeinek inline megvalósítása.
-*   Ez az osztály a VegzettMuvelet osztályból származik, és a karbantartási mûveletek adatait tárolja.
+*   A Karbantartas(t) leiro osztaly deklaracioja es tagfuggvenyeinek inline megvalositasa.
+*   Ez az osztaly a VegzettMuvelet osztalybol szarmazik, es a karbantartasi muveletek adatait tarolja.
 */
 
 #ifndef KARBANTARTAS_H
@@ -14,31 +14,31 @@
 class Karbantartas : public VegzettMuvelet {
 public:
     /*-------------------------------------------
-            Konstruktorok és destruktor
+            Konstruktorok es destruktor
     -------------------------------------------*/
-    /// Alapértelmezett konstruktor
+    /// Alapertelmezett konstruktor
     Karbantartas() : VegzettMuvelet() {}
 
-    /// Paraméteres konstruktor
-    /// @param m - mûvelet megnevezése
-    /// @param d - dátum
-    /// @param a - ár
-    /// @param k - aktuális km óra állás
+    /// Parameteres konstruktor
+    /// @param m - muvelet megnevezese
+    /// @param d - datum
+    /// @param a - ar
+    /// @param k - aktualis km ora allas
     Karbantartas(const std::string& m, const Datum& d, int a, int k) : VegzettMuvelet(m, d, a, k) {}
 
-    /// Másoló konstruktor
-    /// @param k - másolandó Karbantartas objektum
+    /// Masolo konstruktor
+    /// @param k - masolando Karbantartas objektum
     Karbantartas(const Karbantartas& k) : VegzettMuvelet(k.getMuvelet(), k.getDatum(), k.getAr(), k.getAktKmOra()) {}
 
     /// Destruktor
     ~Karbantartas() {}
 
     /*-------------------------------------------
-                    Operátorok
+                    Operatorok
     -------------------------------------------*/
-    /// Értékadó operátor
-    /// @param k - másolandó Karbantartas objektum
-	/// @return - Az aktuális objektum referenciája
+    /// ertekado operator
+    /// @param k - masolando Karbantartas objektum
+	/// @return - Az aktualis objektum referenciaja
     Karbantartas& operator=(const Karbantartas& k) {
         if (this != &k) {
             setMuvelet(k.getMuvelet());
@@ -50,15 +50,15 @@ public:
     }
 
     /*-------------------------------------------
-     Tiszta absztrakt függvények felüldefiniálása
+     Tiszta absztrakt fuggvenyek feluldefinialasa
     -------------------------------------------*/
-    /// Másoló függvény (virtuális, tisztán absztrakt)
-    /// @return - új példány
+    /// Masolo fuggveny (virtualis, tisztan absztrakt)
+    /// @return - uj peldany
     VegzettMuvelet* clone() const override {
         return new Karbantartas(*this);
     }
 
-    /// Kiíró függvény felüldefiniálása
+    /// Kiiro fuggveny feluldefinialasa
     /// @param os - kimeneti stream
     void kiir(std::ostream& os) const override {
         os << "\tKarbantartas: " << getMuvelet()

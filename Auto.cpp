@@ -1,9 +1,8 @@
 /**
 *   \file Auto.cpp
-*   Az autó osztály tagfüggvényeinek megvalósítása.
+*   Az auto osztaly tagfuggvenyeinek megvalositasa.
 */
 
-#define MEMTRACE
 #include "Memtrace.h"
 
 #include <string>
@@ -15,57 +14,52 @@
 #include "VegzettMuvelet.h"
 
 /*-------------------------------------------
-        Konstruktorok és destruktor
+        Konstruktorok es destruktor
 -------------------------------------------*/
-/// Alapértelmezett konstruktor.
+/// Alapertelmezett konstruktor.
 Auto::Auto() : rendszam(""), marka(""), tipus(""), kmOra(0), uzembeHelyezes(Datum()), tulajdonos(nullptr) {}
 
-/// Paraméteres konstruktor.  
-/// @param r - Az autó rendszáma  
-/// @param m - Az autó márkája  
-/// @param t - Az autó típusa  
-/// @param k - A kilométeróra állása  
-Auto::Auto(const std::string& r, const std::string& m, const std::string& t, int k)
-    : rendszam(r), marka(m), tipus(t), kmOra(k), uzembeHelyezes(), tulajdonos(nullptr) {
-}
+/// Parameteres konstruktor.  
+/// @param r - Az auto rendszama  
+/// @param m - Az auto markaja  
+/// @param t - Az auto tipusa  
+/// @param k - A kilometerora allasa  
+Auto::Auto(const std::string& r, const std::string& m, const std::string& t, int k) : rendszam(r), marka(m), tipus(t), kmOra(k), uzembeHelyezes(), tulajdonos(nullptr) {}
 
-/// Paraméteres konstruktor.
-/// @param r - Az autó rendszáma
-/// @param m - Az autó márkája
-/// @param t - Az autó típusa
-/// @param k - A kilométeróra állása
-/// @param d - Az üzembe helyezés dátuma
-Auto::Auto(const std::string& r, const std::string& m, const std::string& t, int k, const Datum& d, const Vector<VegzettMuvelet*>& v, Ugyfel* u)
-    : rendszam(r), marka(m), tipus(t), kmOra(k), uzembeHelyezes(d), tulajdonos(u) {
-    for (size_t i = 0; i < v.size(); i++) {
+/// Parametres 2 konstruktor.
+/// Parameteres konstruktor.  
+/// @param r - Az auto rendszama  
+/// @param m - Az auto markaja  
+/// @param t - Az auto tipusa  
+/// @param k - A kilometerora allasa  
+/// @param d - Az uzembe helyezes datuma  
+/// @param v - Az autohoz tartozo szervizmuveletek listaja  
+/// @param u - Az auto tulajdonosa  
+Auto::Auto(const std::string& r, const std::string& m, const std::string& t, int k, const Datum& d, const Vector<VegzettMuvelet*>& v, Ugyfel* u) : rendszam(r), marka(m), tipus(t), kmOra(k), uzembeHelyezes(d), tulajdonos(u) {
+    for (size_t i = 0; i < v.size(); i++)
         vegzettSzervizMuveletek.push_back(v.at(i)->clone());
-    }
 }
 
-
-/// Másoló konstruktor.
-/// @param a - másolandó Auto objektum
+/// Masolo konstruktor.
+/// @param a - masolando Auto objektum
 Auto::Auto(const Auto& a) : rendszam(a.rendszam), marka(a.marka), tipus(a.tipus), kmOra(a.kmOra), uzembeHelyezes(a.uzembeHelyezes), tulajdonos(a.tulajdonos) {
-    for (size_t i = 0; i < a.vegzettSzervizMuveletek.size(); i++) {
+    for (size_t i = 0; i < a.vegzettSzervizMuveletek.size(); i++)
         vegzettSzervizMuveletek.push_back(a.vegzettSzervizMuveletek[i]->clone());
-    }
 }
 
 /// Destruktor
-Auto::~Auto() {
-    for (size_t i = 0; i < vegzettSzervizMuveletek.size(); i++)
-        delete vegzettSzervizMuveletek[i]; // felszabadítjuk a dinamikusan foglalt szervizmûveletet
-    vegzettSzervizMuveletek.clear(); // nem kötelezõ, de szép
+Auto::~Auto() { 
+    vegzettSzervizMuveletek.clear();
 }
 
 
 
 /*-------------------------------------------
-                Operátorok
+                Operatorok
 -------------------------------------------*/
-/// Értékadó operátor.
-/// @param a - másolandó Auto objektum
-/// @return - Az aktuális objektum referenciája
+/// Ertekado operator.
+/// @param a - masolando Auto objektum
+/// @return - Az aktualis objektum referenciaja
 Auto& Auto::operator=(const Auto& a) {
     if (this != &a) {
         rendszam = a.rendszam;
@@ -75,21 +69,18 @@ Auto& Auto::operator=(const Auto& a) {
         uzembeHelyezes = a.uzembeHelyezes;
         tulajdonos = a.tulajdonos;
 
-        for (size_t i = 0; i < vegzettSzervizMuveletek.size(); i++) {
-            delete vegzettSzervizMuveletek.at(i);
-        }
         vegzettSzervizMuveletek.clear();
 
-        for (size_t i = 0; i < a.vegzettSzervizMuveletek.size(); i++) {
+        for (size_t i = 0; i < a.vegzettSzervizMuveletek.size(); i++)
             vegzettSzervizMuveletek.push_back(a.vegzettSzervizMuveletek[i]->clone());
-        }
     }
     return *this;
 }
 
-/// Egyenlõség operátor túlterhelése az Auto osztályhoz.
-/// @param a - Az összehasonlítandó Auto objektum.
-/// @return - true, ha az objektumok megegyeznek, különben false.
+
+/// Egyenloseg operator tultoltese az Auto osztalyhoz.
+/// @param a - Az osszehasonlitando Auto objektum.
+/// @return - true, ha az objektumok megegyeznek, kulonben false.
 bool Auto::operator==(const Auto& a) const {
     return rendszam == a.rendszam &&
         marka == a.marka &&
@@ -106,56 +97,56 @@ bool Auto::operator==(const Auto& a) const {
 /*-------------------------------------------
                  Getterek
 -------------------------------------------*/
-/// Visszaadja az autó rendszámát.
-/// @return - Rendszám
+/// Visszaadja az auto rendszamat.
+/// @return - Rendszam
 const std::string& Auto::getRendszam() const {
     return rendszam;
 }
 
-/// Visszaadja az autó márkáját.
-/// @return - Márka.
+/// Visszaadja az auto markajat.
+/// @return - Marka.
 const std::string& Auto::getMarka() const {
     return marka;
 }
 
-/// Visszaadja az autó típusát.
-/// @return - Típus.
+/// Visszaadja az auto tipusat.
+/// @return - Tipus.
 const std::string& Auto::getTipus() const {
     return tipus;
 }
 
-/// Visszaadja a kilométeróra aktuális értékét.
-/// @return - Km óra értéke.
+/// Visszaadja a kilometerora aktualis erteket.
+/// @return - Km ora erteke.
 const int Auto::getKmOra() const {
     return kmOra;
 }
 
-/// Visszaadja az üzembe helyezés dátumát.
-/// @return - Dátum.
+/// Visszaadja az uzembe helyezes datumot.
+/// @return - Datum.
 const Datum& Auto::getUzembeHelyezes() const {
     return uzembeHelyezes;
 }
 
-/// Visszaadja az autóhoz tartozó szervizmûveletek listáját.
-/// @return - Szervizmûveletek vektora.
+/// Visszaadja az autohoz tartozo szervizmuveletek listajat.
+/// @return - Szervizmuveletek vektora.
 Vector<VegzettMuvelet*>& Auto::getSzervizMuveletek() {
     return vegzettSzervizMuveletek;
 }
 
-/// Visszaadja az autóhoz tartozó szervizmûveletek listáját (const változat).
-/// @return - Szervizmûveletek vektora.
+/// Visszaadja az autohoz tartozo szervizmuveletek listajat (const valtozat).
+/// @return - Szervizmuveletek vektora.
 const Vector<VegzettMuvelet*>& Auto::getSzervizMuveletek() const {
     return vegzettSzervizMuveletek;
 }
 
-// Visszaadja az autó tulajdonosát.
-/// @return - Az autó tulajdonosa.
+// Visszaadja az auto tulajdonosat.
+/// @return - Az auto tulajdonosa.
 Ugyfel* Auto::getTulajdonos() {
     return tulajdonos;
 }
 
-// Visszaadja az autó tulajdonosát (const változat).
-/// @return - Az autó tulajdonosa.
+// Visszaadja az auto tulajdonosat (const valtozat).
+/// @return - Az auto tulajdonosa.
 const Ugyfel* Auto::getTulajdonos() const {
     return tulajdonos;
 }
@@ -165,20 +156,20 @@ const Ugyfel* Auto::getTulajdonos() const {
 /*-------------------------------------------
                 Setterek
 -------------------------------------------*/
-/// Beállítja az autó rendszámát.
-/// @param r - Az új rendszám
+/// Beallitja az auto rendszamat.
+/// @param r - Az uj rendszam
 void Auto::setRendszam(const std::string& r) {
     rendszam = r;
 }
 
-/// Beállítja a kilométeróra értékét.
-/// @param k - Az új km óra érték
+/// Beallitja a kilometerora erteket.
+/// @param k - Az uj km ora ertek
 void Auto::setKmOra(int k) {
     if (k >= kmOra) kmOra = k;
 }
 
-/// Beállítja a tulajdonost.
-/// @param u - Az új tulajdonos.
+/// Beallitja a tulajdonost.
+/// @param u - Az uj tulajdonos.
 void Auto::setTulajdonos(Ugyfel* u) {
     tulajdonos = u;
 }
@@ -186,40 +177,42 @@ void Auto::setTulajdonos(Ugyfel* u) {
 
 
 /*-------------------------------------------
-            Fontos tagmûveletek
+            Fontos tagmuveletek
 -------------------------------------------*/
-/// Másoló függvény (virtuális, tisztán absztrakt)
-/// @return - új példány
+/// Masolo fuggveny (virtualis, tisztan absztrakt)
+/// @return - uj peldany
 Auto* Auto::clone() const {
     return new Auto(*this);
 }
 
-/// Hozzáad egy szervizmûveletet az autó szervizlistájához.
-/// @param m - A hozzáadandó szervizmûvelet pointere
+/// Hozzaad egy szervizmuveletet az auto szervizlistajahoz.
+/// @param m - A hozzadando szervizmuvelet pointere
 void Auto::addVegzettSzerviz(VegzettMuvelet* m) {
     vegzettSzervizMuveletek.push_back(m);
 }
 
-/// Törli a megadott indexû szervizmûveletet a listából.
-/// @param idx - A törlendõ mûvelet pozíciója
+/// Torli a megadott indexu szervizmuveletet a listabol.
+/// @param idx - A torlendo muvelet pozicioja
 void Auto::torolVegzettSzerviz(size_t idx) {
     if (idx < vegzettSzervizMuveletek.size()) {
-        delete vegzettSzervizMuveletek.at(idx);
+        delete vegzettSzervizMuveletek[idx];
         vegzettSzervizMuveletek.erase(vegzettSzervizMuveletek.begin() + idx);
     }
 }
 
-/// Kiírja az autó adatait és szervizmûveleteit az adott ostream-re.
-/// @param os - A kimeneti adatfolyam
-/// @return - Az ostream referenciája (láncoláshoz)
 void Auto::kiir(std::ostream& os) const {
     os << "\tRendszam: " << rendszam << "\n"
         << "\tMarka: " << marka << "\n"
         << "\tTipus: " << tipus << "\n"
         << "\tKm ora: " << kmOra << "\n"
         << "\tUzembe helyezes: " << uzembeHelyezes << "\n"
-        << "\tTulajdonos: " << tulajdonos->getNev() << "\n"
-        << "\tSzervizmuveletek:" << (vegzettSzervizMuveletek.size() == 0 ? "nincs" : "") << "\n";
+        << "\tTulajdonos: ";
+    if (tulajdonos)
+        os << tulajdonos->getNev();
+    else
+        os << "nincs megadva";
+    os << "\n"
+        << "\tSzervizmuveletek:" << (vegzettSzervizMuveletek.size() == 0 ? " nincs" : "") << "\n";
 
     for (size_t i = 0; i < vegzettSzervizMuveletek.size(); i++) {
         vegzettSzervizMuveletek.at(i)->kiir(os);
@@ -231,12 +224,12 @@ void Auto::kiir(std::ostream& os) const {
 
 
 /*-------------------------------------------
-            Globális operátorok
+            Globalis operatorok
 -------------------------------------------*/
-/// Kimeneti operátor Datum objektumhoz
+/// Kimeneti operator Datum objektumhoz
 /// @param os - kimeneti stream
-/// @param a - kiírandó Auto objektum
-/// @return - módosított kimeneti stream
+/// @param a - kiirando Auto objektum
+/// @return - modositott kimeneti stream
 std::ostream& operator<<(std::ostream& os, const Auto& a) {
     a.kiir(os);
     return os;

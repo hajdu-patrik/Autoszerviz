@@ -3,7 +3,7 @@ Memoriaszivargas-detektor
 Keszitette: Peregi Tamas, BME IIT, 2011
 			petamas@iit.bme.hu
 Kanari:     Szeberenyi Imre, 2013.
-VS 2012:    Szeberényi Imre, 2015.,
+VS 2012:    Szeberenyi Imre, 2015.,
 mem_dump:   2016.
 meset felszabaditaskor: 2018.
 typo:       2019.
@@ -210,10 +210,10 @@ static void print_registry_item(registry_item* p) {
 	}
 }
 
-/* ha nincs hiba, akkor 0-val tér vissza */
+/* ha nincs hiba, akkor 0-val ter vissza */
 int mem_check(void) {
 	initialize();
-	if (dying) return  2;    /* címzési hiba */
+	if (dying) return  2;    /* cimzesi hiba */
 
 	if (registry.next) {
 		/*szivarog*/
@@ -223,7 +223,7 @@ int mem_check(void) {
 		fprintf(fperror, "Szivargas:\n");
 		print_registry_item(registry.next);
 		registry.next = NULL;
-		return 1;           /* memória fogyás */
+		return 1;           /* memoria fogyas */
 	}
 	return 0;
 }
@@ -325,7 +325,7 @@ static void unregister_memory(void* p, call_t call) {
 END_NAMESPACE
 
 /*******************************************************************/
-/* C-stílusú memóriakezelés */
+/* C-stilusu memoriakezeles */
 /*******************************************************************/
 
 #ifdef MEMTRACE_C
@@ -421,7 +421,7 @@ END_NAMESPACE
 #endif/*MEMTRACE_C*/
 
 /*******************************************************************/
-/* C++-stílusú memóriakezelés */
+/* C++-stilusu memoriakezeles */
 /*******************************************************************/
 
 #ifdef MEMTRACE_CPP
@@ -438,7 +438,7 @@ static BOOL delete_called;
 
 void set_delete_call(int line, const char* file) {
 	initialize();
-	delete_call = pack(0, "", line, file); /*func értéke lényegtelen, majd felülírjuk*/
+	delete_call = pack(0, "", line, file); /*func erteke lenyegtelen, majd felulirjuk*/
 	delete_called = TRUE;
 }
 
@@ -502,7 +502,7 @@ void operator delete[](void* p, size_t) THROW_NOTHING {
 	memtrace::traced_delete(p, FDELETEARR);
 }
 
-/* Visual C++ 2012 miatt kell, mert háklis, hogy nincs megfelelõ delete, bár senki sem használja */
+/* Visual C++ 2012 miatt kell, mert haklis, hogy nincs megfelelõ delete, bar senki sem hasznalja */
 void operator delete(void* p, int, const char*) THROW_NOTHING {
 	memtrace::traced_delete(p, FDELETE);
 }

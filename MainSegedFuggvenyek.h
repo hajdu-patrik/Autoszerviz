@@ -1,7 +1,7 @@
 /**
 *	\file MainSegedFuggvenyek.h
-*   Ez a fájl a program alapvetõ funkcióinak tesztelését végzi.
-*	A modul ellenõrzi, hogy a rendszer fõbb képességei helyesen mûködnek, és segít a hibák kiszûrésében a fejlesztés során.
+*   Ez a fajl a program alapveto funkcioinak teszteleset vegzi.
+*	A modul ellenorzi, hogy a rendszer fobb kepessegei helyesen mukodnek, es segit a hibak kiszureseben a fejlesztes soran.
 */
 
 #ifndef MAINSEGEDFUGGVENYEK_H  
@@ -14,155 +14,155 @@
 
 struct MainSegedFuggvenyei {
     /*-------------------------------------------
-            Menü rendszerhez
+            Menu rendszerhez
     -------------------------------------------*/
-    /// "Autoszerviz" felirat ASCII art kiírása a konzolra, tabulátorral behúzva
+    /// "Autoszerviz" felirat ASCII art kiirasa a konzolra, tabulatorral behuzva
     void kiirASCII1();
 
-    /// "Arrivederci" felirat ASCII art kiírása a konzolra, tabulátorral behúzva
+    /// "Arrivederci" felirat ASCII art kiirasa a konzolra, tabulatorral behuzva
     void kiirASCII2();
 
-    /// A program által biztosított funkciók használatához szükséges menü opciók kiírása
+    /// A program altal biztositott funkciok hasznalatahoz szukseges menu opciok kiirasa
     void menuOpciok();
 
 
 
     /*-------------------------------------------
-                  UI élményhez
+                  UI elmenyhez
     -------------------------------------------*/
-    /// Megvárja, amíg a felhasználó lenyomja az Enter billentyût.
-    /// Általában hibaüzenetek vagy információk megjelenítése után használatos, hogy a felhasználónak legyen ideje elolvasni azokat.
-    /// @param o - A kiírandó üzenet.
+    /// Megvarja, amig a felhasznalo lenyomja az Enter billentyut.
+    /// altalaban hibauzenetek vagy informaciok megjelenitese utan hasznalatos, hogy a felhasznalonak legyen ideje elolvasni azokat.
+    /// @param o - A kiirando uzenet.
     void varakozasEnterre(const std::string& o);
 
-    /// Törli a konzol képernyõt
+    /// Torli a konzol kepernyot
     void torolKonzol();
 
-    /// Meghívja a torolKonzol-t majd kiírja a "Szerviz Nyilvántartó Rendszer" feliratot ASCII art formátumban
+    /// Meghivja a torolKonzol-t majd kiirja a "Szerviz Nyilvantarto Rendszer" feliratot ASCII art formatumban
     void toroloMajdCim();
 
-    /// Varakozik az Enter billentyû lenyomására, majd törli a konzolt
+    /// Varakozik az Enter billentyu lenyomasara, majd torli a konzolt
     void varakozasTorol();
 
 
 
     /*-------------------------------------------
-                   Segéd
+                   Seged
     -------------------------------------------*/
-    /// Ellenõrzi, hogy a megadott rendszám formátuma helyes-e.
-    /// @param rendszam - A vizsgált rendszám.
-    /// @return - true, ha a formátum helytelen, false, ha helyes.
+    /// Ellenorzi, hogy a megadott rendszam formatuma helyes-e.
+    /// @param rendszam - A vizsgalt rendszam.
+    /// @return - true, ha a formatum helytelen, false, ha helyes.
     bool helyesRendszamFormatum(const std::string& rendszam);
 
-    /// Ellenõrzi, hogy a megadott fájl létezik-e.
-    /// @param f - A vizsgált fájl neve (elérési útvonal is lehet).
-    /// @return - true, ha a fájl létezik, különben false.
+    /// Ellenorzi, hogy a megadott fajl letezik-e.
+    /// @param f - A vizsgalt fajl neve (eleresi utvonal is lehet).
+    /// @return - true, ha a fajl letezik, kulonben false.
     bool letezikAFajl(const std::string& f);
 
-    /// Bekéri a felhasználótól egy dátum (év, hónap, nap) értékeit.
-    /// Addig ismétli a bekérést, amíg helyes formátumú (érvényes tartományban lévõ) dátumot nem kap.
-    /// @return - A bekért dátum `Datum` típusban.
+    /// Bekeri a felhasznalotol egy datum (ev, honap, nap) ertekeit.
+    /// Addig ismetli a bekerest, amig helyes formatumu (ervenyes tartomanyban levo) datumot nem kap.
+    /// @return - A bekert datum `Datum` tipusban.
     Datum bekerDatum();
 
-    /// Bekér egy sort a felhasználótól, miután kiír egy megadott üzenetet.
-    /// @param t - A felhasználónak megjelenítendõ üzenet.
-    /// @return - A felhasználó által beírt sor.
+    /// Beker egy sort a felhasznalotol, miutan kiir egy megadott uzenetet.
+    /// @param t - A felhasznalonak megjelenitendo uzenet.
+    /// @return - A felhasznalo altal beirt sor.
     std::string sorBeker(const std::string& t);
 
-    /// Lefuttat egy adott mûveletet, majd a visszatérési értéktõl függõen kiírja a megfelelõ üzenetet.
-    /// @param muvelet - A végrehajtandó függvény.
-    /// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
-    /// @param sikerUzenet - Az üzenet, ha a mûvelet sikeres.
+    /// Lefuttat egy adott muveletet, majd a visszateresi ertektol fuggoen kiirja a megfelelo uzenetet.
+    /// @param muvelet - A vegrehajtando fuggveny.
+    /// @param aDB - A szerviz nyilvantarto rendszer, amely tartalmazza az ugyfeleket es autokat.
+    /// @param sikerUzenet - Az uzenet, ha a muvelet sikeres.
     void muveletFuttato(MuveletAllapot(MainSegedFuggvenyei::* muvelet)(SzervizNyilvantartoRendszer&), SzervizNyilvantartoRendszer& aDB, const std::string& sikerUzenet);
 
-    /// Lefuttatja a fájlkezeléshez szükséges mûveletet, majd a visszatérési értéktõl függõen kiírja a megfelelõ üzenetet.
-    /// @param muvelet - A végrehajtandó függvény, amely fájlmûveletet végez.
-    /// @param aDB - A szerviz nyilvántartó rendszer.
-    /// @param tipus - Igaz (true) ha mentés, hamis (false) ha beolvasás.
-    /// @param sikerUzenet - Az üzenet, ha a mûvelet sikeres.
-    // Változtasd a függvény deklarációkat
+    /// Lefuttatja a fajlkezeleshez szukseges muveletet, majd a visszateresi ertektol fuggoen kiirja a megfelelo uzenetet.
+    /// @param muvelet - A vegrehajtando fuggveny, amely fajlmuveletet vegez.
+    /// @param aDB - A szerviz nyilvantarto rendszer.
+    /// @param tipus - Igaz (true) ha mentes, hamis (false) ha beolvasas.
+    /// @param sikerUzenet - Az uzenet, ha a muvelet sikeres.
+    // Valtoztasd a fuggveny deklaraciokat
     void fajlMuveletFuttato(MuveletAllapot(MainSegedFuggvenyei::* muvelet)(bool, SzervizNyilvantartoRendszer&), SzervizNyilvantartoRendszer& aDB, bool tipus, const std::string& sikerUzenet);
 
 
 
     /*-------------------------------------------
-               1. menüponthoz
+               1. menuponthoz
     -------------------------------------------*/
-    /// Listázza az ügyfeleket vagy az autókat a megadott adatbázisból.
-    /// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
-    /// @return - MuveletAllapot érték a mûvelet eredménye szerint.
+    /// Listazza az ugyfeleket vagy az autokat a megadott adatbazisbol.
+    /// @param aDB - A szerviz nyilvantarto rendszer, amely tartalmazza az ugyfeleket es autokat.
+    /// @return - MuveletAllapot ertek a muvelet eredmenye szerint.
     MuveletAllapot kiListazo(SzervizNyilvantartoRendszer& aDB);
 
 
 
     /*-------------------------------------------
-               2. menüponthoz
+               2. menuponthoz
     -------------------------------------------*/
-    /// Új ügyfél vagy autó rögzítése.
-    /// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
-    /// @return - MuveletAllapot érték a mûvelet eredménye szerint.
+    /// uj ugyfel vagy auto rogzitese.
+    /// @param aDB - A szerviz nyilvantarto rendszer, amely tartalmazza az ugyfeleket es autokat.
+    /// @return - MuveletAllapot ertek a muvelet eredmenye szerint.
     MuveletAllapot ugyfelAutoAdd(SzervizNyilvantartoRendszer& aDB);
 
 
 
     /*-------------------------------------------
-               3. menüponthoz
+               3. menuponthoz
     -------------------------------------------*/
-    /// Meglévõ ügyfél vagy autó frissitése.
-    /// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
-    /// @return - MuveletAllapot érték a mûvelet eredménye szerint.
+    /// Meglevo ugyfel vagy auto frissitese.
+    /// @param aDB - A szerviz nyilvantarto rendszer, amely tartalmazza az ugyfeleket es autokat.
+    /// @return - MuveletAllapot ertek a muvelet eredmenye szerint.
     MuveletAllapot ugyfelAutoFrissit(SzervizNyilvantartoRendszer& aDB);
 
 
 
     /*-------------------------------------------
-               4. menüponthoz
+               4. menuponthoz
     -------------------------------------------*/
-    /// A rendszerben lévõ ügyfél vagy autó törlésére szolgál.
-    /// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
-    /// @return - MuveletAllapot érték a mûvelet eredménye szerint.
+    /// A rendszerben levo ugyfel vagy auto torlesere szolgal.
+    /// @param aDB - A szerviz nyilvantarto rendszer, amely tartalmazza az ugyfeleket es autokat.
+    /// @return - MuveletAllapot ertek a muvelet eredmenye szerint.
     MuveletAllapot ugyfelAutoTorlo(SzervizNyilvantartoRendszer& aDB);
 
 
 
     /*-------------------------------------------
-               5. menüponthoz
+               5. menuponthoz
     -------------------------------------------*/
-    /// Keres egy ügyfelet a megadott név alapján.
-    /// @param aDB - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
-    /// @return - MuveletAllapot érték a mûvelet eredménye szerint.
+    /// Keres egy ugyfelet a megadott nev alapjan.
+    /// @param aDB - A szerviz nyilvantarto rendszer, amely tartalmazza az ugyfeleket es autokat.
+    /// @return - MuveletAllapot ertek a muvelet eredmenye szerint.
     MuveletAllapot ugyfelKereses(SzervizNyilvantartoRendszer& aDB);
 
 
 
     /*-------------------------------------------
-               6. menüponthoz
+               6. menuponthoz
     -------------------------------------------*/
-    /// Keres egy autót a megadott rendszám alapján.
-    /// @param rendszer - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
-    /// @return - MuveletAllapot érték a mûvelet eredménye szerint.
+    /// Keres egy autot a megadott rendszam alapjan.
+    /// @param rendszer - A szerviz nyilvantarto rendszer, amely tartalmazza az ugyfeleket es autokat.
+    /// @return - MuveletAllapot ertek a muvelet eredmenye szerint.
     MuveletAllapot autoKereses(SzervizNyilvantartoRendszer& aDB);
 
 
 
     /*-------------------------------------------
-               7. menüponthoz
+               7. menuponthoz
     -------------------------------------------*/
-    /// Új szerviz mûvelet rögzítése egy autóhoz.
-    /// @param rendszer - A szerviz nyilvántartó rendszer, amely tartalmazza az ügyfeleket és autókat.
-    /// @return - MuveletAllapot érték a mûvelet eredménye szerint.
+    /// uj szerviz muvelet rogzitese egy autohoz.
+    /// @param rendszer - A szerviz nyilvantarto rendszer, amely tartalmazza az ugyfeleket es autokat.
+    /// @return - MuveletAllapot ertek a muvelet eredmenye szerint.
     MuveletAllapot ujSzervizMuvelet(SzervizNyilvantartoRendszer& aDB);
 
 
 
     /*-------------------------------------------
-               8.-9. menüponthoz
+               8.-9. menuponthoz
     -------------------------------------------*/
-    /// Fájlnév bekérése, formátumának és létezésének ellenõrzése.
-    /// Elfogadja az "exit" szót is, ami visszalépést jelent a fõmenübe.
-    /// @param mentesE - A függvény célját jelzõ kapcsoló (mentés vagy betöltés)
-    /// @param aDB - A szerviz adatbázis objektum referenciája
-    /// @return - MuveletAllapot érték a mûvelet eredménye szerint.
+    /// Fajlnev bekerese, formatumanak es letezesenek ellenorzese.
+    /// Elfogadja az "exit" szot is, ami visszalepest jelent a fomenube.
+    /// @param mentesE - A fuggveny celjat jelzo kapcsolo (mentes vagy betoltes)
+    /// @param aDB - A szerviz adatbazis objektum referenciaja
+    /// @return - MuveletAllapot ertek a muvelet eredmenye szerint.
     MuveletAllapot fajlHelyessegBiztosito(bool mentesE, SzervizNyilvantartoRendszer& aDB);
 
 #endif // MAINSEGEDFUGGVENYEK_H

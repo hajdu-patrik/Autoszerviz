@@ -4,40 +4,40 @@
 /**
  * \file gtest_lite.h  (v3/2019)
  *
- * Google gtest keretrendszerhez hasonló rendszer.
+ * Google gtest keretrendszerhez hasonlo rendszer.
  * Sz.I. 2015., 2016., 2017. (_Has_X)
  * Sz.I. 2018 (template), ENDM, ENDMsg, nullptr_t
  * Sz.I. 2019 singleton
  * Sz.I. 2021 ASSERT.., STRCASE...
  * Sz.I. 2021 EXPEXT_REGEXP
  *
- * A tesztelés legalapvetõbb funkcióit támogató függvények és makrók.
- * Nem szálbiztos megvalósítás.
+ * A teszteles legalapvetõbb funkcioit tamogato fuggvenyek es makrok.
+ * Nem szalbiztos megvalositas.
  *
  *
- * Szabadon felhasználható, bõvíthetõ.
+ * Szabadon felhasznalhato, bõvithetõ.
  *
- * Használati példa:
- *   Teszteljük az f(x)=2*x függvényt:
+ * Hasznalati pelda:
+ *   Teszteljuk az f(x)=2*x fuggvenyt:
  * int f(int x) { return 2*x; }
  *
  * int main() {
  *   TEST(TeszEsetNeve, TesztNeve)
  *     EXPECT_EQ(0, f(0));
- *     EXPECT_EQ(4, f(2)) << "A függvény hibás eredményt adott" << std::endl;
+ *     EXPECT_EQ(4, f(2)) << "A fuggveny hibas eredmenyt adott" << std::endl;
  *     ...
  *   END
  * ...
- * // Fatális hiba esetén a teszteset nem fut tovább. Ezek az ASSERT... makrók.
- * // Nem lehet a kiírásukhoz további üzenetet fûzni. PL:
+ * // Fatalis hiba eseten a teszteset nem fut tovabb. Ezek az ASSERT... makrok.
+ * // Nem lehet a kiirasukhoz tovabbi uzenetet fûzni. PL:
  *   TEST(TeszEsetNeve, TesztNeve)
  *     ASSERT_NO_THROW(f(0));  // itt nem lehet << "duma"
- *     EXPECT_EQ(4, f(2)) << "A függvény hibás eredményt adott" << std::endl;
+ *     EXPECT_EQ(4, f(2)) << "A fuggveny hibas eredmenyt adott" << std::endl;
  *     ...
  *   END
  *  ...
  *
- * A mûködés részleteinek megértése szorgalmi feladat.
+ * A mûkodes reszleteinek megertese szorgalmi feladat.
  */
 
 #include <iostream>
@@ -56,136 +56,136 @@
 # include "memtrace.h"
 #endif
 
- // Két makró az egyes tesztek elé és mögé:
- // A két makró a kapcsos zárójelekkel egy új blokkot hoz létre, amiben
- // a nevek lokálisak, így elkerülhetõ a névütközés.
+ // Ket makro az egyes tesztek ele es moge:
+ // A ket makro a kapcsos zarojelekkel egy uj blokkot hoz letre, amiben
+ // a nevek lokalisak, igy elkerulhetõ a nevutkozes.
 
- /// Teszt kezdete. A makró paraméterezése hasonlít a gtest
- /// paraméterezéséhez. Így az itt elkészített testek könnyen átemelhetõk
+ /// Teszt kezdete. A makro parameterezese hasonlit a gtest
+ /// parameterezesehez. igy az itt elkeszitett testek konnyen atemelhetõk
  /// a gtest keretrendszerbe.
- /// @param C - teszteset neve (csak a gtest kompatibilitás miatt van külön neve az eseteknek)
+ /// @param C - teszteset neve (csak a gtest kompatibilitas miatt van kulon neve az eseteknek)
  /// @param N - teszt neve
 #define TEST(C, N) do { gtest_lite::test.begin(#C"."#N);
 
-/// Teszteset vége.
+/// Teszteset vege.
 #define END gtest_lite::test.end(); } while (false);
 
-/// Teszteset vége allokált blokkok számának összehasonlításával
-/// Ez az ellenõrzés nem bomba biztos.
+/// Teszteset vege allokalt blokkok szamanak osszehasonlitasaval
+/// Ez az ellenõrzes nem bomba biztos.
 #define ENDM gtest_lite::test.end(true); } while (false);
 
-/// Teszteset vége allokált blokkok számának összehasonlításával
-/// Ez az ellenõrzés nem bomba biztos.
-/// Ha hiba van kiírja az üzenetet.
+/// Teszteset vege allokalt blokkok szamanak osszehasonlitasaval
+/// Ez az ellenõrzes nem bomba biztos.
+/// Ha hiba van kiirja az uzenetet.
 #define ENDMsg(t) gtest_lite::test.end(true) << t << std::endl; } while (false);
 
-// Eredmények vizsgálatát segítõ makrók.
-// A paraméterek és a funkciók a gtest keretrendszerrel megegyeznek.
+// Eredmenyek vizsgalatat segitõ makrok.
+// A parameterek es a funkciok a gtest keretrendszerrel megegyeznek.
 
-/// Sikeres teszt makrója
+/// Sikeres teszt makroja
 #define SUCCEED() gtest_lite::test.expect(true, __FILE__, __LINE__, "SUCCEED()", true)
 
-/// Sikertelen teszt fatális hiba makrója
+/// Sikertelen teszt fatalis hiba makroja
 #define FAIL() gtest_lite::test.expect(false, __FILE__, __LINE__, "FAIL()", true)
 
-/// Sikertelen teszt makrója
+/// Sikertelen teszt makroja
 #define ADD_FAILURE() gtest_lite::test.expect(false, __FILE__, __LINE__, "ADD_FAILURE()", true)
 
-/// Azonosságot elváró makró
+/// Azonossagot elvaro makro
 #define EXPECT_EQ(expected, actual) gtest_lite::EXPECT_(expected, actual, gtest_lite::eq, __FILE__, __LINE__, "EXPECT_EQ(" #expected ", " #actual ")" )
 
-/// Eltérést elváró makró
+/// Elterest elvaro makro
 #define EXPECT_NE(expected, actual) gtest_lite::EXPECT_(expected, actual, gtest_lite::ne, __FILE__, __LINE__, "EXPECT_NE(" #expected ", " #actual ")", "etalon" )
 
-/// Kisebb, vagy egyenlõ relációt elváró makró
+/// Kisebb, vagy egyenlõ relaciot elvaro makro
 #define EXPECT_LE(expected, actual) gtest_lite::EXPECT_(expected, actual, gtest_lite::le, __FILE__, __LINE__, "EXPECT_LE(" #expected ", " #actual ")", "etalon" )
 
-/// Kisebb, mint relációt elváró makró
+/// Kisebb, mint relaciot elvaro makro
 #define EXPECT_LT(expected, actual) gtest_lite::EXPECT_(expected, actual, gtest_lite::lt, __FILE__, __LINE__, "EXPECT_LT(" #expected ", " #actual ")", "etalon" )
 
-/// Nagyobb, vagy egyenlõ relációt elváró makró
+/// Nagyobb, vagy egyenlõ relaciot elvaro makro
 #define EXPECT_GE(expected, actual) gtest_lite::EXPECT_(expected, actual, gtest_lite::ge, __FILE__, __LINE__, "EXPECT_GE(" #expected ", " #actual ")", "etalon" )
 
-/// Nagyobb, mint relációt elváró makró
+/// Nagyobb, mint relaciot elvaro makro
 #define EXPECT_GT(expected, actual) gtest_lite::EXPECT_(expected, actual, gtest_lite::gt, __FILE__, __LINE__, "EXPECT_GT(" #expected ", " #actual ")", "etalon" )
 
-/// Igaz értéket elváró makró
+/// Igaz erteket elvaro makro
 #define EXPECT_TRUE(actual)  gtest_lite::EXPECT_(true, actual,  gtest_lite::eq, __FILE__, __LINE__, "EXPECT_TRUE(" #actual ")" )
 
-/// Hamis értéket elváró makró
+/// Hamis erteket elvaro makro
 #define EXPECT_FALSE(actual) gtest_lite::EXPECT_(false, actual, gtest_lite::eq, __FILE__, __LINE__, "EXPECT_FALSE(" #actual ")" )
 
-/// Valós számok azonosságát elváró makró
+/// Valos szamok azonossagat elvaro makro
 #define EXPECT_FLOAT_EQ(expected, actual)  gtest_lite::EXPECT_(expected, actual, gtest_lite::almostEQ, __FILE__, __LINE__, "EXPECT_FLOAT_EQ(" #expected ", " #actual ")" )
 
-/// Valós számok azonosságát elváró makró
+/// Valos szamok azonossagat elvaro makro
 #define EXPECT_DOUBLE_EQ(expected, actual) gtest_lite::EXPECT_(expected, actual, gtest_lite::almostEQ, __FILE__, __LINE__, "EXPECT_DOUBLE_EQ(" #expected ", " #actual ")" )
 
-/// C stringek (const char *) azonosságát tesztelõ makró
+/// C stringek (const char *) azonossagat tesztelõ makro
 #define EXPECT_STREQ(expected, actual) gtest_lite::EXPECTSTR(expected, actual, gtest_lite::eqstr, __FILE__, __LINE__, "EXPECT_STREQ(" #expected ", " #actual ")" )
 
-/// C stringek (const char *) eltéréset tesztelõ makró
+/// C stringek (const char *) eltereset tesztelõ makro
 #define EXPECT_STRNE(expected, actual) gtest_lite::EXPECTSTR(expected, actual, gtest_lite::nestr, __FILE__, __LINE__, "EXPECT_STRNE(" #expected ", " #actual ")", "etalon" )
 
-/// C stringek (const char *) azonosságát tesztelõ makró (kisbetû/nagybetû azonos)
+/// C stringek (const char *) azonossagat tesztelõ makro (kisbetû/nagybetû azonos)
 #define EXPECT_STRCASEEQ(expected, actual) gtest_lite::EXPECTSTR(expected, actual, gtest_lite::eqstrcase, __FILE__, __LINE__, "EXPECT_STRCASEEQ(" #expected ", " #actual ")" )
 
-/// C stringek (const char *) eltéréset tesztelõ makró (kisbetû/nagybetû azonos)
+/// C stringek (const char *) eltereset tesztelõ makro (kisbetû/nagybetû azonos)
 #define EXPECT_STRCASENE(expected, actual) gtest_lite::EXPECTSTR(expected, actual, gtest_lite::nestrcase, __FILE__, __LINE__, "EXPECT_STRCASENE(" #expected ", " #actual ")", "etalon" )
 
-/// Kivételt várunk
+/// Kivetelt varunk
 #define EXPECT_THROW(statement, exception_type) try { gtest_lite::test.tmp = false; statement; } \
     catch (exception_type) { gtest_lite::test.tmp = true; } \
     catch (...) { } \
     EXPECTTHROW(statement, "kivetelt dob.", "nem dobott '"#exception_type"' kivetelt.")
 
-/// Kivételt várunk
+/// Kivetelt varunk
 #define EXPECT_ANY_THROW(statement) try { gtest_lite::test.tmp = false; statement; } \
     catch (...) { gtest_lite::test.tmp = true; } \
     EXPECTTHROW(statement, "kivetelt dob.", "nem dobott kivetelt.")
 
-/// Nem várunk kivételt
+/// Nem varunk kivetelt
 #define EXPECT_NO_THROW(statement) try { gtest_lite::test.tmp = true; statement; } \
     catch (...) { gtest_lite::test.tmp = false; }\
     EXPECTTHROW(statement, "nem dob kivetelt.", "kivetelt dobott.")
 
-/// Nem várunk kivételt
+/// Nem varunk kivetelt
 #define ASSERT_NO_THROW(statement) try { gtest_lite::test.tmp = true; statement; } \
     catch (...) { gtest_lite::test.tmp = false; }\
     ASSERTTHROW(statement, "nem dob kivetelt.", "kivetelt dobott.")
 
-/// Kivételt várunk és továbbdobjuk -- ilyen nincs a gtest-ben
+/// Kivetelt varunk es tovabbdobjuk -- ilyen nincs a gtest-ben
 #define EXPECT_THROW_THROW(statement, exception_type) try { gtest_lite::test.tmp = false; statement; } \
     catch (exception_type) { gtest_lite::test.tmp = true; throw; } \
     EXPECTTHROW(statement, "kivetelt dob.", "nem dobott '"#exception_type"' kivetelt.")
 
-/// Környezeti változóhoz hasonlít -- ilyen nincs a gtest-ben
+/// Kornyezeti valtozohoz hasonlit -- ilyen nincs a gtest-ben
 #define EXPECT_ENVEQ(expected, actual) gtest_lite::EXPECTSTR(std::getenv(expected), actual, gtest_lite::eqstr, __FILE__, __LINE__, "EXPECT_ENVEQ(" #expected ", " #actual ")" )
 
-/// Környezeti változóhoz hasonlít -- ilyen nincs a gtest-ben (kisbetû/nagybetû azonos)
+/// Kornyezeti valtozohoz hasonlit -- ilyen nincs a gtest-ben (kisbetû/nagybetû azonos)
 #define EXPECT_ENVCASEEQ(expected, actual) gtest_lite::EXPECTSTR(std::getenv(expected), actual, gtest_lite::eqstrcase, __FILE__, __LINE__, "EXPECT_ENVCASEEQ(" #expected ", " #actual ")" )
 
 #if __cplusplus >= 201103L
-/// Reguláris kifejezés illesztése
+/// Regularis kifejezes illesztese
 # define EXPECT_REGEXP(expected, actual, match, err) gtest_lite::EXPECTREGEXP(expected, actual, match, err, __FILE__, __LINE__, "EXPECT_REGEXP(" #expected ", " #actual ", " #match ")" )
 #endif
 ////--------------------------------------------------------------------------------------------
-/// ASSERT típusú ellenõrzések. CSak 1-2 van megvalósítva. Nem ostream& -val térnek vissza !!!
-/// Kivételt várunk
+/// ASSERT tipusu ellenõrzesek. CSak 1-2 van megvalositva. Nem ostream& -val ternek vissza !!!
+/// Kivetelt varunk
 
-/// Azonosságot elváró makró
+/// Azonossagot elvaro makro
 #define ASSERT_EQ(expected, actual) gtest_lite::ASSERT_(expected, actual, gtest_lite::eq, "ASSER_EQ")
 
-/// Nem várunk kivételt
+/// Nem varunk kivetelt
 #define ASSERT_NO_THROW(statement) try { gtest_lite::test.tmp = true; statement; } \
     catch (...) { gtest_lite::test.tmp = false; }\
     ASSERTTHROW(statement, "nem dob kivetelt.", "kivetelt dobott.")
 
 
-/// Segédmakró egy adattag, vagy tagfüggvény létezésének tesztelésére futási idõben
-/// Ötlet:
+/// Segedmakro egy adattag, vagy tagfuggveny letezesenek tesztelesere futasi idõben
+/// otlet:
 /// https://cpptalk.wordpress.com/2009/09/12/substitution-failure-is-not-an-error-2
-/// Használat:
+/// Hasznalat:
 /// CREATE_Has_(size)
 /// ... if (Has_size<std::string>::member)...
 #define CREATE_Has_(X) \
@@ -198,11 +198,11 @@ template<typename T> struct _Has_##X {  \
     static bool const member = sizeof(f<Derived>(0)) == 2; \
 };
 
-/// Segédfüggvény egy publikus adattag, vagy tagfüggvény létezésének tesztelésére
-/// fordítási idõben
+/// Segedfuggveny egy publikus adattag, vagy tagfuggveny letezesenek tesztelesere
+/// forditasi idõben
 inline void hasMember(...) {}
 
-/// Segédsablon típuskonverzió futás közbeni ellenõrzésere
+/// Segedsablon tipuskonverzio futas kozbeni ellenõrzesere
 template <typename F, typename T>
 struct _Is_Types {
     template<typename D> static char(&f(D))[1];
@@ -211,11 +211,11 @@ struct _Is_Types {
 };
 
 /// -----------------------------------
-/// Belsõ megvalósításhoz tartozó makrók, és osztályok.
-/// Nem célszerû közvetlenül használni, vagy módosítani
+/// Belsõ megvalositashoz tartozo makrok, es osztalyok.
+/// Nem celszerû kozvetlenul hasznalni, vagy modositani
 /// -----------------------------------
 
-/// EXPECTTHROW: kivételkezelés
+/// EXPECTTHROW: kivetelkezeles
 #define EXPECTTHROW(statement, exp, act) gtest_lite::test.expect(gtest_lite::test.tmp, __FILE__, __LINE__, #statement) \
     << "** Az utasitas " << (act) \
     << "\n** Azt vartuk, hogy " << (exp) << std::endl
@@ -242,22 +242,22 @@ struct _Is_Types {
 #define GTEND(os)
 #endif // CPORTA
 
-/// gtest_lite: a keretrendszer függvényinek és objektumainak névtere
+/// gtest_lite: a keretrendszer fuggvenyinek es objektumainak nevtere
 namespace gtest_lite {
 
-    /// Tesztek állapotát tároló osztály.
-    /// Egyetlen egy statikus példány keletkezik, aminek a
-    /// destruktora a futás végén hívódik meg.
+    /// Tesztek allapotat tarolo osztaly.
+    /// Egyetlen egy statikus peldany keletkezik, aminek a
+    /// destruktora a futas vegen hivodik meg.
     struct Test {
-        int sum;            ///< tesztek számlálója
-        int failed;         ///< hibás tesztek
-        int ablocks;        ///< allokált blokkok száma
-        bool status;        ///< éppen futó teszt státusza
-        bool tmp;           ///< temp a kivételkezeléshez;
-        std::string name;   ///< éppen futó teszt neve
-        std::fstream null;  ///< nyelõ, ha nem kell kiírni semmit
+        int sum;            ///< tesztek szamlaloja
+        int failed;         ///< hibas tesztek
+        int ablocks;        ///< allokalt blokkok szama
+        bool status;        ///< eppen futo teszt statusza
+        bool tmp;           ///< temp a kivetelkezeleshez;
+        std::string name;   ///< eppen futo teszt neve
+        std::fstream null;  ///< nyelõ, ha nem kell kiirni semmit
         static Test& getTest() {
-            static Test instance;///< egyedüli (singleton) példány
+            static Test instance;///< egyeduli (singleton) peldany
             return instance;
         }
     private:    /// singleton minta miatt
@@ -276,7 +276,7 @@ namespace gtest_lite {
 #endif // CPORTA
             ++sum;
         }
-        /// Teszt vége
+        /// Teszt vege
         std::ostream& end(bool memchk = false) {
 #ifdef MEMTRACE
             if (memchk && ablocks != memtrace::allocated_blocks()) {
@@ -298,7 +298,7 @@ namespace gtest_lite {
 
         bool astatus() { return status; }
 
-        /// Eredményt adminisztráló tagfüggvény True a jó eset.
+        /// Eredmenyt adminisztralo tagfuggveny True a jo eset.
         std::ostream& expect(bool st, const char* file, int line, const char* expr, bool pr = false) {
             if (!st) {
                 ++failed;
@@ -323,11 +323,11 @@ namespace gtest_lite {
         }
     };
 
-    /// A statikus referencia minden fordítási egységben keletkezik, de
-    /// mindegyik egyetlen példányra fog hivatkozni a singleton minta miatt
+    /// A statikus referencia minden forditasi egysegben keletkezik, de
+    /// mindegyik egyetlen peldanyra fog hivatkozni a singleton minta miatt
     static Test& test = Test::getTest();
 
-    /// általános sablon a várt értékhez.
+    /// altalanos sablon a vart ertekhez.
     template <typename T1, typename T2>
     std::ostream& EXPECT_(T1 exp, T2 act, bool (*pred)(T1, T2), const char* file, int line,
         const char* expr, const char* lhs = "elvart", const char* rhs = "aktual") {
@@ -336,7 +336,7 @@ namespace gtest_lite {
             << "\n** " << rhs << ": " << std::boolalpha << act << std::endl;
     }
 
-    /// pointerre specializált sablon a várt értékhez.
+    /// pointerre specializalt sablon a vart ertekhez.
     template <typename T1, typename T2>
     std::ostream& EXPECT_(T1* exp, T2* act, bool (*pred)(T1*, T2*), const char* file, int line,
         const char* expr, const char* lhs = "elvart", const char* rhs = "aktual") {
@@ -346,7 +346,7 @@ namespace gtest_lite {
     }
 
 #if __cplusplus >= 201103L
-    /// nullptr-re specializált sablon a várt értékhez.
+    /// nullptr-re specializalt sablon a vart ertekhez.
     template <typename T1>
     std::ostream& EXPECT_(T1* exp, std::nullptr_t act, bool (*pred)(T1*, std::nullptr_t), const char* file, int line,
         const char* expr, const char* lhs = "elvart", const char* rhs = "aktual") {
@@ -356,8 +356,8 @@ namespace gtest_lite {
     }
 #endif
 
-    /// stringek összehasonlításához.
-    /// azért nem spec. mert a sima EQ-ra másként kell mûködnie.
+    /// stringek osszehasonlitasahoz.
+    /// azert nem spec. mert a sima EQ-ra maskent kell mûkodnie.
     inline
         std::ostream& EXPECTSTR(const char* exp, const char* act, bool (*pred)(const char*, const char*), const char* file, int line,
             const char* expr, const char* lhs = "elvart", const char* rhs = "aktual") {
@@ -367,7 +367,7 @@ namespace gtest_lite {
     }
 
 #if __cplusplus >= 201103L
-    /// regexp összehasonlításhoz.
+    /// regexp osszehasonlitashoz.
     template <typename E, typename S>
     int count_regexp(E exp, S str) {
         std::regex rexp(exp);
@@ -389,8 +389,8 @@ namespace gtest_lite {
     }
 #endif
 
-    /// segéd sablonok a relációkhoz.
-    /// azért nem STL (algorithm), mert csak a függvény lehet, hogy menjen a deduckció
+    /// seged sablonok a relaciokhoz.
+    /// azert nem STL (algorithm), mert csak a fuggveny lehet, hogy menjen a deduckcio
     template <typename T1, typename T2>
     bool eq(T1 a, T2 b) { return a == b; }
 
@@ -436,14 +436,14 @@ namespace gtest_lite {
     template <typename T1, typename T2>
     bool gt(T1 a, T2 b) { return a > b; }
 
-    /// Segédsablon valós számok összehasonlításához
-    /// Nem bombabiztos, de nekünk most jó lesz
-    /// Elméleti hátér:
+    /// Segedsablon valos szamok osszehasonlitasahoz
+    /// Nem bombabiztos, de nekunk most jo lesz
+    /// Elmeleti hater:
     /// http://www.cygnus-software.com/papers/comparingfloats/comparingfloats.htm
     template <typename T>
     bool almostEQ(T a, T  b) {
-        // eps: ha a relatív, vagy abszolút hiba ettõl kisebb, akkor elfogadjuk
-        T eps = 10 * std::numeric_limits<T>::epsilon(); // 10-szer a legkisebb érték
+        // eps: ha a relativ, vagy abszolut hiba ettõl kisebb, akkor elfogadjuk
+        T eps = 10 * std::numeric_limits<T>::epsilon(); // 10-szer a legkisebb ertek
         if (a == b) return true;
         if (fabs(a - b) < eps)
             return true;

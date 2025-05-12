@@ -1,11 +1,11 @@
 /**
 *   \file Ugyfel.h
-*   Az Ugyfel(et) leíró osztály deklarációja és tagfüggvényeinek inline megvalósítása.
+*   Az Ugyfel(et) leiro osztaly deklaracioja es tagfuggvenyeinek inline megvalositasa.
 *
-*   Az osztály célja, hogy reprezentálja egy autószerviz ügyfeleit,
-*   beleértve a nevüket, elérhetõségeiket.
+*   Az osztaly celja, hogy reprezentalja egy autoszerviz ugyfeleit,
+*   beleertve a nevuket, elerhetosegeiket.
 *
-*   Az osztályban szereplõ összes std::string tipusú adattag feltételezi, hogy nem kell ékezetes betûket kezelnie.
+*   Az osztalyban szereplo osszes std::string tipusu adattag feltetelezi, hogy nem kell ekezetes betuket kezelnie.
 */
 
 #ifndef UGYFEL_H
@@ -15,24 +15,24 @@
 #include <iostream>
 
 class Ugyfel {
-    std::string nev;            ///< Az ügyfél neve
-    std::string telefonszam;    ///< Az ügyfél telefonszáma
-    std::string email;          ///< Az ügyfél e-mail címe
+    std::string nev;            ///< Az ugyfel neve
+    std::string telefonszam;    ///< Az ugyfel telefonszama
+    std::string email;          ///< Az ugyfel e-mail cime
 public:
     /*-------------------------------------------
-            Konstruktorok és destruktor
+            Konstruktorok es destruktor
     -------------------------------------------*/
-    /// Alapértelmezett konstruktor
+    /// Alapertelmezett konstruktor
     Ugyfel();
 
-    /// Paraméteres konstruktor.
-    /// @param n - Az ügyfél neve
-    /// @param t - Az ügyfél telefonszáma
-    /// @param e - Az ügyfél e-mail címe
+    /// Parameteres konstruktor.
+    /// @param n - Az ugyfel neve
+    /// @param t - Az ugyfel telefonszama
+    /// @param e - Az ugyfel e-mail cime
     Ugyfel(const std::string& n, const std::string& t, const std::string& e);
 
-    /// Másoló konstruktor
-    /// @param u - másolandó Karbantartas objektum
+    /// Masolo konstruktor
+    /// @param u - masolando Karbantartas objektum
     Ugyfel(const Ugyfel& u);
 
     /// Destruktor
@@ -41,11 +41,11 @@ public:
 
 
     /*-------------------------------------------
-                    Operátorok
+                    Operatorok
     -------------------------------------------*/
-    /// Értékadó operátor
-    /// @param u - másolandó Vizsga objektum
-    /// @return - Az aktuális objektum referenciája
+    /// ertekado operator
+    /// @param u - masolando Vizsga objektum
+    /// @return - Az aktualis objektum referenciaja
     Ugyfel& operator=(const Ugyfel& u);
 
 
@@ -53,16 +53,16 @@ public:
     /*-------------------------------------------
                      Getterek
     -------------------------------------------*/
-    /// Az ügyfél nevének lekérdezése.
-    /// @return - Név.
+    /// Az ugyfel nevenek lekerdezese.
+    /// @return - Nev.
     const std::string& getNev() const;
 
-    /// Az ügyfél telefonszámának lekérdezése.
-    /// @return - Telefonszám.
+    /// Az ugyfel telefonszamanak lekerdezese.
+    /// @return - Telefonszam.
     const std::string& getTelefonszam() const;
 
-    /// Az ügyfél e-mail címének lekérdezése.
-    /// @return - E-mail cím.
+    /// Az ugyfel e-mail cimenek lekerdezese.
+    /// @return - E-mail cim.
     const std::string& getEmail() const;
 
 
@@ -70,39 +70,39 @@ public:
     /*-------------------------------------------
                     Setterek
     -------------------------------------------*/
-    /// Az ügyfél nevének beállítása.
-    /// @param n - Az új név.
+    /// Az ugyfel nevenek beallitasa.
+    /// @param n - Az uj nev.
     void setNev(const std::string& n);
 
-    /// Az ügyfél telefonszámának beállítása.
-    /// @param t - Az új telefonszám.
+    /// Az ugyfel telefonszamanak beallitasa.
+    /// @param t - Az uj telefonszam.
     void setTel(const std::string& t);
 
-    /// Az ügyfél e-mail címének beállítása.
-    /// @param e - Az új e-mail cím.
+    /// Az ugyfel e-mail cimenek beallitasa.
+    /// @param e - Az uj e-mail cim.
     void setEmail(const std::string& e);
 
 
 
     /*-------------------------------------------
-                Fontos tagmûveletek
+                Fontos tagmuveletek
     -------------------------------------------*/
-    /// Másoló függvény (virtuális, tisztán absztrakt)
-    /// @return - új példány
+    /// Masolo fuggveny (virtualis, tisztan absztrakt)
+    /// @return - uj peldany
     virtual Ugyfel* clone() const;
 
-    /// Kiírja az ügyfél adatait az adott ostream-re.
+    /// Kiirja az ugyfel adatait az adott ostream-re.
     /// @param os - A kimeneti adatfolyam.
-    /// @return - Az ostream referenciája (láncoláshoz).
+    /// @return - Az ostream referenciaja (lancolashoz).
     void kiir(std::ostream& os) const;
 };
 /*-------------------------------------------
-            Globális operátorok
+            Globalis operatorok
 -------------------------------------------*/
-/// Kimeneti operátor Datum objektumhoz
+/// Kimeneti operator Datum objektumhoz
 /// @param os - kimeneti stream
-/// @param u - kiírandó Ugyfel objektum
-/// @return - módosított kimeneti stream
+/// @param u - kiirando Ugyfel objektum
+/// @return - modositott kimeneti stream
 std::ostream& operator<<(std::ostream& os, const Ugyfel& u);
 
 #endif // UGYFEL_H

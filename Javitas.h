@@ -1,7 +1,7 @@
 ﻿/**
 *   \file Javitas.h
-*   A Javitas(t) leíró osztály deklarációja és tagfüggvényeinek inline megvalósítása.
-*   Ez az osztály a VegzettMuvelet osztályból származik, és a javítási műveletek adatait tárolja.
+*   A Javitas(t) leiro osztaly deklaracioja es tagfuggvenyeinek inline megvalositasa.
+*   Ez az osztaly a VegzettMuvelet osztalybol szarmazik, es a javitasi muveletek adatait tarolja.
 */
 
 #ifndef JAVITAS_H
@@ -14,31 +14,31 @@
 class Javitas : public VegzettMuvelet {
 public:
     /*-------------------------------------------
-            Konstruktorok és destruktor
+            Konstruktorok es destruktor
     -------------------------------------------*/
-    /// Alapértelmezett konstruktor
+    /// Alapertelmezett konstruktor
     Javitas() : VegzettMuvelet() {}
 
-    /// Paraméteres konstruktor
-    /// @param m - művelet megnevezése
-    /// @param d - dátum
-    /// @param a - ár
-    /// @param k - aktuális km óra állás
+    /// Parameteres konstruktor
+    /// @param m - muvelet megnevezese
+    /// @param d - datum
+    /// @param a - ar
+    /// @param k - aktualis km ora allas
     Javitas(const std::string& m, const Datum& d, int a, int k) : VegzettMuvelet(m, d, a, k) {}
 
-    /// Másoló konstruktor
-    /// @param j - másolandó Javitas objektum
+    /// Masolo konstruktor
+    /// @param j - masolando Javitas objektum
     Javitas(const Javitas& j) : VegzettMuvelet(j.getMuvelet(), j.getDatum(), j.getAr(), j.getAktKmOra()) {}
 
     /// Destruktor
     ~Javitas() {}
 
     /*-------------------------------------------
-                    Operátorok
+                    Operatorok
     -------------------------------------------*/
-    /// Értékadó operátor
-    /// @param j - másolandó Javitas objektum
-	/// @return - Az aktuális objektum referenciája
+    /// ertekado operator
+    /// @param j - masolando Javitas objektum
+	/// @return - Az aktualis objektum referenciaja
     Javitas& operator=(const Javitas& j) {
         if (this != &j) {
             setMuvelet(j.getMuvelet());
@@ -50,15 +50,15 @@ public:
     }
 
     /*-------------------------------------------
-    Tiszta absztrakt függvények felüldefiniálása
+    Tiszta absztrakt fuggvenyek feluldefinialasa
     -------------------------------------------*/
-    /// Másoló függvény (virtuális, tisztán absztrakt)
-    /// @return - új példány
+    /// Masolo fuggveny (virtualis, tisztan absztrakt)
+    /// @return - uj peldany
     VegzettMuvelet* clone() const override {
         return new Javitas(*this);
     }
 
-    /// Kiíró függvény felüldefiniálása
+    /// Kiiro fuggveny feluldefinialasa
     /// @param os - kimeneti stream
     void kiir(std::ostream& os) const override {
         os << "\tJavitas: " << getMuvelet()

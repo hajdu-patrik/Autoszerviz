@@ -1,11 +1,7 @@
 /**
  *  \file Applikacio.cpp
- *  Ez a fájl amely bemutatja a rendszer alapvetõ mûködését és fõ funkcióit.
+ *  Ez a fajl amely bemutatja a rendszer alapveto mukodeset es fo funkcioit.
  */
-
-#define MEMTRACE
-#include "Memtrace.h"
-#include "Gtest_lite.h"
 
 #include <sstream>
 
@@ -17,7 +13,7 @@
 void Applikacio::applikacio() {
     SzervizNyilvantartoRendszer autoszervizAdatbazis;
 
-    // Fájlok betöltése, hogy teszt adatokkal induljon a program amely elõsegíti a tesztelést és a hibakeresést
+    // Fajlok betoltese, hogy teszt adatokkal induljon a program amely elosegiti a tesztelest es a hibakeresest
     if (!tesztDBLetrehozas(autoszervizAdatbazis)) return;
 
     int valasztottMenu;

@@ -8,9 +8,15 @@
 #define TESZT_H
 
 /// Ellenorzi, hogy a megadott fajl letezik-e.
-/// @param f - A vizsgált fájl neve (elérési útvonal is lehet).
-/// @return - true, ha a fájl létezik, különben false.
+/// @param f - A vizsgalt fajl neve (eleresi utvonal is lehet).
+/// @return - true, ha a fajl letezik, kulonben false.
 bool tesztDBLetrehozas(SzervizNyilvantartoRendszer& aDB);
+
+/// A megadott int erteket unsigned int-re konvertalja.
+unsigned int fromIntToUnsigned(int x);
+
+/// A megadott size_t erteket unsigned int-re konvertalja.
+unsigned int fromSizetToUnsigned(size_t x);
 
 /// A tesztelesi funkciok futtatasara szolgalo fuggveny.
 void tesztek();

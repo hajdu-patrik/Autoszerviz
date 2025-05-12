@@ -1,9 +1,8 @@
 ﻿/**
 *   \file SzervizNyilvantartoRendszer.cpp
-*   A SzervizNyilvantartoRendszer osztály tagfüggvényeinek megvalósítása.
+*   A SzervizNyilvantartoRendszer osztaly tagfuggvenyeinek megvalositasa.
 */
 
-#define MEMTRACE
 #include "Memtrace.h"
 
 #include <fstream>
@@ -19,22 +18,22 @@
 #include "Javitas.h"
 
 /*-------------------------------------------
-		Konstruktorok és destruktor
+		Konstruktorok es destruktor
 -------------------------------------------*/
-/// Alapértelmezett konstruktor.
-/// Üres vektort hoz létre, előre lefoglalt kapacitással.
+/// Alapertelmezett konstruktor.
+/// ures vektort hoz letre, elore lefoglalt kapacitassal.
 SzervizNyilvantartoRendszer::SzervizNyilvantartoRendszer() : autok(), ugyfelek() {}
 
-/// Paraméteres konstruktor
-/// @param a - Az autó példány
-/// @param u - Az ügyfél példány
+/// Parameteres konstruktor
+/// @param a - Az auto peldany
+/// @param u - Az ugyfel peldany
 SzervizNyilvantartoRendszer::SzervizNyilvantartoRendszer(const Auto& a, const Ugyfel& u) {
 	autok.push_back(a);
 	ugyfelek.push_back(u);
 }
 
-/// Másoló konstruktor.
-/// @param v - Másolandó SzervizNyilvantartoRendszer példány
+/// Masolo konstruktor.
+/// @param v - Masolando SzervizNyilvantartoRendszer peldany
 SzervizNyilvantartoRendszer::SzervizNyilvantartoRendszer(const SzervizNyilvantartoRendszer& v) {
 	for (size_t i = 0; i < v.autok.size(); i++)
 		autok.push_back(v.autok.at(i));
@@ -43,7 +42,7 @@ SzervizNyilvantartoRendszer::SzervizNyilvantartoRendszer(const SzervizNyilvantar
 }
 
 /// Destruktor.
-/// Ez jelzi, hogy nem kell semmi egyedi a destruktorba, mert a tagok destruktora magától elintézi.
+/// Ez jelzi, hogy nem kell semmi egyedi a destruktorba, mert a tagok destruktora magatol elintezi.
 SzervizNyilvantartoRendszer::~SzervizNyilvantartoRendszer() = default;
 
 
@@ -51,26 +50,26 @@ SzervizNyilvantartoRendszer::~SzervizNyilvantartoRendszer() = default;
 /*-------------------------------------------
 				Getter
 -------------------------------------------*/
-/// Visszaadja az összes autó objektumot.
-/// @return - Egy Vector<Auto> példány, amely az összes jelenleg nyilvántartott autót tartalmazza.
+/// Visszaadja az osszes auto objektumot.
+/// @return - Egy Vector<Auto> peldany, amely az osszes jelenleg nyilvantartott autot tartalmazza.
 Vector<Auto>& SzervizNyilvantartoRendszer::getAutok() {
 	return autok;
 }
 
-/// Visszaadja az összes auto objektumot (const változat).
-/// @return - Egy const Vector<Auto> példány, amely az összes jelenleg nyilvántartott autott tartalmazza.
+/// Visszaadja az osszes auto objektumot (const valtozat).
+/// @return - Egy const Vector<Auto> peldany, amely az osszes jelenleg nyilvantartott autott tartalmazza.
 const Vector<Auto>& SzervizNyilvantartoRendszer::getAutok() const {
 	return autok;
 }
 
-/// Visszaadja az összes ügyfél objektumot.
-/// @return - Egy Vector<Ugyfel> példány, amely az összes jelenleg nyilvántartott ügyfelet tartalmazza.
+/// Visszaadja az osszes ugyfel objektumot.
+/// @return - Egy Vector<Ugyfel> peldany, amely az osszes jelenleg nyilvantartott ugyfelet tartalmazza.
 Vector<Ugyfel>& SzervizNyilvantartoRendszer::getUgyfelek() {
 	return ugyfelek;
 }
 
-/// Visszaadja az összes ügyfél objektumot (const változat).
-/// @return - Egy const Vector<Ugyfel> példány, amely az összes jelenleg nyilvántartott ügyfelet tartalmazza.
+/// Visszaadja az osszes ugyfel objektumot (const valtozat).
+/// @return - Egy const Vector<Ugyfel> peldany, amely az osszes jelenleg nyilvantartott ugyfelet tartalmazza.
 const Vector<Ugyfel>& SzervizNyilvantartoRendszer::getUgyfelek() const {
 	return ugyfelek;
 }
@@ -78,11 +77,11 @@ const Vector<Ugyfel>& SzervizNyilvantartoRendszer::getUgyfelek() const {
 
 
 /*-------------------------------------------
-				Bővítő tagfüggvények
+				Bovito tagfuggvenyek
 -------------------------------------------*/
-/// Új autó hozzáadása az adatbázishoz.
-/// @param a - Az új autó példány.
-/// @return - True, ha az autó sikeresen hozzáadva, false, ha már létezik.
+/// uj auto hozzaadasa az adatbazishoz.
+/// @param a - Az uj auto peldany.
+/// @return - True, ha az auto sikeresen hozzaadva, false, ha mar letezik.
 bool SzervizNyilvantartoRendszer::ujAuto(const Auto& a) {
 	if (!vanAuto(a.getRendszam())) {
 		autok.push_back(a);
@@ -92,9 +91,9 @@ bool SzervizNyilvantartoRendszer::ujAuto(const Auto& a) {
 }
 
 
-/// Új ügyfél hozzáadása az adatbázishoz.
-/// @param u - Az új ügyfél példány.
-/// @return - True, ha az ügyfél sikeresen hozzáadva, false, ha már létezik.
+/// uj ugyfel hozzaadasa az adatbazishoz.
+/// @param u - Az uj ugyfel peldany.
+/// @return - True, ha az ugyfel sikeresen hozzaadva, false, ha mar letezik.
 bool SzervizNyilvantartoRendszer::ujUgyfel(const Ugyfel& u) {
 	if (!vanUgyfel(u.getNev())) {
 		ugyfelek.push_back(u);
@@ -106,12 +105,12 @@ bool SzervizNyilvantartoRendszer::ujUgyfel(const Ugyfel& u) {
 
 
 /*-------------------------------------------
-			Frissítő tagfüggvények
+			Frissito tagfuggvenyek
 -------------------------------------------*/
-/// Egy autó adatainak frissítése a rendszeren belül.
-/// Ha a rendszeren belül már létezik az autó (rendszám alapján), akkor az adatai frissülnek.
-/// @param a - Az autó új adatai.
-/// @return - True, ha az autó sikeresen frissítve lett, false, ha nem található.
+/// Egy auto adatainak frissitese a rendszeren belul.
+/// Ha a rendszeren belul mar letezik az auto (rendszam alapjan), akkor az adatai frissulnek.
+/// @param a - Az auto uj adatai.
+/// @return - True, ha az auto sikeresen frissitve lett, false, ha nem talalhato.
 bool SzervizNyilvantartoRendszer::frissitAuto(const Auto& a) {
 	for (auto& autoRef : autok) {
 		if (autoRef.getRendszam() == a.getRendszam()) {
@@ -122,10 +121,10 @@ bool SzervizNyilvantartoRendszer::frissitAuto(const Auto& a) {
 	return false;
 }
 
-/// Egy ügyfél adatainak frissítése a rendszeren belül.
-/// Ha a rendszeren belül már létezik az ügyfél (név alapján), akkor az adatai frissülnek.
-/// @param u - Az ügyfél új adatai.
-/// @return - True, ha az ügyfél sikeresen frissítve lett, false, ha nem található.
+/// Egy ugyfel adatainak frissitese a rendszeren belul.
+/// Ha a rendszeren belul mar letezik az ugyfel (nev alapjan), akkor az adatai frissulnek.
+/// @param u - Az ugyfel uj adatai.
+/// @return - True, ha az ugyfel sikeresen frissitve lett, false, ha nem talalhato.
 bool SzervizNyilvantartoRendszer::frissitUgyfel(const Ugyfel& u) {
 	for (auto& ugyfelRef : ugyfelek) {
 		if (ugyfelRef.getNev() == u.getNev()) {
@@ -139,11 +138,11 @@ bool SzervizNyilvantartoRendszer::frissitUgyfel(const Ugyfel& u) {
 
 
 /*-------------------------------------------
-			Törlő tagfüggvények
+			Torlo tagfuggvenyek
 -------------------------------------------*/
-/// Egy autó törlése rendszám alapján.
-/// @param r - A törlendő autó rendszáma.
-/// @return - True, ha az autó törölve lett, false, ha nem található.
+/// Egy auto torlese rendszam alapjan.
+/// @param r - A torlendo auto rendszama.
+/// @return - True, ha az auto torolve lett, false, ha nem talalhato.
 bool SzervizNyilvantartoRendszer::torolAuto(const std::string& r) {
 	for (auto it = autok.begin(); it != autok.end(); it++) {
 		if (it->getRendszam() == r) {
@@ -154,13 +153,13 @@ bool SzervizNyilvantartoRendszer::torolAuto(const std::string& r) {
 	return false;
 }
 
-/// Egy ügyfél törlése név alapján.
-/// @param n - A törlendő ügyfél neve.
-/// @return - True, ha az ügyfél törölve lett, false, ha nem található.
+/// Egy ugyfel torlese nev alapjan.
+/// @param n - A torlendo ugyfel neve.
+/// @return - True, ha az ugyfel torolve lett, false, ha nem talalhato.
 bool SzervizNyilvantartoRendszer::torolUgyfel(const std::string& n) {
 	bool torolve = false;
 
-	// Töröljük az ügyfélhez tartozó autókat
+	// Toroljuk az ugyfelhez tartozo autokat
 	for (auto jt = autok.begin(); jt != autok.end(); ) {
 		if (jt->getTulajdonos()->getNev() == n) {
 			jt = autok.erase(jt);
@@ -171,7 +170,7 @@ bool SzervizNyilvantartoRendszer::torolUgyfel(const std::string& n) {
 		}
 	}
 
-	// Töröljük az ügyfelet
+	// Toroljuk az ugyfelet
 	for (auto it = ugyfelek.begin(); it != ugyfelek.end(); ) {
 		if (it->getNev() == n) {
 			it = ugyfelek.erase(it);
@@ -185,10 +184,10 @@ bool SzervizNyilvantartoRendszer::torolUgyfel(const std::string& n) {
 	return torolve;
 }
 
-/// Egy adott rendszámú autóhoz tartozó szervizművelet törlése a megadott dátum alapján.
-/// @param r - Az autó rendszáma.
-/// @param d - A törlendő művelet dátuma.
-/// @return - True, ha a művelet sikeresen törölve lett, false, ha az autó vagy a megadott dátumú művelet nem található.
+/// Egy adott rendszamu autohoz tartozo szervizmuvelet torlese a megadott datum alapjan.
+/// @param r - Az auto rendszama.
+/// @param d - A torlendo muvelet datuma.
+/// @return - True, ha a muvelet sikeresen torolve lett, false, ha az auto vagy a megadott datumu muvelet nem talalhato.
 bool SzervizNyilvantartoRendszer::torolMuvelet(const std::string& r, const Datum& d) {
 	for (auto& autoObj : autok) {
 		if (autoObj.getRendszam() == r) {
@@ -199,21 +198,21 @@ bool SzervizNyilvantartoRendszer::torolMuvelet(const std::string& r, const Datum
 					return true;
 				}
 			}
-			return false; // Az autó létezik, de nincs ilyen dátumú művelet
+			return false; // Az auto letezik, de nincs ilyen datumu muvelet
 		}
 	}
-	return false; // Nincs ilyen rendszámú autó
+	return false; // Nincs ilyen rendszamu auto
 }
 
 
 
 /*-------------------------------------------
-		  Kereső tagfüggvények
+		  Kereso tagfuggvenyek
 -------------------------------------------*/
-/// Autó keresése rendszám alapján.
-/// @param r - A keresett autó rendszáma (teljes egyezés).
-/// @return - Az autó referenciája, ha megtalálta.
-/// @throw - Hibát dob ha nem talált meg a kerest rendszámu autot
+/// Auto keresese rendszam alapjan.
+/// @param r - A keresett auto rendszama (teljes egyezes).
+/// @return - Az auto referenciaja, ha megtalalta.
+/// @throw - Hibat dob ha nem talalt meg a kerest rendszamu autot
 Auto& SzervizNyilvantartoRendszer::keresAuto(const std::string& r) {
 	for (auto it = autok.begin(); it != autok.end(); it++) {
 		if (it->getRendszam() == r) {
@@ -223,10 +222,10 @@ Auto& SzervizNyilvantartoRendszer::keresAuto(const std::string& r) {
 	throw std::runtime_error("Nincs ilyen rendszamu auto!");
 }
 
-/// Ügyfél keresése név alapján.
-/// @param n - A keresett ügyfél neve (teljes egyezés).
-/// @return - Az ügyfél referenciája, ha megtalálta.
-/// @throw - Hibát dob ha nem talált meg a kerest nevű embert
+/// ugyfel keresese nev alapjan.
+/// @param n - A keresett ugyfel neve (teljes egyezes).
+/// @return - Az ugyfel referenciaja, ha megtalalta.
+/// @throw - Hibat dob ha nem talalt meg a kerest nevu embert
 Ugyfel& SzervizNyilvantartoRendszer::keresUgyfel(const std::string& n) {
 	for (auto it = ugyfelek.begin(); it != ugyfelek.end(); it++) {
 		if (it->getNev() == n) {
@@ -236,9 +235,9 @@ Ugyfel& SzervizNyilvantartoRendszer::keresUgyfel(const std::string& n) {
 	throw std::runtime_error("Nincs ilyen nevu ugyfel!");
 }
 
-/// Auto létezésének ellenőrzése név alapján.
-/// @param r - A keresett autó rendszáma (teljes egyezés).
-/// @return - True, ha az auto megtalálható a rendszerben, false egyébként.
+/// Auto letezesenek ellenorzese nev alapjan.
+/// @param r - A keresett auto rendszama (teljes egyezes).
+/// @return - True, ha az auto megtalalhato a rendszerben, false egyebkent.
 bool SzervizNyilvantartoRendszer::vanAuto(const std::string& r) const {
 	for (const auto& a : autok)
 		if (a.getRendszam() == r)
@@ -246,9 +245,9 @@ bool SzervizNyilvantartoRendszer::vanAuto(const std::string& r) const {
 	return false;
 }
 
-/// Ügyfél létezésének ellenőrzése név alapján.
-/// @param n - A keresett ügyfél neve (teljes egyezés).
-/// @return - True, ha az ügyfél megtalálható a rendszerben, false egyébként.
+/// ugyfel letezesenek ellenorzese nev alapjan.
+/// @param n - A keresett ugyfel neve (teljes egyezes).
+/// @return - True, ha az ugyfel megtalalhato a rendszerben, false egyebkent.
 bool SzervizNyilvantartoRendszer::vanUgyfel(const std::string& n) const {
 	for (const auto& u : ugyfelek)
 		if (u.getNev() == n)
@@ -259,12 +258,12 @@ bool SzervizNyilvantartoRendszer::vanUgyfel(const std::string& n) const {
 
 
 /*-------------------------------------------
-			Fontos tagműveletek
+			Fontos tagmuveletek
 -------------------------------------------*/
-/// Egy végzett szervizművelet rögzítése adott autóhoz.
-/// @param r - Az autó rendszáma.
-/// @param m - A végzett szervizművelet.
-/// @return - True, ha a művelet sikeresen rögzítve lett, false, ha az autó nem található.
+/// Egy vegzett szervizmuvelet rogzitese adott autohoz.
+/// @param r - Az auto rendszama.
+/// @param m - A vegzett szervizmuvelet.
+/// @return - True, ha a muvelet sikeresen rogzitve lett, false, ha az auto nem talalhato.
 bool SzervizNyilvantartoRendszer::rogzitesVegzettMuvelet(const std::string& r, const VegzettMuvelet& m) {
 	for (auto& autoObj : autok) {
 		if (autoObj.getRendszam() == r) {
@@ -276,9 +275,9 @@ bool SzervizNyilvantartoRendszer::rogzitesVegzettMuvelet(const std::string& r, c
 	return false;
 }
 
-/// Lekérdezi az adott autóhoz tartozó szervizműveleteket.ű
+/// Lekerdezi az adott autohoz tartozo szervizmuveleteket.u
 /// @param os - A kimeneti adatfolyam.
-/// @param r - Az autó rendszáma.
+/// @param r - Az auto rendszama.
 void SzervizNyilvantartoRendszer::lekeroVegzettMuvelet(std::ostream& os, const std::string& r) const {
 	for (const auto& autoObj : autok) {
 		if (autoObj.getRendszam() == r) {
@@ -291,11 +290,11 @@ void SzervizNyilvantartoRendszer::lekeroVegzettMuvelet(std::ostream& os, const s
 	}
 }
 
-/// Figyelmeztetéseket generál az autó állapota alapján.
+/// Figyelmezteteseket general az auto allapota alapjan.
 /// @param os - A kimeneti adatfolyam.
-/// @param a - Az autó példány.
+/// @param a - Az auto peldany.
 void SzervizNyilvantartoRendszer::figyelmeztetesek(std::ostream& os, const Auto& a) const {
-	int hanyDBHiba = 0; // Hiba számláló
+	int hanyDBHiba = 0; // Hiba szamlalo
 	for (const auto& autoObj : autok) {
 		if (autoObj == a) {
 			const auto& muveletek = autoObj.getSzervizMuveletek();
@@ -304,16 +303,16 @@ void SzervizNyilvantartoRendszer::figyelmeztetesek(std::ostream& os, const Auto&
 				return;
 			}
 
-			// Az utolsó szervizművelet:
+			// Az utolso szervizmuvelet:
 			VegzettMuvelet* utolso = muveletek.back();
 
-			// Dátum alapú figyelmeztetés
-			if (utolso->getDatum().elteltNap(Datum(2025, 4, 14)) > (365 * 2)) { // Több mint 2 éve
+			// Datum alapu figyelmeztetes
+			if (utolso->getDatum().elteltNap(Datum(2025, 4, 14)) > (365 * 2)) { // Tobb mint 2 eve
 				os << "\tA " << a.getRendszam() << " rendszamu auto muszaki vizsgaja lejart! (Utolso vizsga: " << utolso->getDatum() << ")" << std::endl;
 				hanyDBHiba++;
 			}
 
-			// Km alapú figyelmeztetés
+			// Km alapu figyelmeztetes
 			int elteltKm = autoObj.getKmOra() - utolso->getAktKmOra();
 			if (elteltKm > 10000) {
 				os << "\tA " << a.getRendszam() << " rendszamu auto szervizelesre esedekes! (Utolso szerviz ota " << elteltKm << " km telt el)" << std::endl;
@@ -330,11 +329,11 @@ void SzervizNyilvantartoRendszer::figyelmeztetesek(std::ostream& os, const Auto&
 
 
 /*-------------------------------------------
-		 Fájlkezelő tagfüggvények
+		 Fajlkezelo tagfuggvenyek
 -------------------------------------------*/
-/// Lecseréli a szövegben található aláhúzásjeleket (_) szóközökre.
-/// A függvény static kulcsszóval van ellátva, mert csak a jelenlegi fordítási egységen (fájlban) belül használjuk, így nem szükséges kívülről elérhetővé tenni.
-/// @param str - A bemeneti string, amelyet formázni szeretnénk.
+/// Lecsereli a szovegben talalhato alahuzasjeleket (_) szokozokre.
+/// A fuggveny static kulcsszoval van ellatva, mert csak a jelenlegi forditasi egysegen (fajlban) belul hasznaljuk, igy nem szukseges kivulrol elerhetove tenni.
+/// @param str - A bemeneti string, amelyet formazni szeretnenk.
 /// @return - std::string
 static std::string trim(const std::string& str) {
 	std::string result;
@@ -345,9 +344,9 @@ static std::string trim(const std::string& str) {
 	return result;
 }
 
-/// Lecseréli a szövegben található szóközjeleket ("_") aláhúzásra.
-/// A függvény static kulcsszóval van ellátva, mert csak a jelenlegi fordítási egységen (fájlban) belül használjuk, így nem szükséges kívülről elérhetővé tenni.
-/// @param str - A bemeneti string, amelyet formázni szeretnénk.
+/// Lecsereli a szovegben talalhato szokozjeleket ("_") alahuzasra.
+/// A fuggveny static kulcsszoval van ellatva, mert csak a jelenlegi forditasi egysegen (fajlban) belul hasznaljuk, igy nem szukseges kivulrol elerhetove tenni.
+/// @param str - A bemeneti string, amelyet formazni szeretnenk.
 /// @return - std::string
 static std::string reverse_trim(const std::string& str) {
 	std::string result;
@@ -358,24 +357,24 @@ static std::string reverse_trim(const std::string& str) {
 	return result;
 }
 
-/// Rendszeradatok betöltése fájlból.
-/// @param f - A forrásfájl neve.
+/// Rendszeradatok betoltese fajlbol.
+/// @param f - A forrasfajl neve.
 void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 	std::ifstream fp(f);
 	if (!fp.is_open()) throw std::runtime_error("Nem sikerult megnyitni a fajlt! (betoltesFajlbol)");
 
 	/* --- std::string.find() ---
-	   - Megkeresi egy adott részszöveg (karakter vagy string) első előfordulásának helyét egy másik stringben.
-	   - Ha nem találja meg:A find() visszaadja a speciális értéket: std::string::npos
+	   - Megkeresi egy adott reszszoveg (karakter vagy string) elso elofordulasanak helyet egy masik stringben.
+	   - Ha nem talalja meg:A find() visszaadja a specialis erteket: std::string::npos
 	*/
-	bool ugyfelFajl = f.find("_ufl.txt") != std::string::npos; // A std::string::npos egy speciális konstans érték, amit a C++ std::string típus használ arra, hogy jelezze: valamit nem talált meg.
+	bool ugyfelFajl = f.find("_ufl.txt") != std::string::npos; // A std::string::npos egy specialis konstans ertek, amit a C++ std::string tipus hasznal arra, hogy jelezze: valamit nem talalt meg.
 	bool autoFajl = f.find("_auo.txt") != std::string::npos;
 	if (!ugyfelFajl && !autoFajl) throw std::invalid_argument("Ismeretlen fajlformatum! (betoltesFajlbol)");
 
 	std::string sor;
 	/* --- std::getline() ---
-	   - Sor beolvasása szövegből (akár fájlból, akár más streamből).
-	   - Megadott elválasztó karakterig olvas('\n' az alapértelmezett), de lehet mást is adni
+	   - Sor beolvasasa szovegbol (akar fajlbol, akar mas streambol).
+	   - Megadott elvalaszto karakterig olvas('\n' az alapertelmezett), de lehet mast is adni
 	*/
 	while (std::getline(fp, sor)) {
 		if (sor.empty()) continue;
@@ -392,13 +391,13 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 			telStr = trim(telStr);
 
 			if (vanUgyfel(nevStr)) {
-				// Frissítjük az ügyfél adatait
+				// Frissitjuk az ugyfel adatait
 				Ugyfel& letezoUgyfel = keresUgyfel(nevStr);
 				letezoUgyfel.setTel(telStr);
 				letezoUgyfel.setEmail(emailStr);
 			}
 			else {
-				// Új ügyfél hozzáadása
+				// uj ugyfel hozzaadasa
 				ugyfelek.push_back(Ugyfel(nevStr, telStr, emailStr));
 			}
 		}
@@ -414,7 +413,7 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 			std::string muveletekTulajStr;
 			std::getline(iss, muveletekTulajStr);
 
-			// Az utolsó '-' jel alapján vágjuk ketté: muveletekStr - tulajNev
+			// Az utolso '-' jel alapjan vagjuk kette: muveletekStr - tulajNev
 			size_t utolsoKotojelHelye = muveletekTulajStr.rfind('-');
 			if (utolsoKotojelHelye == std::string::npos)
 				throw std::runtime_error("Hibas sorformatum, nem talalhato tulajdonos neve! (betoltesFajlbol)");
@@ -422,7 +421,7 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 			muveletekStr = muveletekTulajStr.substr(0, utolsoKotojelHelye);
 			tulajNevStr = muveletekTulajStr.substr(utolsoKotojelHelye + 1);
 
-			// Azokat a mezőket, ahol alulvonás("_") karaktert használtunk szóköz helyett, visszaalakítjuk szóközökké(" ") a megjelenés egységesítése érdekében.
+			// Azokat a mezoket, ahol alulvonas("_") karaktert hasznaltunk szokoz helyett, visszaalakitjuk szokozokke(" ") a megjelenes egysegesitese erdekeben.
 			markaStr = trim(markaStr);
 			tipusStr = trim(tipusStr);
 			muveletekStr = trim(muveletekStr);
@@ -440,7 +439,7 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 					if (muveletElem.empty()) continue;
 
 					char tipus = muveletElem[0];
-					std::string extraStr; // deklaráljuk itt, de értéket csak akkor adunk, ha kell
+					std::string extraStr; // deklaraljuk itt, de erteket csak akkor adunk, ha kell
 					std::string leirasStr, datumStr, arStr, kmStr;
 
 					std::string tartalomStr = muveletElem.substr(2);
@@ -451,7 +450,7 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 					std::getline(adatSS, kmStr, ',');
 
 					if (tipus == 'V') {
-						std::getline(adatSS, extraStr); // csak akkor olvassuk be, ha van ilyen mező
+						std::getline(adatSS, extraStr); // csak akkor olvassuk be, ha van ilyen mezo
 					}
 
 					leirasStr = trim(leirasStr);
@@ -478,7 +477,7 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 				autok.push_back(Auto(rendszamStr, markaStr, tipusStr, kmOra, uzembeHelyezes, szervizLista, &tulajStr));
 			}
 			else {
-				// tulajdonos még nincs, létrehozás + beszúrás
+				// tulajdonos meg nincs, letrehozas + beszuras
 				ugyfelek.push_back(Ugyfel(tulajNevStr, "", ""));
 				Ugyfel& ujTulaj = ugyfelek.back();
 				autok.push_back(Auto(rendszamStr, markaStr, tipusStr, kmOra, uzembeHelyezes, szervizLista, &ujTulaj));
@@ -488,8 +487,8 @@ void SzervizNyilvantartoRendszer::betoltesFajlbol(const std::string& f) {
 	fp.close();
 }
 
-/// Az aktuális rendszeradatok mentése fájlba.
-/// @param f - A célfájl neve.
+/// Az aktualis rendszeradatok mentese fajlba.
+/// @param f - A celfajl neve.
 void SzervizNyilvantartoRendszer::mentesFajlba(const std::string& f) const {
 	std::ofstream fp(f);
 	if (!fp.is_open()) throw std::runtime_error("Nem sikerult megnyitni a fajlt! (mentesFajlba)");
@@ -541,7 +540,7 @@ void SzervizNyilvantartoRendszer::mentesFajlba(const std::string& f) const {
 				}
 			}
 
-			// Tulajdonos ellenőrzés
+			// Tulajdonos ellenorzes
 			if (autoObj.getTulajdonos() == nullptr) {
 				throw std::runtime_error("Auto tulajdonosa nullptr! Hibas adatstruktura. (mentesFajlba)");
 			}

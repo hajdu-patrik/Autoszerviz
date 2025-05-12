@@ -1,6 +1,6 @@
 /**
-*	\file Applikacio.h
-*    Az Applikaciot leíró osztály deklarációja.
+*   \file Applikacio.h
+*   Az Applikaciot leiro osztaly deklaracioja.
 */
 
 #ifndef APPLIKACIO_H

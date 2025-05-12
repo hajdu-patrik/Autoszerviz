@@ -4,7 +4,6 @@
 *   A modul ellenorzi, hogy a rendszer fobb kepessegei helyesen mukodnek, es segit a hibak kiszureseben a fejlesztes soran.
 */
 
-#define MEMTRACE
 #include "Memtrace.h"
 #include "Gtest_lite.h"
 
@@ -15,9 +14,9 @@
 #include "Karbantartas.h"
 #include "Vizsga.h"
 
-/// Ellenõrzi, hogy a megadott fájl létezik-e.
-/// @param f - A vizsgált fájl neve (elérési útvonal is lehet).
-/// @return - true, ha a fájl létezik, különben false.
+/// Ellenorzi, hogy a megadott fajl letezik-e.
+/// @param f - A vizsgalt fajl neve (eleresi utvonal is lehet).
+/// @return - true, ha a fajl letezik, kulonben false.
 bool tesztDBLetrehozas(SzervizNyilvantartoRendszer& aDB) {
     try {
         aDB.betoltesFajlbol("init_ugyfel_ufl.txt");
@@ -25,14 +24,24 @@ bool tesztDBLetrehozas(SzervizNyilvantartoRendszer& aDB) {
     }
     catch (const std::exception& e) {
         std::cerr << "Hiba tortent a fajl beolvasasakor: " << e.what() << std::endl;
-        return false;;
+        return false;
     }
     return true;
 }
 
-/// A tesztelési funkciók futtatására szolgáló függvény.
+/// A megadott int erteket unsigned int-re konvertalja.
+unsigned int fromIntToUnsigned(int x) {
+    return static_cast<unsigned int>(x);
+}
+
+/// A megadott size_t erteket unsigned int-re konvertalja.
+unsigned int fromSizetToUnsigned(size_t x) {
+    return static_cast<unsigned int>(x);
+}
+
+/// A tesztelesi funkciok futtatasara szolgalo fuggveny.
 void tesztek() {
-	MainSegedFuggvenyei segedFuggvenyekEleresehez;
+    MainSegedFuggvenyei segedFuggvenyekEleresehez;
 
     TEST(Listazas, UgyfelekEsAutok) {
         SzervizNyilvantartoRendszer aDB;
@@ -40,8 +49,8 @@ void tesztek() {
         aDB.ujUgyfel(Ugyfel("Kiss Bela", "+36 20 991 8873", "Budapest"));
         aDB.ujAuto(Auto("ANA406", "Toyota", "Corolla", 123000, Datum(2020, 5, 12), Vector<VegzettMuvelet*>(), &aDB.keresUgyfel("Kiss Bela")));
 
-        EXPECT_EQ(aDB.getUgyfelek().size(), 1u);
-        EXPECT_EQ(aDB.getAutok().size(), 1u);
+        EXPECT_EQ(fromSizetToUnsigned(aDB.getUgyfelek().size()), 1u);
+        EXPECT_EQ(fromSizetToUnsigned(aDB.getAutok().size()), 1u);
         EXPECT_EQ(aDB.keresAuto("ANA406").getMarka(), "Toyota");
     } END
 
@@ -64,9 +73,9 @@ void tesztek() {
         Auto auto1("ABC123", "Ford", "Focus", 80000, Datum(2022, 6, 10), Vector<VegzettMuvelet*>(), &aDB.keresUgyfel("Szabo Anna"));
         aDB.ujAuto(auto1);
 
-        auto1.setKmOra(80500); // Ez a teszt nyilván hibás lesz ha 80000-nél kisebb km értéket állítunk be
+        auto1.setKmOra(80500);
         EXPECT_TRUE(aDB.frissitAuto(auto1));
-        EXPECT_EQ(aDB.keresAuto("ABC123").getKmOra(), 80500u);
+        EXPECT_EQ(fromIntToUnsigned(aDB.keresAuto("ABC123").getKmOra()), 80500u);
     } END
 
     TEST(Torles, UgyfelEsAuto) {
@@ -76,7 +85,7 @@ void tesztek() {
 
         EXPECT_TRUE(aDB.torolUgyfel("Teszt Elek"));
         EXPECT_FALSE(aDB.vanUgyfel("Teszt Elek"));
-        EXPECT_TRUE(aDB.torolAuto("ABC123") || !aDB.vanAuto("ABC123")); // mivel torolni probaljuk
+        EXPECT_TRUE(aDB.torolAuto("ABC123") || !aDB.vanAuto("ABC123"));
     } END
 
     TEST(Szerviz, Rogzites) {
@@ -87,7 +96,7 @@ void tesztek() {
         Vizsga vizsga("Olajcsere", Datum(2025, 4, 20), 35000, 1500, true);
 
         EXPECT_TRUE(aDB.rogzitesVegzettMuvelet("GHI789", vizsga));
-        EXPECT_EQ(aDB.keresAuto("GHI789").getSzervizMuveletek().size(), 1u);
+        EXPECT_EQ(fromSizetToUnsigned(aDB.keresAuto("GHI789").getSzervizMuveletek().size()), 1u);
     } END
 
     TEST(Kereses, UgyfelNevAlapjan) {
@@ -132,7 +141,7 @@ void tesztek() {
         EXPECT_TRUE(aDB.rogzitesVegzettMuvelet("LMN321", sz2));
 
         const Vector<VegzettMuvelet*>& muveletek = aDB.keresAuto("LMN321").getSzervizMuveletek();
-        EXPECT_EQ(muveletek.size(), 2u);
+        EXPECT_EQ(fromSizetToUnsigned(muveletek.size()), 2u);
         EXPECT_EQ(muveletek[0]->getMuvelet(), "Vizsga 1");
         EXPECT_EQ(muveletek[1]->getMuvelet(), "Fekcsere");
     } END
@@ -148,9 +157,9 @@ void tesztek() {
         aDB.rogzitesVegzettMuvelet("TTT123", vizsga1);
         aDB.rogzitesVegzettMuvelet("TTT123", karb1);
 
-        EXPECT_EQ(aDB.keresAuto("TTT123").getSzervizMuveletek().size(), 2u);
+        EXPECT_EQ(fromSizetToUnsigned(aDB.keresAuto("TTT123").getSzervizMuveletek().size()), 2u);
         EXPECT_TRUE(aDB.torolMuvelet("TTT123", Datum(2025, 5, 2)));
-        EXPECT_EQ(aDB.keresAuto("TTT123").getSzervizMuveletek().size(), 1u);
+        EXPECT_EQ(fromSizetToUnsigned(aDB.keresAuto("TTT123").getSzervizMuveletek().size()), 1u);
         EXPECT_EQ(aDB.keresAuto("TTT123").getSzervizMuveletek()[0]->getMuvelet(), "Muszaki Vizsga");
     } END
 
@@ -166,7 +175,7 @@ void tesztek() {
         EXPECT_TRUE(aDB.rogzitesVegzettMuvelet("BETA01", karb));
 
         const Vector<VegzettMuvelet*>& muvek = aDB.keresAuto("BETA01").getSzervizMuveletek();
-        EXPECT_EQ(muvek.size(), 2u);
+        EXPECT_EQ(fromSizetToUnsigned(muvek.size()), 2u);
         EXPECT_TRUE(dynamic_cast<Vizsga*>(muvek[0]) != nullptr || dynamic_cast<Karbantartas*>(muvek[0]) != nullptr);
         EXPECT_TRUE(dynamic_cast<Vizsga*>(muvek[1]) != nullptr || dynamic_cast<Karbantartas*>(muvek[1]) != nullptr);
     } END

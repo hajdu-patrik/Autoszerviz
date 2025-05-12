@@ -1,10 +1,10 @@
 /**
 *   \file SzervizNyilvantartoRendszer.h
-*   A SzervizNyilvantartoRendszer adatait leíró osztály.
+*   A SzervizNyilvantartoRendszer adatait leiro osztaly.
 *
-*   Az osztály az autókhoz kapcsolódó szervizmûveletek nyilvántartására szolgál.
-*   Felelõs az autók adatainak kezeléséért, új szervizmûveletek rögzítéséért,
-*   meglévõ adatok lekérdezéséért és módosításáért.
+*   Az osztaly az autokhoz kapcsolodo szervizmuveletek nyilvantartasara szolgal.
+*   Felelos az autok adatainak kezeleseert, uj szervizmuveletek rogziteseert,
+*   meglevo adatok lekerdezeseert es modositasaert.
 */
 
 #ifndef SZERVIZNYILVANTARTORENDSZER_H
@@ -17,27 +17,27 @@
 #include "Ugyfel.h"
 
 class SzervizNyilvantartoRendszer {
-	Vector<Auto> autok;			///< Az autók listája
-	Vector<Ugyfel> ugyfelek;	///< Az ügyfelek listája
+	Vector<Auto> autok;			///< Az autok listaja
+	Vector<Ugyfel> ugyfelek;	///< Az ugyfelek listaja
 public:
 	/*-------------------------------------------
-			Konstruktorok és destruktor
+			Konstruktorok es destruktor
 	-------------------------------------------*/
-	/// Alapértelmezett konstruktor.
-	/// Üres vektort hoz létre, elõre lefoglalt kapacitással.
+	/// Alapertelmezett konstruktor.
+	/// ures vektort hoz letre, elore lefoglalt kapacitassal.
 	SzervizNyilvantartoRendszer();
 
-	/// Paraméteres konstruktor
-	/// @param a - Az autó példány
-	/// @param u - Az ügyfél példány
+	/// Parameteres konstruktor
+	/// @param a - Az auto peldany
+	/// @param u - Az ugyfel peldany
 	SzervizNyilvantartoRendszer(const Auto& a, const Ugyfel& u);
 
-	/// Másoló konstruktor.
-	/// @param v - Másolandó SzervizNyilvantartoRendszer példány
+	/// Masolo konstruktor.
+	/// @param v - Masolando SzervizNyilvantartoRendszer peldany
 	SzervizNyilvantartoRendszer(const SzervizNyilvantartoRendszer& v);
 
 	/// Destruktor.
-	/// Ez jelzi, hogy nem kell semmi egyedi a destruktorba, mert a tagok destruktora magától elintézi.
+	/// Ez jelzi, hogy nem kell semmi egyedi a destruktorba, mert a tagok destruktora magatol elintezi.
 	~SzervizNyilvantartoRendszer();
 
 
@@ -45,162 +45,162 @@ public:
 	/*-------------------------------------------
 					Getter
 	-------------------------------------------*/
-	/// Visszaadja az összes autó objektumot.
-	/// @return - Egy Vector<Auto> példány, amely az összes jelenleg nyilvántartott autót tartalmazza.
+	/// Visszaadja az osszes auto objektumot.
+	/// @return - Egy Vector<Auto> peldany, amely az osszes jelenleg nyilvantartott autot tartalmazza.
 	Vector<Auto>& getAutok();
 
-	/// Visszaadja az összes auto objektumot (const változat).
-	/// @return - Egy const Vector<Auto> példány, amely az összes jelenleg nyilvántartott autott tartalmazza.
+	/// Visszaadja az osszes auto objektumot (const valtozat).
+	/// @return - Egy const Vector<Auto> peldany, amely az osszes jelenleg nyilvantartott autott tartalmazza.
 	const Vector<Auto>& getAutok() const;
 
-	/// Visszaadja az összes ügyfél objektumot.
-	/// @return - Egy Vector<Ugyfel> példány, amely az összes jelenleg nyilvántartott ügyfelet tartalmazza.
+	/// Visszaadja az osszes ugyfel objektumot.
+	/// @return - Egy Vector<Ugyfel> peldany, amely az osszes jelenleg nyilvantartott ugyfelet tartalmazza.
 	Vector<Ugyfel>& getUgyfelek();
 
-	/// Visszaadja az összes ügyfél objektumot (const változat).
-	/// @return - Egy const Vector<Ugyfel> példány, amely az összes jelenleg nyilvántartott ügyfelet tartalmazza.
+	/// Visszaadja az osszes ugyfel objektumot (const valtozat).
+	/// @return - Egy const Vector<Ugyfel> peldany, amely az osszes jelenleg nyilvantartott ugyfelet tartalmazza.
 	const Vector<Ugyfel>& getUgyfelek() const;
 
 
 
 	/*-------------------------------------------
-				Bõvítõ tagfüggvények
+				Bovito tagfuggvenyek
 	-------------------------------------------*/
-	/// Új autó hozzáadása az adatbázishoz.
-	/// @param a - Az új autó példány.
-	/// @return - True, ha az autó sikeresen hozzáadva, false, ha már létezik.
+	/// uj auto hozzaadasa az adatbazishoz.
+	/// @param a - Az uj auto peldany.
+	/// @return - True, ha az auto sikeresen hozzaadva, false, ha mar letezik.
 	bool ujAuto(const Auto& a);
 
-	/// Új ügyfél hozzáadása az adatbázishoz.
-	/// @param u - Az új ügyfél példány.
-	/// @return - True, ha az ügyfél sikeresen hozzáadva, false, ha már létezik.
+	/// uj ugyfel hozzaadasa az adatbazishoz.
+	/// @param u - Az uj ugyfel peldany.
+	/// @return - True, ha az ugyfel sikeresen hozzaadva, false, ha mar letezik.
 	bool ujUgyfel(const Ugyfel& u);
 
 
 
 	/*-------------------------------------------
-				Frissítõ tagfüggvények
+				Frissito tagfuggvenyek
 	-------------------------------------------*/
-	/// Egy autó adatainak frissítése a rendszeren belül.
-	/// Ha a rendszeren belül már létezik az autó (rendszám alapján), akkor az adatai frissülnek.
-	/// @param a - Az autó új adatai.
-	/// @return - True, ha az autó sikeresen frissítve lett, false, ha nem található.
+	/// Egy auto adatainak frissitese a rendszeren belul.
+	/// Ha a rendszeren belul mar letezik az auto (rendszam alapjan), akkor az adatai frissulnek.
+	/// @param a - Az auto uj adatai.
+	/// @return - True, ha az auto sikeresen frissitve lett, false, ha nem talalhato.
 	bool frissitAuto(const Auto& a);
 
-	/// Egy ügyfél adatainak frissítése a rendszeren belül.
-	/// Ha a rendszeren belül már létezik az ügyfél (név alapján), akkor az adatai frissülnek.
-	/// @param u - Az ügyfél új adatai.
-	/// @return - True, ha az ügyfél sikeresen frissítve lett, false, ha nem található.
+	/// Egy ugyfel adatainak frissitese a rendszeren belul.
+	/// Ha a rendszeren belul mar letezik az ugyfel (nev alapjan), akkor az adatai frissulnek.
+	/// @param u - Az ugyfel uj adatai.
+	/// @return - True, ha az ugyfel sikeresen frissitve lett, false, ha nem talalhato.
 	bool frissitUgyfel(const Ugyfel& u);
 
 
 
 	/*-------------------------------------------
-				Törlõ tagfüggvények
+				Torlo tagfuggvenyek
 	-------------------------------------------*/
-	/// Egy autó törlése rendszám alapján.
-	/// @param r - A törlendõ autó rendszáma.
-	/// @return - True, ha az autó törölve lett, false, ha nem található.
+	/// Egy auto torlese rendszam alapjan.
+	/// @param r - A torlendo auto rendszama.
+	/// @return - True, ha az auto torolve lett, false, ha nem talalhato.
 	bool torolAuto(const std::string& r);
 
-	/// Egy ügyfél törlése név alapján.
-	/// @param n - A törlendõ ügyfél neve.
-	/// @return - True, ha az ügyfél törölve lett, false, ha nem található.
+	/// Egy ugyfel torlese nev alapjan.
+	/// @param n - A torlendo ugyfel neve.
+	/// @return - True, ha az ugyfel torolve lett, false, ha nem talalhato.
 	bool torolUgyfel(const std::string& n);
 
-	/// Egy adott rendszámú autóhoz tartozó szervizmûvelet törlése a megadott dátum alapján.
-	/// @param r - Az autó rendszáma.
-	/// @param d - A törlendõ mûvelet dátuma.
-	/// @return - True, ha a mûvelet sikeresen törölve lett, false, ha az autó vagy a megadott dátumú mûvelet nem található.
+	/// Egy adott rendszamu autohoz tartozo szervizmuvelet torlese a megadott datum alapjan.
+	/// @param r - Az auto rendszama.
+	/// @param d - A torlendo muvelet datuma.
+	/// @return - True, ha a muvelet sikeresen torolve lett, false, ha az auto vagy a megadott datumu muvelet nem talalhato.
 	bool torolMuvelet(const std::string& r, const Datum& d);
 
 
 
 	/*-------------------------------------------
-			  Keresõ tagfüggvények
+			  Kereso tagfuggvenyek
 	-------------------------------------------*/
-	// Autó keresése rendszám alapján.
-	/// @param r - A keresett autó rendszáma (teljes egyezés).
-	/// @return - Az autó referenciája, ha megtalálta.
-	/// @throw - Hibát dob ha nem talált meg a kerest rendszámu autot
+	// Auto keresese rendszam alapjan.
+	/// @param r - A keresett auto rendszama (teljes egyezes).
+	/// @return - Az auto referenciaja, ha megtalalta.
+	/// @throw - Hibat dob ha nem talalt meg a kerest rendszamu autot
 	Auto& keresAuto(const std::string& r);
 
-	/// Ügyfél keresése név alapján.
-	/// @param n - A keresett ügyfél neve (teljes egyezés).
-	/// @return - Az ügyfél referenciája, ha megtalálta.
-	/// @throw - Hibát dob ha nem talált meg a kerest nevû embert
+	/// ugyfel keresese nev alapjan.
+	/// @param n - A keresett ugyfel neve (teljes egyezes).
+	/// @return - Az ugyfel referenciaja, ha megtalalta.
+	/// @throw - Hibat dob ha nem talalt meg a kerest nevu embert
 	Ugyfel& keresUgyfel(const std::string& n);
 
-	/// Auto létezésének ellenõrzése név alapján.
-	/// @param r - A keresett autó rendszáma (teljes egyezés).
-	/// @return - True, ha az auto megtalálható a rendszerben, false egyébként.
+	/// Auto letezesenek ellenorzese nev alapjan.
+	/// @param r - A keresett auto rendszama (teljes egyezes).
+	/// @return - True, ha az auto megtalalhato a rendszerben, false egyebkent.
 	bool vanAuto(const std::string& r) const;
 
-	/// Ügyfél létezésének ellenõrzése név alapján.
-	/// @param n - A keresett ügyfél neve (teljes egyezés).
-	/// @return - True, ha az ügyfél megtalálható a rendszerben, false egyébként.
+	/// ugyfel letezesenek ellenorzese nev alapjan.
+	/// @param n - A keresett ugyfel neve (teljes egyezes).
+	/// @return - True, ha az ugyfel megtalalhato a rendszerben, false egyebkent.
 	bool vanUgyfel(const std::string& n) const;
 
 
 
 	/*-------------------------------------------
-				Fontos tagmûveletek
+				Fontos tagmuveletek
 	-------------------------------------------*/
-	/// Egy végzett szervizmûvelet rögzítése adott autóhoz.
-	/// @param r - Az autó rendszáma.
-	/// @param m - A végzett szervizmûvelet.
-	/// @return - True, ha a mûvelet sikeresen rögzítve lett, false, ha az autó nem található.
+	/// Egy vegzett szervizmuvelet rogzitese adott autohoz.
+	/// @param r - Az auto rendszama.
+	/// @param m - A vegzett szervizmuvelet.
+	/// @return - True, ha a muvelet sikeresen rogzitve lett, false, ha az auto nem talalhato.
 	bool rogzitesVegzettMuvelet(const std::string& r, const VegzettMuvelet& m);
 
-	/// Lekérdezi az adott autóhoz tartozó szervizmûveleteket.û
+	/// Lekerdezi az adott autohoz tartozo szervizmuveleteket.u
 	/// @param os - A kimeneti adatfolyam.
-	/// @param r - Az autó rendszáma.
+	/// @param r - Az auto rendszama.
 	void lekeroVegzettMuvelet(std::ostream& os, const std::string& r) const;
 
-	/// Figyelmeztetéseket generál az autó állapota alapján.
+	/// Figyelmezteteseket general az auto allapota alapjan.
 	/// @param os - A kimeneti adatfolyam.
-	/// @param a - Az autó példány.
+	/// @param a - Az auto peldany.
 	void figyelmeztetesek(std::ostream& os, const Auto& a) const;
 
 
 
 	/*-------------------------------------------
-			 Fájlkezelõ tagfüggvények
+			 Fajlkezelo tagfuggvenyek
 	-------------------------------------------*/
-	/// Az aktuális rendszeradatok mentése fájlba.
-	/// @param f - A célfájl neve.
+	/// Az aktualis rendszeradatok mentese fajlba.
+	/// @param f - A celfajl neve.
 	void mentesFajlba(const std::string& f) const;
 
-	/// Rendszeradatok betöltése fájlból.
-	/// @param f - A forrásfájl neve.
+	/// Rendszeradatok betoltese fajlbol.
+	/// @param f - A forrasfajl neve.
 	void betoltesFajlbol(const std::string& f);
 
 	/**
-	 * Fontos tudnivalók a fájlkezelõ függvények mûködésérõl:
+	 * Fontos tudnivalok a fajlkezelo fuggvenyek mukodeserol:
 	 *
-	 * A fájlokban tárolt adatoknak pontosan meg kell felelniük az elõre definiált szabályoknak, melyek a következõk:
+	 * A fajlokban tarolt adatoknak pontosan meg kell felelniuk az elore definialt szabalyoknak, melyek a kovetkezok:
 	 *
-	 * Fájlnevek:
-	 *   - Ügyfél típusú fájl esetén a fájlnévnek tartalmaznia kell az "_ufl.txt" végzõdést.
-	 *   - Autó típusú fájl esetén a fájlnévnek "_auo.txt" végzõdést kell tartalmaznia.
+	 * Fajlnevek:
+	 *   - ugyfel tipusu fajl eseten a fajlnevnek tartalmaznia kell az "_ufl.txt" vegzodest.
+	 *   - Auto tipusu fajl eseten a fajlnevnek "_auo.txt" vegzodest kell tartalmaznia.
 	 *
-	 * Fájlstruktúra:
-	 *   - Ügyfelek esetén a sorok formátuma: "ugyfel_neve-telefonszam-email"
-	 *   - Autók esetén a formátum: "rendszam-marka-tipus-kmora-uzembe_helyezes_datuma-szervizmuveletek-tulajdonos_neve"
+	 * Fajlstruktura:
+	 *   - ugyfelek eseten a sorok formatuma: "ugyfel_neve-telefonszam-email"
+	 *   - Autok eseten a formatum: "rendszam-marka-tipus-kmora-uzembe_helyezes_datuma-szervizmuveletek-tulajdonos_neve"
 	 *
-	 * Megjegyzések az autós adatokhoz:
-	 *   - A "szervizmuveletek" mezõben szerepelhet:
-	 *     - a "nincs" szó, ha nem történt szervizelés,
-	 *     - vagy egy felsorolás az elvégzett mûveletekrõl, az alábbi formátumban:
+	 * Megjegyzesek az autos adatokhoz:
+	 *   - A "szervizmuveletek" mezoben szerepelhet:
+	 *     - a "nincs" szo, ha nem tortent szervizeles,
+	 *     - vagy egy felsorolas az elvegzett muveletekrol, az alabbi formatumban:
 	 *       "tipus,leiras,datum,ar,kmora,extra;"
 	 *       ahol:
-	 *         - tipus: 'J' (javítás), 'K' (karbantartás), vagy 'V' (vizsga),
-	 *         - az "extra" mezõ kizárólag vizsga esetén tartalmazza a „sikeres” vagy „sikertelen” értéket.
-	 *		   - a mezõk közötti elválasztó karakter a vesszõ (,) és a végén pontosvesszõ (;) ha van további szervizmuvelet.
-	 *		   - azt is elvárjuk, hogy a kmora értékek mindig pozitív egész számok legyenek amik minden esettben <= mint az azt megelõzõ "szervizmuvelet kmora" értéke
+	 *         - tipus: 'J' (javitas), 'K' (karbantartas), vagy 'V' (vizsga),
+	 *         - az "extra" mezo kizarolag vizsga eseten tartalmazza a „sikeres” vagy „sikertelen” erteket.
+	 *		   - a mezok kozotti elvalaszto karakter a vesszo (,) es a vegen pontosvesszo (;) ha van tovabbi szervizmuvelet.
+	 *		   - azt is elvarjuk, hogy a kmora ertekek mindig pozitiv egesz szamok legyenek amik minden esettben <= mint az azt megelozo "szervizmuvelet kmora" erteke
 	 *
-	 * További szabály:
-	 *   - Amennyiben az autóhoz tartozó tulajdonos még nem szerepel a rendszerben, az új ügyfelet automatikusan felvesszük, viszont a telefonszám és e-mail mezõi üresen maradnak.
+	 * Tovabbi szabaly:
+	 *   - Amennyiben az autohoz tartozo tulajdonos meg nem szerepel a rendszerben, az uj ugyfelet automatikusan felvesszuk, viszont a telefonszam es e-mail mezoi uresen maradnak.
 	 */
 };
 
