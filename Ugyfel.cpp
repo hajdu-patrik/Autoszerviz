@@ -3,8 +3,9 @@
 *   Az ugyfel osztaly tagfuggvenyeinek megvalositasa.
 */
 
+#ifdef MEMTRACE
 #include "Memtrace.h"
-
+#endif
 #include "Ugyfel.h"
 
 /*-------------------------------------------

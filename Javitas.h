@@ -7,6 +7,10 @@
 #ifndef JAVITAS_H
 #define JAVITAS_H
 
+#ifdef MEMTRACE
+#include "Memtrace.h"
+#endif
+
 #include <iostream>
 
 #include "VegzettMuvelet.h"

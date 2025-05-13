@@ -3,8 +3,9 @@
 *   Az auto osztaly tagfuggvenyeinek megvalositasa.
 */
 
+#ifdef MEMTRACE
 #include "Memtrace.h"
-
+#endif
 #include <string>
 
 #include "Auto.h"

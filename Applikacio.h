@@ -7,7 +7,9 @@
 #define APPLIKACIO_H
 
 struct Applikacio {
-    void applikacio();
+	/// Futtatja a programot, beleertve a menut es a felhasznaloi interakciot
+	/// @return - true, ha a program sikeresen befejezodott, kulonben false.
+    bool applikacio();
 };
 
 #endif // APPLIKACIO_H

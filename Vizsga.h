@@ -9,6 +9,10 @@
 #ifndef VIZSGA_H
 #define VIZSGA_H
 
+#ifdef MEMTRACE
+#include "Memtrace.h"
+#endif
+
 #include <iostream>
 
 #include "VegzettMuvelet.h"

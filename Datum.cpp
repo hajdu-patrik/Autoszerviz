@@ -3,8 +3,6 @@
 *   A datum osztaly tagfuggvenyeinek megvalositasa.
 */
 
-#include "Memtrace.h"
-
 #include "Datum.h"
 
 /*-------------------------------------------

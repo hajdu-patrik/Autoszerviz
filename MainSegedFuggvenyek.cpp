@@ -4,7 +4,9 @@
 *	szukseges segedfuggvenyek implementaciojat tartalmazza.
 */
 
+#ifdef MEMTRACE
 #include "Memtrace.h"
+#endif
 
 #include <iostream>
 #include <string>

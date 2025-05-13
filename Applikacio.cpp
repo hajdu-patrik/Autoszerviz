@@ -6,15 +6,15 @@
 #include <sstream>
 
 #include "Applikacio.h"
-#include "MainsegedFuggvenyek.h"
+#include "MainSegedFuggvenyek.h"
 #include "SzervizNyilvantartoRendszer.h"
 #include "Teszt.h"
 
-void Applikacio::applikacio() {
+bool Applikacio::applikacio() {
     SzervizNyilvantartoRendszer autoszervizAdatbazis;
 
     // Fajlok betoltese, hogy teszt adatokkal induljon a program amely elosegiti a tesztelest es a hibakeresest
-    if (!tesztDBLetrehozas(autoszervizAdatbazis)) return;
+    if (!tesztDBLetrehozas(autoszervizAdatbazis)) return true;
 
     int valasztottMenu;
     std::string input;
@@ -25,7 +25,11 @@ void Applikacio::applikacio() {
         std::getline(std::cin, input);
 
         std::stringstream ss(input);
-        if (!(ss >> valasztottMenu)) {
+        if (input.empty()) {
+            std::cout << "\n\t>>> Ures bemenet. A program leall. <<<\n";
+            return true;
+        }
+        else if (!(ss >> valasztottMenu)) {
             segedFuggvenyekEleresehez.torolKonzol();
             std::cout << "\t>>> Ervenytelen bemenet! Szamot adj meg! <<<";
             continue;
@@ -82,4 +86,5 @@ void Applikacio::applikacio() {
             break;
         }
     } while (valasztottMenu != 10);
+	return false;
 }

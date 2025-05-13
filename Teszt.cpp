@@ -4,7 +4,6 @@
 *   A modul ellenorzi, hogy a rendszer fobb kepessegei helyesen mukodnek, es segit a hibak kiszureseben a fejlesztes soran.
 */
 
-#include "Memtrace.h"
 #include "Gtest_lite.h"
 
 #include "SzervizNyilvantartoRendszer.h"

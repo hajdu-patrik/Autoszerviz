@@ -3,13 +3,12 @@
  *  Ez a fajl az autoszerviz nyilvantarto rendszer belepesi pontja.
  */
 
-#include "Memtrace.h"
-
 #include "Applikacio.h"
 
 int main() {
     Applikacio app;
-    app.applikacio();
-
-    return 0;
+    if (app.applikacio()) {
+        return 0; // korrekt kilépés
+    }
+    return 0;  // szintén korrekt, de redundáns
 }

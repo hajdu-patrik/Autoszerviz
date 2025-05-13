@@ -3,7 +3,9 @@
 *   A SzervizNyilvantartoRendszer osztaly tagfuggvenyeinek megvalositasa.
 */
 
+#ifdef MEMTRACE
 #include "Memtrace.h"
+#endif
 
 #include <fstream>
 #include <sstream>
